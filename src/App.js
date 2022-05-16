@@ -24,16 +24,6 @@ import Collapsible from './Collapsible';
 
 function App() {
   const [json, setJson] = useState('{}')
-  const handleChange = (event, property) => {
-    let newJson = JSON.parse(json);
-    if (event.target.value === '') {
-      delete newJson[property];
-    } else {
-      newJson[property] = event.target.value
-    }
-
-    setJson(JSON.stringify(newJson))
-  }
 
   const AutoSubmit = () => {
     // Grab values and submitForm from context
@@ -58,12 +48,18 @@ function App() {
             <Box width='100%'>
               <Formik
                 initialValues={{
-                  webhook_url: "",
-                  rememberMe: false,
+                  // webhook_url: "",
+                  // rememberMe: false,
                   forms: [
                     {
                       webhook_url: '',
                       title: '',
+                      text_inputs: [
+                        {
+                          label: '',
+                          type: 1
+                        }
+                      ]
                     },
                   ],
                 }}
@@ -74,7 +70,7 @@ function App() {
                 {({ handleSubmit, errors, touched, values }) => (
                   <form onSubmit={handleSubmit}>
                     <VStack spacing={4} align="flex-start">
-                      <FormControl isInvalid={!!errors.webhook_url && touched.webhook_url}>
+                      {/* <FormControl isInvalid={!!errors.webhook_url && touched.webhook_url}>
                         <FormLabel htmlFor="webhook_url">Webhook URL</FormLabel>
                         <Field
                           as={Input}
@@ -93,13 +89,14 @@ function App() {
                           }}
                         />
                         <FormErrorMessage>{errors.webhook_url}</FormErrorMessage>
-                      </FormControl>
+                      </FormControl> */}
                       <FormControl>
                         <FieldArray name='forms'>
                           {({ insert, remove, push }) => (
-                            <Box>
+                            <VStack align='flex-start'>
                               {values.forms.length > 0 &&
                                 values.forms.map((form, index) => (
+                                  <Collapsible name={`Form ${index+1}`}>
                                   <div className="row" key={index}>
                                     <div className="col">
 
@@ -154,6 +151,83 @@ function App() {
                                       </button>
                                     </div>
                                   </div>
+                                  <FormControl>
+                        <FieldArray name='text_inputs'>
+                          {({ insert, remove, push }) => (
+                            <VStack align='flex-start'>
+                              {values.forms.length > 0 &&
+                                values.forms.map((form, iindex) => (
+                                  <Collapsible name={`Text Input ${iindex+1}`}>
+                                  <div className="row" key={index}>
+                                    <div className="col">
+
+                                        <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`}>Label</FormLabel>
+                                        <Field
+                                          name={`forms.${index}.text_inputs.${iindex}.label`}
+                                          placeholder="Jane Doe"
+                                          type="text"
+                                          as={Input}
+                                          id={`forms.${index}.text_inputs.${iindex}.label`}
+                                          variant="filled"
+                                          validate={(value) => {
+                                            let error;
+                
+                                            if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
+                                              error = "Invalid Webhook URL";
+                                            }
+                
+                                            return error;
+                                          }}
+                                        />
+                                                                              <ErrorMessage
+                                        name={`forms.${index}.text_inputs.${iindex}.label`}
+                                        component="div"
+                                        className="field-error"
+                                      />
+
+                                    </div>
+                                    <div className="col">
+                                      <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`}>Type</FormLabel>
+                                      <Field
+                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                        placeholder="jane@acme.com"
+                                        type="text"
+                                        as={Input}
+                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                        variant="filled"
+                                      />
+                                      <ErrorMessage
+                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                        component="div"
+                                        className="field-error"
+                                      />
+                                    </div>
+                                    <div className="col">
+                                      <button
+                                        type="button"
+                                        className="secondary"
+                                        onClick={() => remove(iindex)}
+                                      >
+                                        X
+                                      </button>
+                                    </div>
+                                  </div>
+                                  </Collapsible>
+                                ))}
+                              <Button
+                                onClick={() => push({
+                                  label: '',
+                                  style: 1
+                                })}
+                              >
+                              
+                                Add Text Input
+                              </Button>
+                            </VStack>
+                          )}
+                        </FieldArray>
+                      </FormControl>
+                                  </Collapsible>
                                 ))}
                               <Button
                                 onClick={() => push({
@@ -161,13 +235,14 @@ function App() {
                                   title: ''
                                 })}
                               >
+                              
                                 Add Form
                               </Button>
-                            </Box>
+                            </VStack>
                           )}
                         </FieldArray>
                       </FormControl>
-                      <Field
+                      {/* <Field
                         as={Checkbox}
                         id="rememberMe"
                         name="rememberMe"
@@ -177,30 +252,20 @@ function App() {
                       </Field>
                       <Button type="submit" colorScheme="purple" width="full">
                         Login
-                      </Button>
+                      </Button> */}
                     </VStack>
                     <AutoSubmit />
                   </form>
                 )}
               </Formik>
-              <FormControl>
-                <Heading size='sm' marginBottom='5px'>Webhook URL</Heading>
-                <Input
-                  id='webhook_url'
-                  name='webhook_url'
-                  type='webhook_url'
-                  onChange={(event) => { handleChange(event, 'webhook_url') }}
-                />
-              </FormControl>
             </Box>
-            <VStack width='100%' alignItems='flex-start'>
+            <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
               <Code variant='solid' width='100%'>{json}</Code>
-              <HStack>
+              {/* <HStack>
                 <Button>Copy JSON</Button>
                 <Button>Download JSON</Button>
-              </HStack>
-              <Collapsible><Text>Hello</Text></Collapsible>
+              </HStack> */}
             </VStack>
           </VStack>
         </Grid>

@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button, Collapse, Box, useDisclosure } from '@chakra-ui/react'
 
-function Collapsible({ name, children }) {
+function Collapsible({ name, deleteButton, children }) {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
     <Box width='100%'>
-      <Button onClick={onToggle} margin={0} borderBottomRadius={isOpen ? 0 : 'var(--chakra-radii-md)'} width='100%' _focus='unset' justifyContent='flex-start'>{name}</Button>
+      <Button onClick={onToggle} margin={0} justifyContent='space-between' borderBottomRadius={isOpen ? 0 : 'var(--chakra-radii-md)'} width='100%' _focus='unset'>{name} {deleteButton}</Button>
       <Collapse in={isOpen} animateOpacity margin={0}>
         <Box
           p='40px'

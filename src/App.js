@@ -16,7 +16,8 @@ import {
   HStack,
   FormControl,
   FormLabel,
-  FormErrorMessage
+  FormErrorMessage,
+  CloseButton
 } from '@chakra-ui/react';
 
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -92,40 +93,40 @@ function App() {
                       </FormControl> */}
                       <FormControl>
                         <FieldArray name='forms'>
-                          {({ insert, remove, push }) => (
+                          {({ remove, push }) => (
                             <VStack align='flex-start'>
                               {values.forms.length > 0 &&
                                 values.forms.map((form, index) => (
-                                  <Collapsible name={`Form ${index+1}`}>
-                                  <div className="row" key={index}>
-                                    <div className="col">
+                                  <Collapsible name={`Form ${index + 1}`} deleteButton={<CloseButton onClick={() => remove(index)}/>} key={index}>
 
-                                        <FormLabel htmlFor={`forms.${index}.webhook_url`}>Webhook URL</FormLabel>
-                                        <Field
-                                          name={`forms.${index}.webhook_url`}
-                                          placeholder="Jane Doe"
-                                          type="text"
-                                          as={Input}
-                                          id={`forms.${index}.webhook_url`}
-                                          variant="filled"
-                                          validate={(value) => {
-                                            let error;
-                
-                                            if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
-                                              error = "Invalid Webhook URL";
-                                            }
-                
-                                            return error;
-                                          }}
-                                        />
-                                                                              <ErrorMessage
+                                    <Box>
+
+                                      <FormLabel htmlFor={`forms.${index}.webhook_url`}>Webhook URL</FormLabel>
+                                      <Field
+                                        name={`forms.${index}.webhook_url`}
+                                        placeholder="Jane Doe"
+                                        type="text"
+                                        as={Input}
+                                        id={`forms.${index}.webhook_url`}
+                                        variant="filled"
+                                        validate={(value) => {
+                                          let error;
+
+                                          if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
+                                            error = "Invalid Webhook URL";
+                                          }
+
+                                          return error;
+                                        }}
+                                      />
+                                      <ErrorMessage
                                         name={`forms.${index}.webhook_url`}
                                         component="div"
                                         className="field-error"
                                       />
 
-                                    </div>
-                                    <div className="col">
+                                    </Box>
+                                    <Box>
                                       <FormLabel htmlFor={`forms.${index}.title`}>Title</FormLabel>
                                       <Field
                                         name={`forms.${index}.title`}
@@ -140,102 +141,90 @@ function App() {
                                         component="div"
                                         className="field-error"
                                       />
-                                    </div>
-                                    <div className="col">
-                                      <button
-                                        type="button"
-                                        className="secondary"
-                                        onClick={() => remove(index)}
-                                      >
-                                        X
-                                      </button>
-                                    </div>
-                                  </div>
-                                  <FormControl>
-                        <FieldArray name='text_inputs'>
-                          {({ insert, remove, push }) => (
-                            <VStack align='flex-start'>
-                              {values.forms.length > 0 &&
-                                values.forms.map((form, iindex) => (
-                                  <Collapsible name={`Text Input ${iindex+1}`}>
-                                  <div className="row" key={index}>
-                                    <div className="col">
+                                    </Box>
 
-                                        <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`}>Label</FormLabel>
-                                        <Field
-                                          name={`forms.${index}.text_inputs.${iindex}.label`}
-                                          placeholder="Jane Doe"
-                                          type="text"
-                                          as={Input}
-                                          id={`forms.${index}.text_inputs.${iindex}.label`}
-                                          variant="filled"
-                                          validate={(value) => {
-                                            let error;
-                
-                                            if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
-                                              error = "Invalid Webhook URL";
-                                            }
-                
-                                            return error;
-                                          }}
-                                        />
-                                                                              <ErrorMessage
-                                        name={`forms.${index}.text_inputs.${iindex}.label`}
-                                        component="div"
-                                        className="field-error"
-                                      />
 
-                                    </div>
-                                    <div className="col">
-                                      <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`}>Type</FormLabel>
-                                      <Field
-                                        name={`forms.${index}.text_inputs.${iindex}.type`}
-                                        placeholder="jane@acme.com"
-                                        type="text"
-                                        as={Input}
-                                        id={`forms.${index}.text_inputs.${iindex}.type`}
-                                        variant="filled"
-                                      />
-                                      <ErrorMessage
-                                        name={`forms.${index}.text_inputs.${iindex}.type`}
-                                        component="div"
-                                        className="field-error"
-                                      />
-                                    </div>
-                                    <div className="col">
-                                      <button
-                                        type="button"
-                                        className="secondary"
-                                        onClick={() => remove(iindex)}
-                                      >
-                                        X
-                                      </button>
-                                    </div>
-                                  </div>
-                                  </Collapsible>
-                                ))}
-                              <Button
-                                onClick={() => push({
-                                  label: '',
-                                  style: 1
-                                })}
-                              >
-                              
-                                Add Text Input
-                              </Button>
-                            </VStack>
-                          )}
-                        </FieldArray>
-                      </FormControl>
+                                    <FormControl>
+                                      <FieldArray name='text_inputs' render=                                        {({ insert, remove: removeTextInput, push: pushTextInput }) => (
+                                          <VStack align='flex-start'>
+                                            {values.forms[index].text_inputs.length > 0 &&
+                                              values.forms[index].text_inputs.map((text_input, iindex) => (
+                                                <Collapsible name={`Text Input ${iindex + 1}`} key={iindex} deleteButton={<CloseButton onClick={() => removeTextInput(iindex)} />}>
+
+                                                  <div className="col">
+
+                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`}>Label</FormLabel>
+                                                    <Field
+                                                      name={`forms.${index}.text_inputs.${iindex}.label`}
+                                                      placeholder="Jane Doe"
+                                                      type="text"
+                                                      as={Input}
+                                                      id={`forms.${index}.text_inputs.${iindex}.label`}
+                                                      variant="filled"
+                                                      validate={(value) => {
+                                                        let error;
+
+                                                        if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
+                                                          error = "Invalid Webhook URL";
+                                                        }
+
+                                                        return error;
+                                                      }}
+                                                    />
+                                                    <ErrorMessage
+                                                      name={`forms.${index}.text_inputs.${iindex}.label`}
+                                                      component="div"
+                                                      className="field-error"
+                                                    />
+
+                                                  </div>
+                                                  <div className="col">
+                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`}>Type</FormLabel>
+                                                    <Field
+                                                      name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                      placeholder="jane@acme.com"
+                                                      type="text"
+                                                      as={Input}
+                                                      id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                      variant="filled"
+                                                    />
+                                                    <ErrorMessage
+                                                      name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                      component="div"
+                                                      className="field-error"
+                                                    />
+                                                  </div>
+                                                </Collapsible>
+                                              ))}
+                                            <Button
+                                              onClick={() => pushTextInput({
+                                                label: '',
+                                                style: 1
+                                              })}
+                                            >
+
+                                              Add Text Input
+                                            </Button>
+                                          </VStack>
+                                        )}>
+
+                                      </FieldArray>
+                                    </FormControl>
                                   </Collapsible>
                                 ))}
                               <Button
                                 onClick={() => push({
                                   webhook_url: '',
-                                  title: ''
+                                  title: '',
+                                  text_inputs: [
+                                    {
+                                      label: '',
+                                      type: 1
+                                    }
+                                  ]
                                 })}
                               >
-                              
+
                                 Add Form
                               </Button>
                             </VStack>

@@ -1,0 +1,13 @@
+name = "forms-react"
+type = "webpack"
+route = ''
+zone_id = ''
+usage_model = ''
+compatibility_flags = []
+account_id = 'e80b31c3bd8b0056ff219180a2f85c7e'
+workers_dev = true
+compatibility_date = "2022-05-16"
+
+[site]
+bucket = "./build"
+entry-point = "workers-site"

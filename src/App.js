@@ -52,7 +52,7 @@ function App() {
             <ColorModeSwitcher/>
           </HStack>
 
-          <VStack spacing={8} width='calc(100vw - 24px);'>
+          <VStack spacing={8} width='calc(100vw - 24px)'>
             <Box width='100%'>
               <Formik
                 initialValues={{
@@ -63,10 +63,11 @@ function App() {
                       webhook_url: '',
                       title: '',
                       text_inputs: [
-                        {
-                          label: '',
-                          type: 1
-                        }
+                        { label: '', type: 1 },
+                        { label: '', type: 1 },
+                        { label: '', type: 1 },
+                        { label: '', type: 1 },
+                        { label: '', type: 1 }
                       ]
                     },
                   ],
@@ -265,7 +266,7 @@ function App() {
             </Box>
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
-              <Code variant='solid' width='100%'>{json}</Code>
+              <pre><Code variant='solid' colorScheme='blackAlpha' width='calc(100vw - 24px)'>{json}</Code></pre>
               {/* <HStack>
                 <Button>Copy JSON</Button>
                 <Button>Download JSON</Button>

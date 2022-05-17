@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Formik, Field, useFormikContext, FieldArray, ErrorMessage } from 'formik';
-import "./App.css";
 import {
   ChakraProvider,
   Box,
   VStack,
   Code,
   Grid,
-  theme,
   Input,
   Text,
   Checkbox,
+  extendTheme,
   Button,
   Heading,
   HStack,
@@ -19,22 +18,20 @@ import {
   FormErrorMessage,
   CloseButton,
   useTheme,
-  useColorMode,
-  ColorModeScript,
   Tooltip
 } from '@chakra-ui/react';
 
+import './App.css';
+
+import { FaQuestionCircle } from 'react-icons/fa';
+
+import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
-import { FaQuestionCircle } from 'react-icons/fa';
+
 
 function App() {
   const [json, setJson] = useState('{}')
-  const { colorMode } = useColorMode();
-  ColorModeScript({
-    initialColorMode: "dark",
-    type: "cookie"
-  });
 
   const AutoSubmit = () => {
     // Grab values and submitForm from context
@@ -51,8 +48,8 @@ function App() {
       <Box>
         <Grid p={3}>
           <HStack display='flex' justifyContent='space-between'>
-            <Heading size='md'>Forms Builder</Heading>
-            <ColorModeSwitcher />
+            <Heading size='md'>Forms JSON Builder</Heading>
+            <ColorModeSwitcher/>
           </HStack>
 
           <VStack spacing={8} width='calc(100vw - 24px);'>
@@ -114,10 +111,10 @@ function App() {
                                   >
 
                                     <Box>
-                                      <FormLabel htmlFor={`forms.${index}.webhook_url`} className={`theme-${colorMode}`}>
-                                        Webhook URL
-                                        <Tooltip label='The webhook URL. Keep this secret!' fontSize='md'>
-                                          <FaQuestionCircle />
+                                      <FormLabel htmlFor={`forms.${index}.webhook_url`} display='flex' alignItems='center'>
+                                        <Text marginRight='5px'>Webhook URL</Text>
+                                        <Tooltip label='The webhook URL. Keep this secret!' placement='top' fontSize='md'>
+                                          <FaQuestionCircle/>
                                         </Tooltip>
                                       </FormLabel>
                                       <Field
@@ -145,7 +142,7 @@ function App() {
 
                                     </Box>
                                     <Box>
-                                      <FormLabel htmlFor={`forms.${index}.title`} className={`theme-${colorMode}`}>Title</FormLabel>
+                                      <FormLabel htmlFor={`forms.${index}.title`} >Title</FormLabel>
                                       <Field
                                         name={`forms.${index}.title`}
                                         placeholder="My awesome form"
@@ -169,7 +166,7 @@ function App() {
 
                                                 <div className="col">
 
-                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`} className={`theme-${colorMode}`}>Label</FormLabel>
+                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`} >Label</FormLabel>
                                                   <Field
                                                     name={`forms.${index}.text_inputs.${iindex}.label`}
                                                     placeholder="My first text input"
@@ -195,7 +192,7 @@ function App() {
 
                                                 </div>
                                                 <div className="col">
-                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} className={`theme-${colorMode}`}>Type</FormLabel>
+                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} >Type</FormLabel>
                                                   <Field
                                                     name={`forms.${index}.text_inputs.${iindex}.type`}
                                                     placeholder="1"
@@ -213,6 +210,7 @@ function App() {
                                               </Collapsible>
                                             ))}
                                           <Button
+                                            variant='primary'
                                             onClick={() => pushTextInput({
                                               label: '',
                                               style: 1
@@ -229,6 +227,7 @@ function App() {
                                   </Collapsible>
                                 ))}
                               <Button
+                                variant='primary'
                                 onClick={() => push({
                                   webhook_url: '',
                                   title: '',

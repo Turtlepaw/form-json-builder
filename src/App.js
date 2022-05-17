@@ -7,6 +7,7 @@ import {
   Code,
   Grid,
   Input,
+  Radio,
   Text,
   Checkbox,
   extendTheme,
@@ -18,7 +19,9 @@ import {
   FormErrorMessage,
   CloseButton,
   useTheme,
-  Tooltip
+  Tooltip,
+  RadioGroup,
+  Stack
 } from '@chakra-ui/react';
 
 import './App.css';
@@ -28,6 +31,7 @@ import { FaQuestionCircle } from 'react-icons/fa';
 import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
+import { Link } from './Link';
 
 
 function App() {
@@ -49,7 +53,7 @@ function App() {
         <Grid p={3}>
           <HStack display='flex' justifyContent='space-between'>
             <Heading size='md'>Forms JSON Builder</Heading>
-            <ColorModeSwitcher/>
+            <ColorModeSwitcher />
           </HStack>
 
           <VStack spacing={8} width='calc(100vw - 24px)'>
@@ -114,10 +118,15 @@ function App() {
                                     <Box>
                                       <FormLabel htmlFor={`forms.${index}.webhook_url`} display='flex' alignItems='center'>
                                         <Text marginRight='5px'>Webhook URL</Text>
-                                        <Tooltip label='The webhook URL. Keep this secret!' placement='top' fontSize='md'>
-                                          <FaQuestionCircle/>
+                                        <Tooltip hasArrow label={
+                                          <div>
+                                            The Discord webhook URL to post submissions. Keep this secret!
+                                          </div>
+                                        } placement='top' shouldWrapChildren bg="blurple">
+                                          <FaQuestionCircle />
                                         </Tooltip>
                                       </FormLabel>
+                                      <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
                                       <Field
                                         name={`forms.${index}.webhook_url`}
                                         placeholder="https://discord.com/api/webhooks/channel/yourwebhook"
@@ -151,6 +160,15 @@ function App() {
                                         as={Input}
                                         id={`forms.${index}.title`}
                                         variant="filled"
+                                        validate={(value) => {
+                                          let error;
+
+                                          if (value.length >= 45 || value.length <= 0) {
+                                            error = "The title must be between 1 and 45 characters.";
+                                          }
+
+                                          return error;
+                                        }}
                                       />
                                       <ErrorMessage
                                         name={`forms.${index}.title`}
@@ -178,8 +196,8 @@ function App() {
                                                     validate={(value) => {
                                                       let error;
 
-                                                      if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
-                                                        error = "Invalid Webhook URL";
+                                                      if (value.length >= 45 || value.length <= 0) {
+                                                        error = "The label must be between 1 and 45 characters.";
                                                       }
 
                                                       return error;
@@ -193,15 +211,38 @@ function App() {
 
                                                 </div>
                                                 <div className="col">
-                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} >Type</FormLabel>
-                                                  <Field
-                                                    name={`forms.${index}.text_inputs.${iindex}.type`}
-                                                    placeholder="1"
-                                                    type="text"
-                                                    as={Input}
-                                                    id={`forms.${index}.text_inputs.${iindex}.type`}
-                                                    variant="filled"
-                                                  />
+                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} display='flex' alignItems='center'>
+                                                    <Text marginRight='5px'>Type</Text>
+                                                    <Tooltip hasArrow label='Short only allows 1 line of text to be entered versus paragraph allows more then 1 line of text to be entered.' placement='top' shouldWrapChildren bg="blurple">
+                                                      <FaQuestionCircle />
+                                                    </Tooltip>
+                                                  </FormLabel>
+                                                  <RadioGroup>
+                                                    <Stack direction="row">
+                                                      <Field
+                                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        type="radio"
+                                                        as={Radio}
+                                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        variant="filled"
+                                                        value="1"
+                                                        className='radioText'
+                                                      >
+                                                        <Text>Short</Text>
+                                                      </Field>
+                                                      <Field
+                                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        type="radio"
+                                                        as={Radio}
+                                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        variant="filled"
+                                                        value="2"
+                                                        className='radioText'
+                                                      >
+                                                        <Text className='radioText'>Paragraph</Text>
+                                                      </Field>
+                                                    </Stack>
+                                                  </RadioGroup>
                                                   <ErrorMessage
                                                     name={`forms.${index}.text_inputs.${iindex}.type`}
                                                     component="div"
@@ -275,6 +316,14 @@ function App() {
           </VStack>
         </Grid>
       </Box>
+      <div className="text-sm pt-5 text-center pb-10">
+        <p className="font-medium">©️ 2022 Forms Discord Bot</p>
+        <p className="text-muted">
+          Not affiliated with Discord, Inc.
+          <br />
+          Discord is a registered trademark of Discord, Inc.
+        </p>
+      </div>
     </ChakraProvider>
   );
 }

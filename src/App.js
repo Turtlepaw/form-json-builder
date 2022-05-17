@@ -20,11 +20,13 @@ import {
   CloseButton,
   useTheme,
   useColorMode,
-  ColorModeScript
+  ColorModeScript,
+  Tooltip
 } from '@chakra-ui/react';
 
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
+import { FaQuestionCircle } from 'react-icons/fa';
 
 function App() {
   const [json, setJson] = useState('{}')
@@ -107,13 +109,17 @@ function App() {
                                 values.forms.map((form, index) => (
                                   <Collapsible
                                     name={`Form ${index + 1}`}
-                                    deleteButton={<CloseButton onClick={() => remove(index)}/>}
+                                    deleteButton={<CloseButton onClick={() => remove(index)} />}
                                     key={index}
-                                    >
+                                  >
 
                                     <Box>
-
-                                      <FormLabel htmlFor={`forms.${index}.webhook_url`} className={`theme-${colorMode}`}>Webhook URL</FormLabel>
+                                      <FormLabel htmlFor={`forms.${index}.webhook_url`} className={`theme-${colorMode}`}>
+                                        Webhook URL
+                                        <Tooltip label='The webhook URL. Keep this secret!' fontSize='md'>
+                                          <FaQuestionCircle />
+                                        </Tooltip>
+                                      </FormLabel>
                                       <Field
                                         name={`forms.${index}.webhook_url`}
                                         placeholder="https://discord.com/api/webhooks/channel/yourwebhook"
@@ -155,68 +161,68 @@ function App() {
                                       />
                                     </Box>
                                     <FormControl>
-                                      <FieldArray name='text_inputs' render=                                        {({ insert, remove: removeTextInput, push: pushTextInput }) => (
-                                          <VStack align='flex-start'>
-                                            {values.forms[index].text_inputs.length > 0 &&
-                                              values.forms[index].text_inputs.map((text_input, iindex) => (
-                                                <Collapsible name={`Text Input ${iindex + 1}`} key={iindex} deleteButton={<CloseButton onClick={() => removeTextInput(iindex)} />}>
+                                      <FieldArray name='text_inputs' render={({ insert, remove: removeTextInput, push: pushTextInput }) => (
+                                        <VStack align='flex-start'>
+                                          {values.forms[index].text_inputs.length > 0 &&
+                                            values.forms[index].text_inputs.map((text_input, iindex) => (
+                                              <Collapsible name={`Text Input ${iindex + 1}`} key={iindex} deleteButton={<CloseButton onClick={() => removeTextInput(iindex)} />}>
 
-                                                  <div className="col">
+                                                <div className="col">
 
-                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`}  className={`theme-${colorMode}`}>Label</FormLabel>
-                                                    <Field
-                                                      name={`forms.${index}.text_inputs.${iindex}.label`}
-                                                      placeholder="My first text input"
-                                                      type="text"
-                                                      as={Input}
-                                                      id={`forms.${index}.text_inputs.${iindex}.label`}
-                                                      variant="filled"
-                                                      validate={(value) => {
-                                                        let error;
+                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`} className={`theme-${colorMode}`}>Label</FormLabel>
+                                                  <Field
+                                                    name={`forms.${index}.text_inputs.${iindex}.label`}
+                                                    placeholder="My first text input"
+                                                    type="text"
+                                                    as={Input}
+                                                    id={`forms.${index}.text_inputs.${iindex}.label`}
+                                                    variant="filled"
+                                                    validate={(value) => {
+                                                      let error;
 
-                                                        if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
-                                                          error = "Invalid Webhook URL";
-                                                        }
+                                                      if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
+                                                        error = "Invalid Webhook URL";
+                                                      }
 
-                                                        return error;
-                                                      }}
-                                                    />
-                                                    <ErrorMessage
-                                                      name={`forms.${index}.text_inputs.${iindex}.label`}
-                                                      component="div"
-                                                      className="field-error"
-                                                    />
+                                                      return error;
+                                                    }}
+                                                  />
+                                                  <ErrorMessage
+                                                    name={`forms.${index}.text_inputs.${iindex}.label`}
+                                                    component="div"
+                                                    className="field-error"
+                                                  />
 
-                                                  </div>
-                                                  <div className="col">
-                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} className={`theme-${colorMode}`}>Type</FormLabel>
-                                                    <Field
-                                                      name={`forms.${index}.text_inputs.${iindex}.type`}
-                                                      placeholder="1"
-                                                      type="text"
-                                                      as={Input}
-                                                      id={`forms.${index}.text_inputs.${iindex}.type`}
-                                                      variant="filled"
-                                                    />
-                                                    <ErrorMessage
-                                                      name={`forms.${index}.text_inputs.${iindex}.type`}
-                                                      component="div"
-                                                      className="field-error"
-                                                    />
-                                                  </div>
-                                                </Collapsible>
-                                              ))}
-                                            <Button
-                                              onClick={() => pushTextInput({
-                                                label: '',
-                                                style: 1
-                                              })}
-                                            >
+                                                </div>
+                                                <div className="col">
+                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} className={`theme-${colorMode}`}>Type</FormLabel>
+                                                  <Field
+                                                    name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                    placeholder="1"
+                                                    type="text"
+                                                    as={Input}
+                                                    id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                    variant="filled"
+                                                  />
+                                                  <ErrorMessage
+                                                    name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                    component="div"
+                                                    className="field-error"
+                                                  />
+                                                </div>
+                                              </Collapsible>
+                                            ))}
+                                          <Button
+                                            onClick={() => pushTextInput({
+                                              label: '',
+                                              style: 1
+                                            })}
+                                          >
 
-                                              Add Text Input
-                                            </Button>
-                                          </VStack>
-                                        )}>
+                                            Add Text Input
+                                          </Button>
+                                        </VStack>
+                                      )}>
 
                                       </FieldArray>
                                     </FormControl>

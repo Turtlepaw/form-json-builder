@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.field-error {
+    color: #ED4245;
+}
+
+.theme-light {
+    color: black !important;
+}
+
+.theme-dark {
+
+}

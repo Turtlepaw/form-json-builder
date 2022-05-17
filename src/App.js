@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, Field, useFormikContext, FieldArray, ErrorMessage } from 'formik';
-
+import "./App.css";
 import {
   ChakraProvider,
   Box,
@@ -17,7 +17,10 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  CloseButton
+  CloseButton,
+  useTheme,
+  useColorMode,
+  ColorModeScript
 } from '@chakra-ui/react';
 
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -25,6 +28,11 @@ import Collapsible from './Collapsible';
 
 function App() {
   const [json, setJson] = useState('{}')
+  const { colorMode } = useColorMode();
+  ColorModeScript({
+    initialColorMode: "dark",
+    type: "cookie"
+  });
 
   const AutoSubmit = () => {
     // Grab values and submitForm from context
@@ -41,7 +49,7 @@ function App() {
       <Box>
         <Grid p={3}>
           <HStack display='flex' justifyContent='space-between'>
-            <Heading size='md'>Hello!!!!</Heading>
+            <Heading size='md'>Forms Builder</Heading>
             <ColorModeSwitcher />
           </HStack>
 
@@ -97,14 +105,18 @@ function App() {
                             <VStack align='flex-start'>
                               {values.forms.length > 0 &&
                                 values.forms.map((form, index) => (
-                                  <Collapsible name={`Form ${index + 1}`} deleteButton={<CloseButton onClick={() => remove(index)}/>} key={index}>
+                                  <Collapsible
+                                    name={`Form ${index + 1}`}
+                                    deleteButton={<CloseButton onClick={() => remove(index)}/>}
+                                    key={index}
+                                    >
 
                                     <Box>
 
-                                      <FormLabel htmlFor={`forms.${index}.webhook_url`}>Webhook URL</FormLabel>
+                                      <FormLabel htmlFor={`forms.${index}.webhook_url`} className={`theme-${colorMode}`}>Webhook URL</FormLabel>
                                       <Field
                                         name={`forms.${index}.webhook_url`}
-                                        placeholder="Jane Doe"
+                                        placeholder="https://discord.com/api/webhooks/channel/yourwebhook"
                                         type="text"
                                         as={Input}
                                         id={`forms.${index}.webhook_url`}
@@ -127,10 +139,10 @@ function App() {
 
                                     </Box>
                                     <Box>
-                                      <FormLabel htmlFor={`forms.${index}.title`}>Title</FormLabel>
+                                      <FormLabel htmlFor={`forms.${index}.title`} className={`theme-${colorMode}`}>Title</FormLabel>
                                       <Field
                                         name={`forms.${index}.title`}
-                                        placeholder="jane@acme.com"
+                                        placeholder="My awesome form"
                                         type="text"
                                         as={Input}
                                         id={`forms.${index}.title`}
@@ -142,8 +154,6 @@ function App() {
                                         className="field-error"
                                       />
                                     </Box>
-
-
                                     <FormControl>
                                       <FieldArray name='text_inputs' render=                                        {({ insert, remove: removeTextInput, push: pushTextInput }) => (
                                           <VStack align='flex-start'>
@@ -153,10 +163,10 @@ function App() {
 
                                                   <div className="col">
 
-                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`}>Label</FormLabel>
+                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`}  className={`theme-${colorMode}`}>Label</FormLabel>
                                                     <Field
                                                       name={`forms.${index}.text_inputs.${iindex}.label`}
-                                                      placeholder="Jane Doe"
+                                                      placeholder="My first text input"
                                                       type="text"
                                                       as={Input}
                                                       id={`forms.${index}.text_inputs.${iindex}.label`}
@@ -179,10 +189,10 @@ function App() {
 
                                                   </div>
                                                   <div className="col">
-                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`}>Type</FormLabel>
+                                                    <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} className={`theme-${colorMode}`}>Type</FormLabel>
                                                     <Field
                                                       name={`forms.${index}.text_inputs.${iindex}.type`}
-                                                      placeholder="jane@acme.com"
+                                                      placeholder="1"
                                                       type="text"
                                                       as={Input}
                                                       id={`forms.${index}.text_inputs.${iindex}.type`}

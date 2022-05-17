@@ -1,1 +1,5 @@
-To test I think run `npm i && npm start`
+# Forms builder
+
+The official Forms (discord bot) builder website.
+
+[View](https://forms-builder.pages.dev/)

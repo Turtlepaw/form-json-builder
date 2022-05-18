@@ -23,16 +23,13 @@ import {
   RadioGroup,
   Stack
 } from '@chakra-ui/react';
-
+import { Rest, sendForm } from "./Discord";
 import './App.css';
-
 import { FaQuestionCircle } from 'react-icons/fa';
-
 import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
 import { Link } from './Link';
-
 
 function App() {
   const [json, setJson] = useState('{}')
@@ -45,7 +42,6 @@ function App() {
     }, [values, submitForm]);
     return null;
   };
-
 
   return (
     <ChakraProvider theme={theme}>
@@ -60,8 +56,12 @@ function App() {
             <Box width='100%'>
               <Formik
                 initialValues={{
-                  // webhook_url: "",
-                  // rememberMe: false,
+                  location: {
+                    channel_id: '976298080506904596',
+                    message: {
+                      content: 'test'
+                    }
+                  },
                   forms: [
                     {
                       webhook_url: '',
@@ -107,6 +107,56 @@ function App() {
                         <FieldArray name='forms'>
                           {({ remove, push }) => (
                             <VStack align='flex-start'>
+                              <Box>
+                              <FormLabel htmlFor={`location.channel_id`} >Channel ID</FormLabel>
+                              <Field
+                                name={`location.channel_id`}
+                                placeholder="976298080506904596"
+                                type="text"
+                                as={Input}
+                                id={`location.channel_id`}
+                                variant="filled"
+                                validate={(value) => {
+                                  let error;
+
+                                  if (isNaN(Number(value)) || value.length > 18 || value.length <= 0) {
+                                    error = "Invalid channel ID";
+                                  }
+
+                                  return error;
+                                }}
+                              />
+                                <ErrorMessage
+                                  name={`location.channel_id`}
+                                  component="div"
+                                  className="field-error"
+                                />
+                              </Box>
+                              <Box>
+                              <FormLabel htmlFor={`location.message.content`} >Message Content</FormLabel>
+                              <Field
+                                name={`location.message.content`}
+                                placeholder="976298080506904596"
+                                type="text"
+                                as={Input}
+                                id={`location.message.content`}
+                                variant="filled"
+                                validate={(value) => {
+                                  let error;
+
+                                  if (value.length > 2000 || value.length <= 0) {
+                                    error = "Message Content must be less than 2000 characters";
+                                  }
+
+                                  return error;
+                                }}
+                              />
+                                <ErrorMessage
+                                  name={`location.message.content`}
+                                  component="div"
+                                  className="field-error"
+                                />
+                              </Box>
                               {values.forms.length > 0 &&
                                 values.forms.map((form, index) => (
                                   <Collapsible
@@ -114,7 +164,6 @@ function App() {
                                     deleteButton={<CloseButton onClick={() => remove(index)} />}
                                     key={index}
                                   >
-
                                     <Box>
                                       <FormLabel htmlFor={`forms.${index}.webhook_url`} display='flex' alignItems='center'>
                                         <Text marginRight='5px'>Webhook URL</Text>
@@ -283,6 +332,15 @@ function App() {
                               >
 
                                 Add Form
+                              </Button>
+                              <Button
+                                variant='primary'
+                                onClick={async () => {
+                                  const res = await sendForm(json)
+                                  alert(res);
+                                }}
+                              >
+                                Post
                               </Button>
                             </VStack>
                           )}

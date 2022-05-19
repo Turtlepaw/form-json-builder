@@ -1,19 +1,29 @@
 import { extendTheme } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 
+const colours =  {
+  'blurple': '#5865F2',
+  'grey.extralight': '#ebedef',
+  'grey.light': '#4f545c',
+  'grey.dark': '#36393f',
+  'grey.extradark': '#292b2f'
+};
+
+const { blurple } = colours;
+
 const theme = extendTheme({
-  colors: {
-    'blurple': '#5865F2',
-    'grey': '#4f545c',
-    'grey.500': '#36393f',
-    'grey.900': '#292b2f'
-  },
+  colors: colours,
   styles: {
     global: (props) => ({
       body: {
-        bg: mode('grey.500', 'white')(props),
+        bg: mode('grey.dark', 'white')(props),
         color: mode('white', 'black')(props),
       },
+      input: {
+        bg: mode('grey.extradark', 'grey.extralight')(props),
+        borderColor: blurple,
+        _focus: { border: `2px solid ${blurple}` }
+      }
     })
   },
   components: {
@@ -22,18 +32,19 @@ const theme = extendTheme({
         color: 'white'
       },
       variants: {
-        'primary': {
+        primary: {
           bg: 'blurple'
         },
-        'secondary': {
-          bg: 'grey'
+        secondary: {
+          bg: 'grey.light'
         }
       },
       defaultProps: {
         variant: 'secondary',
       }
-    }
+    },
+    Input: { defaultProps: { variant: 'normal' } }
   }
-})
+});
 
 export default theme

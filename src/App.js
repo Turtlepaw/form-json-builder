@@ -57,9 +57,9 @@ function App() {
               <Formik
                 initialValues={{
                   location: {
-                    channel_id: '976298080506904596',
+                    channel_id: '',
                     message: {
-                      content: 'test'
+                      content: ''
                     }
                   },
                   forms: [
@@ -114,50 +114,49 @@ function App() {
                         <FieldArray name='forms'>
                           {({ remove, push }) => (
                             <VStack align='flex-start'>
-                              <Box>
-                              <FormLabel htmlFor={`location.channel_id`} >Channel ID</FormLabel>
-                              <Field
-                                name={`location.channel_id`}
-                                placeholder="976298080506904596"
-                                type="text"
-                                as={Input}
-                                id={`location.channel_id`}
-                                variant="filled"
-                                validate={(value) => {
-                                  let error;
+                              <Box width='100%'>
+                                <FormLabel htmlFor={`location.channel_id`} >Channel ID</FormLabel>
+                                <Field
+                                  name={`location.channel_id`}
+                                  placeholder="976298080506904596"
+                                  type="text"
+                                  as={Input}
+                                  id={`location.channel_id`}
+                                  validate={(value) => {
+                                    let error;
 
-                                  if (isNaN(Number(value)) || value.length > 18 || value.length <= 0) {
-                                    error = "Invalid channel ID";
-                                  }
+                                    if (isNaN(Number(value)) || value.length > 18 || value.length <= 0) {
+                                      error = "Invalid channel ID";
+                                    }
 
-                                  return error;
-                                }}
-                              />
+                                    return error;
+                                  }}
+                                />
                                 <ErrorMessage
                                   name={`location.channel_id`}
                                   component="div"
                                   className="field-error"
                                 />
                               </Box>
-                              <Box>
-                              <FormLabel htmlFor={`location.message.content`} >Message Content</FormLabel>
-                              <Field
-                                name={`location.message.content`}
-                                placeholder="976298080506904596"
-                                type="text"
-                                as={Input}
-                                id={`location.message.content`}
-                                variant="filled"
-                                validate={(value) => {
-                                  let error;
+                              <Box width='100%'>
+                                <FormLabel htmlFor={`location.message.content`} >Message Content</FormLabel>
+                                <Field
+                                  name={`location.message.content`}
+                                  placeholder="976298080506904596"
+                                  type="text"
+                                  as={Input}
+                                  id={`location.message.content`}
+                                  
+                                  validate={(value) => {
+                                    let error;
 
-                                  if (value.length > 2000 || value.length <= 0) {
-                                    error = "Message Content must be less than 2000 characters";
-                                  }
+                                    if (value.length > 2000 || value.length <= 0) {
+                                      error = "Message Content must be less than 2000 characters";
+                                    }
 
-                                  return error;
-                                }}
-                              />
+                                    return error;
+                                  }}
+                                />
                                 <ErrorMessage
                                   name={`location.message.content`}
                                   component="div"
@@ -189,7 +188,7 @@ function App() {
                                         type="text"
                                         as={Input}
                                         id={`forms.${index}.modal.webhook_url`}
-                                        variant="filled"
+                                        
                                         validate={(value) => {
                                           let error;
 
@@ -215,7 +214,7 @@ function App() {
                                         type="text"
                                         as={Input}
                                         id={`forms.${index}.modal.title`}
-                                        variant="filled"
+                                        
                                         validate={(value) => {
                                           let error;
 
@@ -248,7 +247,7 @@ function App() {
                                                     type="text"
                                                     as={Input}
                                                     id={`forms.${index}.modal.components.${iindex}.components.0.label`}
-                                                    variant="filled"
+                                                    
                                                     validate={(value) => {
                                                       let error;
 
@@ -280,7 +279,7 @@ function App() {
                                                         type="radio"
                                                         as={Radio}
                                                         id={`forms.${index}.modal.components.${iindex}.components.0.style`}
-                                                        variant="filled"
+                                                        
                                                         value="1"
                                                         className='radioText'
                                                       >
@@ -291,7 +290,7 @@ function App() {
                                                         type="radio"
                                                         as={Radio}
                                                         id={`forms.${index}.modal.components.${iindex}.components.0.style`}
-                                                        variant="filled"
+                                                        
                                                         value="2"
                                                         className='radioText'
                                                       >
@@ -326,7 +325,7 @@ function App() {
                                 ))}
                               <Button
                                 variant='primary'
-                                onClick={() => push(                    {
+                                onClick={() => push({
                                   webhook_url: '',
                                   title: '',
                                   modal: {

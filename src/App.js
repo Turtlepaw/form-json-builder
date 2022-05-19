@@ -64,15 +64,42 @@ function App() {
                   },
                   forms: [
                     {
-                      webhook_url: '',
-                      title: '',
-                      text_inputs: [
-                        { label: '', type: 1 },
-                        { label: '', type: 1 },
-                        { label: '', type: 1 },
-                        { label: '', type: 1 },
-                        { label: '', type: 1 }
-                      ]
+                      modal: {
+                        webhook_url: '',
+                        title: '',
+                        components: [
+                          {
+                            components: [{
+                              label: '',
+                              style: 1
+                            }]
+                          },
+                          {
+                            components: [{
+                              label: '',
+                              style: 1
+                            }]
+                          },
+                          {
+                            components: [{
+                              label: '',
+                              style: 1
+                            }]
+                          },
+                          {
+                            components: [{
+                              label: '',
+                              style: 1
+                            }]
+                          },
+                          {
+                            components: [{
+                              label: '',
+                              style: 1
+                            }]
+                          }
+                        ]
+                      }
                     },
                   ],
                 }}
@@ -83,26 +110,6 @@ function App() {
                 {({ handleSubmit, errors, touched, values }) => (
                   <form onSubmit={handleSubmit}>
                     <VStack spacing={4} align="flex-start">
-                      {/* <FormControl isInvalid={!!errors.webhook_url && touched.webhook_url}>
-                        <FormLabel htmlFor="webhook_url">Webhook URL</FormLabel>
-                        <Field
-                          as={Input}
-                          id="webhook_url"
-                          name="webhook_url"
-                          type="webhook_url"
-                          variant="filled"
-                          validate={(value) => {
-                            let error;
-
-                            if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
-                              error = "Invalid Webhook URL";
-                            }
-
-                            return error;
-                          }}
-                        />
-                        <FormErrorMessage>{errors.webhook_url}</FormErrorMessage>
-                      </FormControl> */}
                       <FormControl>
                         <FieldArray name='forms'>
                           {({ remove, push }) => (
@@ -177,11 +184,11 @@ function App() {
                                       </FormLabel>
                                       <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
                                       <Field
-                                        name={`forms.${index}.webhook_url`}
+                                        name={`forms.${index}.modal.webhook_url`}
                                         placeholder="https://discord.com/api/webhooks/channel/yourwebhook"
                                         type="text"
                                         as={Input}
-                                        id={`forms.${index}.webhook_url`}
+                                        id={`forms.${index}.modal.webhook_url`}
                                         variant="filled"
                                         validate={(value) => {
                                           let error;
@@ -194,20 +201,20 @@ function App() {
                                         }}
                                       />
                                       <ErrorMessage
-                                        name={`forms.${index}.webhook_url`}
+                                        name={`forms.${index}.modal.webhook_url`}
                                         component="div"
                                         className="field-error"
                                       />
 
                                     </Box>
                                     <Box>
-                                      <FormLabel htmlFor={`forms.${index}.title`} >Title</FormLabel>
+                                      <FormLabel htmlFor={`forms.${index}.modal.title`}>Title</FormLabel>
                                       <Field
-                                        name={`forms.${index}.title`}
+                                        name={`forms.${index}.modal.title`}
                                         placeholder="My awesome form"
                                         type="text"
                                         as={Input}
-                                        id={`forms.${index}.title`}
+                                        id={`forms.${index}.modal.title`}
                                         variant="filled"
                                         validate={(value) => {
                                           let error;
@@ -220,7 +227,7 @@ function App() {
                                         }}
                                       />
                                       <ErrorMessage
-                                        name={`forms.${index}.title`}
+                                        name={`forms.${index}.modal.title`}
                                         component="div"
                                         className="field-error"
                                       />
@@ -228,19 +235,19 @@ function App() {
                                     <FormControl>
                                       <FieldArray name='text_inputs' render={({ insert, remove: removeTextInput, push: pushTextInput }) => (
                                         <VStack align='flex-start'>
-                                          {values.forms[index].text_inputs.length > 0 &&
-                                            values.forms[index].text_inputs.map((text_input, iindex) => (
+                                          {values.forms[index].modal.components.length > 0 &&
+                                            values.forms[index].modal.components.map((text_input, iindex) => (
                                               <Collapsible name={`Text Input ${iindex + 1}`} key={iindex} deleteButton={<CloseButton onClick={() => removeTextInput(iindex)} />}>
 
                                                 <div className="col">
 
-                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.label`} >Label</FormLabel>
+                                                  <FormLabel htmlFor={`forms.${index}.modal.components.${iindex}.components.0.label`}>Label</FormLabel>
                                                   <Field
-                                                    name={`forms.${index}.text_inputs.${iindex}.label`}
+                                                    name={`forms.${index}.modal.components.${iindex}.components.0.label`}
                                                     placeholder="My first text input"
                                                     type="text"
                                                     as={Input}
-                                                    id={`forms.${index}.text_inputs.${iindex}.label`}
+                                                    id={`forms.${index}.modal.components.${iindex}.components.0.label`}
                                                     variant="filled"
                                                     validate={(value) => {
                                                       let error;
@@ -260,8 +267,8 @@ function App() {
 
                                                 </div>
                                                 <div className="col">
-                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} display='flex' alignItems='center'>
-                                                    <Text marginRight='5px'>Type</Text>
+                                                  <FormLabel htmlFor={`forms.${index}.modal.components.${iindex}.components.0.style`} display='flex' alignItems='center'>
+                                                    <Text marginRight='5px'>Style</Text>
                                                     <Tooltip hasArrow label='Short only allows 1 line of text to be entered versus paragraph allows more then 1 line of text to be entered.' placement='top' shouldWrapChildren bg="blurple">
                                                       <FaQuestionCircle />
                                                     </Tooltip>
@@ -269,10 +276,10 @@ function App() {
                                                   <RadioGroup>
                                                     <Stack direction="row">
                                                       <Field
-                                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        name={`forms.${index}.modal.components.${iindex}.components.0.style`}
                                                         type="radio"
                                                         as={Radio}
-                                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        id={`forms.${index}.modal.components.${iindex}.components.0.style`}
                                                         variant="filled"
                                                         value="1"
                                                         className='radioText'
@@ -280,10 +287,10 @@ function App() {
                                                         <Text>Short</Text>
                                                       </Field>
                                                       <Field
-                                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        name={`forms.${index}.modal.components.${iindex}.components.0.style`}
                                                         type="radio"
                                                         as={Radio}
-                                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        id={`forms.${index}.modal.components.${iindex}.components.0.style`}
                                                         variant="filled"
                                                         value="2"
                                                         className='radioText'
@@ -293,7 +300,7 @@ function App() {
                                                     </Stack>
                                                   </RadioGroup>
                                                   <ErrorMessage
-                                                    name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                    name={`forms.${index}.modal.components.${iindex}.components.0.style`}
                                                     component="div"
                                                     className="field-error"
                                                   />
@@ -319,15 +326,43 @@ function App() {
                                 ))}
                               <Button
                                 variant='primary'
-                                onClick={() => push({
+                                onClick={() => push(                    {
                                   webhook_url: '',
                                   title: '',
-                                  text_inputs: [
-                                    {
-                                      label: '',
-                                      type: 1
-                                    }
-                                  ]
+                                  modal: {
+                                    components: [
+                                      {
+                                        components: [{
+                                          label: '',
+                                          style: 1
+                                        }]
+                                      },
+                                      {
+                                        components: [{
+                                          label: '',
+                                          style: 1
+                                        }]
+                                      },
+                                      {
+                                        components: [{
+                                          label: '',
+                                          style: 1
+                                        }]
+                                      },
+                                      {
+                                        components: [{
+                                          label: '',
+                                          style: 1
+                                        }]
+                                      },
+                                      {
+                                        components: [{
+                                          label: '',
+                                          style: 1
+                                        }]
+                                      }
+                                    ]
+                                  }
                                 })}
                               >
 

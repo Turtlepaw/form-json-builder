@@ -6,10 +6,38 @@
     color: #ED4245;
 }
 
-.theme-light {
-    color: black !important;
+.textInline {
+    display: inline !important;
 }
 
-.theme-dark {
+.radioText {
+    display: inline-flex !important;
+    padding-left: 1%;
+    padding-right: 4%;
+    padding-bottom: 5%;
+}
 
+.icon.outbound {
+    position: relative;
+    display: inline-block;
+    color: #aaa;
+    vertical-align: middle;
+    top: -1px;
+}
+
+.text-blurple {
+    color: #5865f2;
+}
+
+.textBlock {
+    display: block !important;
+}
+
+.text-muted {
+    --bs-text-opacity: 1;
+    color: #6c757d !important;
+}
+
+.text-light {
+    color: #afafaf !important;
 }

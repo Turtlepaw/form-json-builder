@@ -7,6 +7,7 @@ import {
   Code,
   Grid,
   Input,
+  Radio,
   Text,
   Checkbox,
   extendTheme,
@@ -18,17 +19,17 @@ import {
   FormErrorMessage,
   CloseButton,
   useTheme,
-  Tooltip
+  Tooltip,
+  RadioGroup,
+  Stack
 } from '@chakra-ui/react';
-
+import { Rest, sendForm } from "./Discord";
 import './App.css';
-
 import { FaQuestionCircle } from 'react-icons/fa';
-
 import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
-
+import { Link } from './Link';
 
 function App() {
   const [json, setJson] = useState('{}')
@@ -42,22 +43,25 @@ function App() {
     return null;
   };
 
-
   return (
     <ChakraProvider theme={theme}>
       <Box>
         <Grid p={3}>
           <HStack display='flex' justifyContent='space-between'>
             <Heading size='md'>Forms JSON Builder</Heading>
-            <ColorModeSwitcher/>
+            <ColorModeSwitcher />
           </HStack>
 
           <VStack spacing={8} width='calc(100vw - 24px)'>
             <Box width='100%'>
               <Formik
                 initialValues={{
-                  // webhook_url: "",
-                  // rememberMe: false,
+                  location: {
+                    channel_id: '976298080506904596',
+                    message: {
+                      content: 'test'
+                    }
+                  },
                   forms: [
                     {
                       webhook_url: '',
@@ -103,6 +107,56 @@ function App() {
                         <FieldArray name='forms'>
                           {({ remove, push }) => (
                             <VStack align='flex-start'>
+                              <Box>
+                              <FormLabel htmlFor={`location.channel_id`} >Channel ID</FormLabel>
+                              <Field
+                                name={`location.channel_id`}
+                                placeholder="976298080506904596"
+                                type="text"
+                                as={Input}
+                                id={`location.channel_id`}
+                                variant="filled"
+                                validate={(value) => {
+                                  let error;
+
+                                  if (isNaN(Number(value)) || value.length > 18 || value.length <= 0) {
+                                    error = "Invalid channel ID";
+                                  }
+
+                                  return error;
+                                }}
+                              />
+                                <ErrorMessage
+                                  name={`location.channel_id`}
+                                  component="div"
+                                  className="field-error"
+                                />
+                              </Box>
+                              <Box>
+                              <FormLabel htmlFor={`location.message.content`} >Message Content</FormLabel>
+                              <Field
+                                name={`location.message.content`}
+                                placeholder="976298080506904596"
+                                type="text"
+                                as={Input}
+                                id={`location.message.content`}
+                                variant="filled"
+                                validate={(value) => {
+                                  let error;
+
+                                  if (value.length > 2000 || value.length <= 0) {
+                                    error = "Message Content must be less than 2000 characters";
+                                  }
+
+                                  return error;
+                                }}
+                              />
+                                <ErrorMessage
+                                  name={`location.message.content`}
+                                  component="div"
+                                  className="field-error"
+                                />
+                              </Box>
                               {values.forms.length > 0 &&
                                 values.forms.map((form, index) => (
                                   <Collapsible
@@ -110,14 +164,18 @@ function App() {
                                     deleteButton={<CloseButton onClick={() => remove(index)} />}
                                     key={index}
                                   >
-
                                     <Box>
                                       <FormLabel htmlFor={`forms.${index}.webhook_url`} display='flex' alignItems='center'>
                                         <Text marginRight='5px'>Webhook URL</Text>
-                                        <Tooltip label='The webhook URL. Keep this secret!' placement='top' fontSize='md'>
-                                          <FaQuestionCircle/>
+                                        <Tooltip hasArrow label={
+                                          <div>
+                                            The Discord webhook URL to post submissions. Keep this secret!
+                                          </div>
+                                        } placement='top' shouldWrapChildren bg="blurple">
+                                          <FaQuestionCircle />
                                         </Tooltip>
                                       </FormLabel>
+                                      <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
                                       <Field
                                         name={`forms.${index}.webhook_url`}
                                         placeholder="https://discord.com/api/webhooks/channel/yourwebhook"
@@ -151,6 +209,15 @@ function App() {
                                         as={Input}
                                         id={`forms.${index}.title`}
                                         variant="filled"
+                                        validate={(value) => {
+                                          let error;
+
+                                          if (value.length >= 45 || value.length <= 0) {
+                                            error = "The title must be between 1 and 45 characters.";
+                                          }
+
+                                          return error;
+                                        }}
                                       />
                                       <ErrorMessage
                                         name={`forms.${index}.title`}
@@ -178,8 +245,8 @@ function App() {
                                                     validate={(value) => {
                                                       let error;
 
-                                                      if (!value.match(/https:\/\/((canary|ptb)\.)?discord\.com\/api\/webhooks\/\d+\/.+/)) {
-                                                        error = "Invalid Webhook URL";
+                                                      if (value.length >= 45 || value.length <= 0) {
+                                                        error = "The label must be between 1 and 45 characters.";
                                                       }
 
                                                       return error;
@@ -193,15 +260,38 @@ function App() {
 
                                                 </div>
                                                 <div className="col">
-                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} >Type</FormLabel>
-                                                  <Field
-                                                    name={`forms.${index}.text_inputs.${iindex}.type`}
-                                                    placeholder="1"
-                                                    type="text"
-                                                    as={Input}
-                                                    id={`forms.${index}.text_inputs.${iindex}.type`}
-                                                    variant="filled"
-                                                  />
+                                                  <FormLabel htmlFor={`forms.${index}.text_inputs.${iindex}.type`} display='flex' alignItems='center'>
+                                                    <Text marginRight='5px'>Type</Text>
+                                                    <Tooltip hasArrow label='Short only allows 1 line of text to be entered versus paragraph allows more then 1 line of text to be entered.' placement='top' shouldWrapChildren bg="blurple">
+                                                      <FaQuestionCircle />
+                                                    </Tooltip>
+                                                  </FormLabel>
+                                                  <RadioGroup>
+                                                    <Stack direction="row">
+                                                      <Field
+                                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        type="radio"
+                                                        as={Radio}
+                                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        variant="filled"
+                                                        value="1"
+                                                        className='radioText'
+                                                      >
+                                                        <Text>Short</Text>
+                                                      </Field>
+                                                      <Field
+                                                        name={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        type="radio"
+                                                        as={Radio}
+                                                        id={`forms.${index}.text_inputs.${iindex}.type`}
+                                                        variant="filled"
+                                                        value="2"
+                                                        className='radioText'
+                                                      >
+                                                        <Text className='radioText'>Paragraph</Text>
+                                                      </Field>
+                                                    </Stack>
+                                                  </RadioGroup>
                                                   <ErrorMessage
                                                     name={`forms.${index}.text_inputs.${iindex}.type`}
                                                     component="div"
@@ -243,6 +333,15 @@ function App() {
 
                                 Add Form
                               </Button>
+                              <Button
+                                variant='primary'
+                                onClick={async () => {
+                                  const res = await sendForm(json)
+                                  alert(res);
+                                }}
+                              >
+                                Post
+                              </Button>
                             </VStack>
                           )}
                         </FieldArray>
@@ -275,6 +374,14 @@ function App() {
           </VStack>
         </Grid>
       </Box>
+      <div className="text-sm pt-5 text-center pb-10">
+        <p className="font-medium">©️ 2022 Forms Discord Bot</p>
+        <p className="text-muted">
+          Not affiliated with Discord, Inc.
+          <br />
+          Discord is a registered trademark of Discord, Inc.
+        </p>
+      </div>
     </ChakraProvider>
   );
 }

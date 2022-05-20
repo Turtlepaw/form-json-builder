@@ -25,7 +25,8 @@ import {
 } from '@chakra-ui/react';
 import { Rest, sendForm } from "./Discord";
 import './App.css';
-import { FaQuestionCircle } from 'react-icons/fa';
+import { IconContext } from "react-icons";
+import { IoInformationCircle } from 'react-icons/io5';
 import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
@@ -64,8 +65,8 @@ function App() {
                   },
                   forms: [
                     {
+                      webhook_url: '',
                       modal: {
-                        webhook_url: '',
                         title: '',
                         components: [
                           {
@@ -146,7 +147,7 @@ function App() {
                                   type="text"
                                   as={Input}
                                   id={`location.message.content`}
-                                  
+
                                   validate={(value) => {
                                     let error;
 
@@ -166,7 +167,7 @@ function App() {
                               {values.forms.length > 0 &&
                                 values.forms.map((form, index) => (
                                   <Collapsible
-                                    name={`Form ${index + 1}`}
+                                    name={`Form ${index + 1} ${values.forms[index].modal.title.match(/\w/) ? `– ${values.forms[index].modal.title}` : ''}`}
                                     deleteButton={<CloseButton onClick={() => remove(index)} />}
                                     key={index}
                                   >
@@ -178,17 +179,17 @@ function App() {
                                             The Discord webhook URL to post submissions. Keep this secret!
                                           </div>
                                         } placement='top' shouldWrapChildren bg="blurple">
-                                          <FaQuestionCircle />
+                                          <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                                         </Tooltip>
                                       </FormLabel>
                                       <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
                                       <Field
-                                        name={`forms.${index}.modal.webhook_url`}
+                                        name={`forms.${index}.webhook_url`}
                                         placeholder="https://discord.com/api/webhooks/channel/yourwebhook"
                                         type="text"
                                         as={Input}
-                                        id={`forms.${index}.modal.webhook_url`}
-                                        
+                                        id={`forms.${index}.webhook_url`}
+
                                         validate={(value) => {
                                           let error;
 
@@ -200,7 +201,7 @@ function App() {
                                         }}
                                       />
                                       <ErrorMessage
-                                        name={`forms.${index}.modal.webhook_url`}
+                                        name={`forms.${index}.webhook_url`}
                                         component="div"
                                         className="field-error"
                                       />
@@ -214,7 +215,7 @@ function App() {
                                         type="text"
                                         as={Input}
                                         id={`forms.${index}.modal.title`}
-                                        
+
                                         validate={(value) => {
                                           let error;
 
@@ -247,7 +248,7 @@ function App() {
                                                     type="text"
                                                     as={Input}
                                                     id={`forms.${index}.modal.components.${iindex}.components.0.label`}
-                                                    
+
                                                     validate={(value) => {
                                                       let error;
 
@@ -269,7 +270,7 @@ function App() {
                                                   <FormLabel htmlFor={`forms.${index}.modal.components.${iindex}.components.0.style`} display='flex' alignItems='center'>
                                                     <Text marginRight='5px'>Style</Text>
                                                     <Tooltip hasArrow label='Short only allows 1 line of text to be entered versus paragraph allows more then 1 line of text to be entered.' placement='top' shouldWrapChildren bg="blurple">
-                                                      <FaQuestionCircle />
+                                                      <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                                                     </Tooltip>
                                                   </FormLabel>
                                                   <RadioGroup>
@@ -279,7 +280,7 @@ function App() {
                                                         type="radio"
                                                         as={Radio}
                                                         id={`forms.${index}.modal.components.${iindex}.components.0.style`}
-                                                        
+
                                                         value="1"
                                                         className='radioText'
                                                       >
@@ -290,7 +291,7 @@ function App() {
                                                         type="radio"
                                                         as={Radio}
                                                         id={`forms.${index}.modal.components.${iindex}.components.0.style`}
-                                                        
+
                                                         value="2"
                                                         className='radioText'
                                                       >
@@ -380,17 +381,6 @@ function App() {
                           )}
                         </FieldArray>
                       </FormControl>
-                      {/* <Field
-                        as={Checkbox}
-                        id="rememberMe"
-                        name="rememberMe"
-                        colorScheme="purple"
-                      >
-                        Remember me?
-                      </Field>
-                      <Button type="submit" colorScheme="purple" width="full">
-                        Login
-                      </Button> */}
                     </VStack>
                     <AutoSubmit />
                   </form>

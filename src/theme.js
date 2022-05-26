@@ -3,6 +3,7 @@ import { mode } from '@chakra-ui/theme-tools';
 
 const colours =  {
   'blurple': '#5865F2',
+  'red': '#ED4245',
   'grey.extralight': '#ebedef',
   'grey.light': '#4f545c',
   'grey.dark': '#36393f',
@@ -21,7 +22,12 @@ const theme = extendTheme({
       },
       input: {
         bg: mode('grey.extradark', 'grey.extralight')(props),
-        borderColor: blurple,
+        height: '36px',
+        width: '100%',
+        padding: '0px 9px',
+        border: `0px solid ${blurple}`,
+        outline: 'none',
+        borderRadius: 3,
         _focus: { border: `2px solid ${blurple}` }
       }
     })
@@ -37,6 +43,9 @@ const theme = extendTheme({
         },
         secondary: {
           bg: 'grey.light'
+        },
+        destructive: {
+          bg: 'red'
         }
       },
       defaultProps: {

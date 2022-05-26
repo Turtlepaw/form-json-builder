@@ -1,0 +1,17 @@
+
+
+.counter {
+  font-weight: 400;
+  background: white;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 4px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid rgb(79, 98, 148);
+}

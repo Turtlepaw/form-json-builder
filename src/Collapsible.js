@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Collapse, Box, useDisclosure, useColorMode } from '@chakra-ui/react'
 
-function Collapsible({ name, deleteButton, children }) {
+function Collapsible({ name, deleteButton, children}) {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode } = useColorMode();
 

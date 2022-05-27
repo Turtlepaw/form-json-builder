@@ -13,7 +13,7 @@ export default ({ nestIndex, control, register }) => {
     <div>
       {fields.map((item, k) => {
         return (
-          <Collapsible name={`Text Input ${k + 1}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} key={item.id} style={{ marginLeft: 20 }}>
+          <Collapsible name={`Text Input ${k + 1}${fields[k].components[0].label && fields[k].components[0].label.match(/\S/) ? ` – ${fields[k].components[0].label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} key={item.id} style={{ marginLeft: 20 }}>
 
             <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
             <input

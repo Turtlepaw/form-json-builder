@@ -35,35 +35,19 @@ import { Link } from './Link';
 
 const defaultValues = {
   location: {
-    channel_id: "123412341234",
-    message: "Forms:"
+    channel_id: "",
+    message: ""
   },
   forms: [
     {
-      webhook_url: "useFieldArray1",
+      webhook_url: "",
       modal: {
         components: [
           {
             type: 1,
             components: [
               {
-                label: "hi",
-                style: "1"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      webhook_url: "useFieldArray2",
-      modal: {
-        components: [
-          {
-            type: 1,
-            components: [
-              {
-                label: "hi",
+                label: "",
                 style: "1"
               }
             ]
@@ -113,7 +97,7 @@ function App() {
               <form onSubmit={handleSubmit(onSubmit)}>
 
                 <FormLabel htmlFor="location.channel_id">Channel ID</FormLabel>
-                <input {...register('location.channel_id')} id='location.channel_id' />
+                <input {...register('location.channel_id')} id='location.channel_id' placeholder='943471614580903956' />
 
                 <FormLabel htmlFor="location.channel_id">Message</FormLabel>
                 <input {...register('location.message')} id='location.message' />

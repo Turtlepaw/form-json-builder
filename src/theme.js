@@ -28,6 +28,7 @@ const theme = extendTheme({
         border: `0px solid ${blurple}`,
         outline: 'none',
         borderRadius: 3,
+        color: 'rgb(220, 221, 222)',
         _focus: { border: `2px solid ${blurple}` }
       }
     })
@@ -35,11 +36,11 @@ const theme = extendTheme({
   components: {
     Button: {
       baseStyle: {
-        color: 'white'
+        color: 'white',
       },
       variants: {
         primary: {
-          bg: 'blurple'
+          bg: 'blurple',
         },
         secondary: {
           bg: 'grey.light'

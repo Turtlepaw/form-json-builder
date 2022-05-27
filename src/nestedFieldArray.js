@@ -1,4 +1,4 @@
-import { Button, CloseButton, FormLabel } from "@chakra-ui/react";
+import { Button, CloseButton, FormLabel, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useFieldArray } from "react-hook-form";
 import Collapsible from "./Collapsible";
@@ -13,7 +13,7 @@ export default ({ nestIndex, control, register }) => {
     <div>
       {fields.map((item, k) => {
         return (
-          <Collapsible name={`Text Input ${k+1}`} deleteButton={<CloseButton onClick={() => remove(k)} />} key={item.id} style={{ marginLeft: 20 }}>
+          <Collapsible name={`Text Input ${k + 1}`} deleteButton={<CloseButton onClick={() => remove(k)} />} key={item.id} style={{ marginLeft: 20 }}>
 
             <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
             <input
@@ -29,21 +29,36 @@ export default ({ nestIndex, control, register }) => {
               id={`forms[${nestIndex}].modal.components[${k}].components[0].style`}
               defaultValue={item.style}
             />
+
+            {/* <RadioGroup id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
+              <Stack direction="row">
+                <Radio
+                  name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
+
+                  {...register(`forms[${nestIndex}].modal.components[${k}].components[0].style`)}
+
+                  value="1"
+                  className='radioText'
+                >
+                  <Text>Short</Text>
+                </Radio>
+                <Radio
+                  name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
+                  
+                  {...register(`forms[${nestIndex}].modal.components[${k}].components[0].style`)}
+
+                  value="2"
+                  className='radioText'
+                >
+                  <Text className='radioText'>Paragraph</Text>
+                </Radio>
+              </Stack>
+            </RadioGroup> */}
+
           </Collapsible>
         );
       })}
-
-      <Button
-        variant="primary"
-        onClick={() =>
-          append({
-            label: "hi",
-            style: "1"
-          })
-        }
-      >
-        Add Text Input
-      </Button>
+      <Button variant="primary" onClick={() => append()}>Add Text Input</Button>
     </div>
   );
 };

@@ -13,6 +13,7 @@ export default function Fields({ control, register, setValue, getValues }) {
     name: "forms"
   });
 
+  const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false)
 
   return (
     <>
@@ -36,6 +37,10 @@ export default function Fields({ control, register, setValue, getValues }) {
                 {...register(`forms[${index}].webhook_url`)}
                 id={`forms[${index}].webhook_url`}
                 defaultValue={item.name}
+                onFocus={() => webhookUrlSetFocused(true)}
+                onBlur={() => webhookUrlSetFocused(false)}
+                type={webhookUrlFocused ? 'text' : 'password'}
+                placeholder='https://discord.com/api/webhooks/ ...'
               />
 
               <NestedArray nestIndex={index} {...{ control, register }} />
@@ -48,9 +53,7 @@ export default function Fields({ control, register, setValue, getValues }) {
         <Button
           variant='primary'
           disabled={getValues('forms').length >= 10 ? true : false}
-          onClick={() => {
-            append({ webhook_url: "append" });
-          }}
+          onClick={() => append()}
         >
           Add Form
         </Button>

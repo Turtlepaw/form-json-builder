@@ -35,20 +35,25 @@ import { Link } from './Link';
 
 const defaultValues = {
   location: {
-    channel_id: "",
-    message: ""
+    channel_id: '',
+    message: ''
   },
   forms: [
     {
-      webhook_url: "",
+      webhook_url: '',
+      button: {
+        label: '',
+        style: '1'
+      },
       modal: {
+        title: '',
         components: [
           {
             type: 1,
             components: [
               {
-                label: "",
-                style: "1"
+                label: '',
+                style: '1'
               }
             ]
           }

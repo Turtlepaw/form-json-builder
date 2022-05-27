@@ -13,7 +13,7 @@ export default ({ nestIndex, control, register }) => {
     <div>
       {fields.map((item, k) => {
         return (
-          <Collapsible name={`Text Input ${k + 1}`} deleteButton={<CloseButton onClick={() => remove(k)} />} key={item.id} style={{ marginLeft: 20 }}>
+          <Collapsible name={`Text Input ${k + 1}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} key={item.id} style={{ marginLeft: 20 }}>
 
             <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
             <input
@@ -58,7 +58,7 @@ export default ({ nestIndex, control, register }) => {
           </Collapsible>
         );
       })}
-      <Button variant="primary" onClick={() => append()}>Add Text Input</Button>
+      <Button variant="primary" disabled={fields.length >= 5 ? true : false} onClick={() => append()}>Add Text Input</Button>
     </div>
   );
 };

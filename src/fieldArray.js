@@ -20,7 +20,7 @@ export default function Fields({ control, register, setValue, getValues }) {
       <ul>
         {fields.map((item, index) => {
           return (
-            <Collapsible name={`Form ${index + 1}`} deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index) } /> : null} key={item.id}>
+            <Collapsible name={`Form ${index + 1}`} deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index)} /> : null} key={item.id}>
 
               <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
                 <Text marginRight='5px'>Webhook URL</Text>
@@ -29,7 +29,7 @@ export default function Fields({ control, register, setValue, getValues }) {
                     The Discord webhook URL to post submissions. Keep this secret!
                   </Box>
                 } placement='top' shouldWrapChildren bg="blurple">
-                  <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle/></Box></IconContext.Provider>
+                  <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                 </Tooltip>
               </FormLabel>
               <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
@@ -53,7 +53,22 @@ export default function Fields({ control, register, setValue, getValues }) {
         <Button
           variant='primary'
           disabled={getValues('forms').length >= 10 ? true : false}
-          onClick={() => append()}
+          onClick={() => append({
+            webhook_url: "",
+            modal: {
+              components: [
+                {
+                  type: 1,
+                  components: [
+                    {
+                      label: "",
+                      style: "1"
+                    }
+                  ]
+                }
+              ]
+            }
+          })}
         >
           Add Form
         </Button>

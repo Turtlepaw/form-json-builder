@@ -96,11 +96,18 @@ function App() {
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
 
-                <FormLabel htmlFor="location.channel_id">Channel ID</FormLabel>
-                <input {...register('location.channel_id')} id='location.channel_id' placeholder='943471614580903956' />
+                <HStack marginBottom='8px'>
+                  <Box width='100%'>
+                    <FormLabel htmlFor="location.channel_id">Channel ID</FormLabel>
+                    <input {...register('location.channel_id')} id='location.channel_id' placeholder='943471614580903956' />
+                  </Box>
+                  <Box width='100%'>
+                    <FormLabel htmlFor="location.channel_id">Message</FormLabel>
+                    <input {...register('location.message')} id='location.message' />
+                  </Box>
+                </HStack>
 
-                <FormLabel htmlFor="location.channel_id">Message</FormLabel>
-                <input {...register('location.message')} id='location.message' />
+
 
                 <FieldArray
                   {...{ control, register, defaultValues, getValues, setValue, errors }}
@@ -115,10 +122,20 @@ function App() {
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
               <pre><Code variant='solid' colorScheme='blackAlpha' width='calc(100vw - 24px)'>{JSON.stringify(watch(), null, 2)}</Code></pre>
-              {/* <HStack>
-                <Button>Copy JSON</Button>
-                <Button>Download JSON</Button>
-              </HStack> */}
+              <Button
+                variant='primary'
+                onClick={() => {
+                  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+                    JSON.stringify(watch(), null, 2)
+                  )}`;
+                  const link = document.createElement("a");
+                  link.href = jsonString;
+                  link.download = "data.json";
+                  link.click();
+                }}
+              >
+                Download JSON
+              </Button>
             </VStack>
           </VStack>
         </Grid>

@@ -25,10 +25,10 @@ const theme = extendTheme({
         height: '36px',
         width: '100%',
         padding: '0px 9px',
-        border: `0px solid ${blurple}`,
+        border: `2px solid transparent`,
+        transition: '0.2s',
         outline: 'none',
         borderRadius: 3,
-        color: 'rgb(220, 221, 222)',
         _focus: { border: `2px solid ${blurple}` }
       }
     })
@@ -36,11 +36,11 @@ const theme = extendTheme({
   components: {
     Button: {
       baseStyle: {
-        color: 'white',
+        color: 'white'
       },
       variants: {
         primary: {
-          bg: 'blurple',
+          bg: 'blurple'
         },
         secondary: {
           bg: 'grey.light'
@@ -53,7 +53,8 @@ const theme = extendTheme({
         variant: 'secondary',
       }
     },
-    Input: { defaultProps: { variant: 'normal' } }
+    Input: { defaultProps: { variant: 'normal' } },
+    FormLabel: { baseStyle: { marginBottom: '0px' } }
   }
 });
 

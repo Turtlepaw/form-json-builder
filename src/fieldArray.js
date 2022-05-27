@@ -7,24 +7,21 @@ import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import NestedArray from "./nestedFieldArray";
 
-let renderCount = 0;
-
 export default function Fields({ control, register, setValue, getValues }) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
   });
 
-  renderCount++;
 
   return (
     <>
       <ul>
         {fields.map((item, index) => {
           return (
-            <Collapsible name={`Form ${index + 1}`} deleteButton={<CloseButton onClick={() => remove(index)} />} key={item.id}>
+            <Collapsible name={`Form ${index + 1}`} deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index) } /> : null} key={item.id}>
 
-              <FormLabel for={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
+              <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
                 <Text marginRight='5px'>Webhook URL</Text>
                 <Tooltip hasArrow label={
                   <Box>
@@ -50,6 +47,7 @@ export default function Fields({ control, register, setValue, getValues }) {
       <section>
         <Button
           variant='primary'
+          disabled={getValues('forms').length >= 10 ? true : false}
           onClick={() => {
             append({ webhook_url: "append" });
           }}
@@ -57,8 +55,6 @@ export default function Fields({ control, register, setValue, getValues }) {
           Add Form
         </Button>
       </section>
-
-      <span className="counter">Render Count: {renderCount}</span>
     </>
   );
 }

@@ -15,7 +15,7 @@ export default ({ nestIndex, control, register }) => {
         return (
           <Collapsible name={`Text Input ${k+1}`} deleteButton={<CloseButton onClick={() => remove(k)} />} key={item.id} style={{ marginLeft: 20 }}>
 
-            <FormLabel for={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
+            <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
             <input
               {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`)}
               id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}
@@ -23,7 +23,7 @@ export default ({ nestIndex, control, register }) => {
               style={{ marginRight: "25px" }}
             />
 
-            <FormLabel for={`forms[${nestIndex}].modal.components[${k}].components[0].style`}>Style</FormLabel>
+            <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`}>Style</FormLabel>
             <input
               {...register(`forms[${nestIndex}].modal.components[${k}].components[0].style`)}
               id={`forms[${nestIndex}].modal.components[${k}].components[0].style`}

@@ -73,12 +73,14 @@ function App() {
     watch,
     handleSubmit,
     getValues,
-    errors,
     reset,
-    setValue
+    setValue,
+    formState: { errors }
   } = useForm({
     defaultValues
   });
+
+
 
   const onSubmit = (data) => console.log("data", data);
 
@@ -104,7 +106,8 @@ function App() {
                 <HStack marginBottom='8px'>
                   <Box width='100%'>
                     <FormLabel htmlFor="location.channel_id">Channel ID</FormLabel>
-                    <input {...register('location.channel_id')} id='location.channel_id' placeholder='943471614580903956' />
+                    <input {...register('location.channel_id', { required: true, pattern: /^\d{7,30}$/ })} type='number' id='location.channel_id' placeholder='943471614580903956' />
+                    {/* {errors.location?.channel_id?.type === 'required' && "This field is required"} */}
                   </Box>
                   <Box width='100%'>
                     <FormLabel htmlFor="location.channel_id">Message</FormLabel>

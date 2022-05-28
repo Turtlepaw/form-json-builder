@@ -35,8 +35,7 @@ function Collapsible({ name, deleteButton, children }) {
         </Box>{deleteButton} </Button>
       <Collapse in={isOpen} animateOpacity margin={0}>
         <Box
-          p='40px'
-          mt='4'
+          p='0px 10px 10px'
           rounded='md'
           shadow='md'
           margin='0'

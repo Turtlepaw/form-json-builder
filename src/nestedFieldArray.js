@@ -1,4 +1,4 @@
-import { Button, CloseButton, FormLabel, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { Button, CloseButton, FormLabel, Box, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useFieldArray } from "react-hook-form";
 import Collapsible from "./Collapsible";
@@ -13,24 +13,25 @@ export default ({ nestIndex, control, register }) => {
     <div>
       {fields.map((item, k) => {
         return (
-          <Collapsible name={`Text Input ${k + 1}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} key={item.id} style={{ marginLeft: 20 }}>
+          <Box key={item.id}>
+            <Collapsible name={`Text Input ${k + 1}${fields[k].components?.[0].label && fields[k].components[0].label.match(/\S/) ? ` – ${fields[k].components[0].label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ marginLeft: 20 }}>
 
-            <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
-            <input
-              {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`)}
-              id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}
-              defaultValue={item.label}
-              style={{ marginRight: "25px" }}
-            />
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`}>Label</FormLabel>
+              <input
+                {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`)}
+                id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}
+                defaultValue={item.label}
+                style={{ marginRight: "25px" }}
+              />
 
-            <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`}>Style</FormLabel>
-            <input
-              {...register(`forms[${nestIndex}].modal.components[${k}].components[0].style`)}
-              id={`forms[${nestIndex}].modal.components[${k}].components[0].style`}
-              defaultValue={item.style}
-            />
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`}>Style</FormLabel>
+              <input
+                {...register(`forms[${nestIndex}].modal.components[${k}].components[0].style`)}
+                id={`forms[${nestIndex}].modal.components[${k}].components[0].style`}
+                defaultValue={item.style}
+              />
 
-            {/* <RadioGroup id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
+              {/* <RadioGroup id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
               <Stack direction="row">
                 <Radio
                   name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
@@ -55,7 +56,10 @@ export default ({ nestIndex, control, register }) => {
               </Stack>
             </RadioGroup> */}
 
-          </Collapsible>
+            </Collapsible>
+            {k+1 === fields.length || k+1 === 0 ? null : <hr/>}
+            </Box>
+
         );
       })}
       <Button variant="primary" disabled={fields.length >= 5 ? true : false} onClick={() => append()}>Add Text Input</Button>

@@ -95,7 +95,7 @@ function App() {
             <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Documentation</a>
           </nav>
         </Box>
-        <ColorModeSwitcher height='0px' />
+        <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
       </header>
       <Box>
         <Grid p={3}>

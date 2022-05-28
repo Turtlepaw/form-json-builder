@@ -20,7 +20,7 @@ export default function Fields({ control, register, setValue, getValues }) {
       <ul>
         {fields.map((item, index) => {
           return (
-            <Collapsible name={`Form ${index + 1}${getValues('forms')[index].modal.title && getValues('forms')[index].modal.title.match(/\S/) ? ` – ${getValues('forms')[index].modal.title}` : ''}`} deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index)} /> : null} key={item.id}>
+            <Collapsible name={`Form ${index + 1}${getValues('forms')[index].modal.title && getValues('forms')[index].modal.title.match(/\S/) ? ` – ${getValues('forms')[index].modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index)} /> : null} key={item.id}>
 
               <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
                 <Text marginRight='5px'>Webhook URL</Text>

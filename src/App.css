@@ -44,7 +44,20 @@
 
 header { display: flex; align-items: center; justify-content: space-between; position: sticky; box-shadow: rgb(0 0 0 / 16%) 0px 4px 4px; padding: 12px; border-bottom: 1px solid rgb(32, 34, 37); font-weight: 600; font-size: 15px; }
 nav { display: flex; align-items: center; }
-nav a { display: flex; align-items: center; color: white; text-decoration: none; padding-left: 20px; }
+nav a { display: flex; align-items: center; text-decoration: none; padding-left: 20px; font-family: 'Whitney Bold' !important; }
 nav a:hover { text-decoration: underline; }
 
 input { transition: border-color .2s ease-in-out; }
+
+@font-face {
+    font-family: 'Whitney';
+    src: url('./Fonts/Whitney/whitneymedium.otf');
+}
+
+@font-face {
+    font-family: 'Whitney Bold';
+    src: url('./Fonts/Whitney/whitneysemibold.otf');
+}
+
+body { font-family: 'Whitney' !important; }
+label { font-family: 'Whitney Bold' !important; }

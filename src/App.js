@@ -135,7 +135,7 @@ function App() {
                   )}`;
                   const link = document.createElement("a");
                   link.href = jsonString;
-                  link.download = "data.json";
+                  link.download = 'form.json';
                   link.click();
                 }}
               >

@@ -32,6 +32,7 @@ import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
 import { Link } from './Link';
+import JSONViewer from './JSONViewer';
 
 const defaultValues = {
   location: {
@@ -99,7 +100,8 @@ function App() {
       </header>
       <Box>
         <Grid p={3}>
-          <VStack spacing={8} width='calc(100vw - 24px)'>
+          <VStack spacing={3} width='calc(100vw - 24px)' alignItems='flex-start'>
+            <Button onClick={() => reset(defaultValues)}>Clear All</Button>
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -121,17 +123,13 @@ function App() {
                   {...{ control, register, defaultValues, getValues, setValue, errors }}
                 />
 
-                <Button variant="destructive" onClick={() => reset(defaultValues)}>
-                  Reset
-                </Button>
-
               </form>
             </Box>
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
-              <pre><Code variant='solid' colorScheme='blackAlpha' width='calc(100vw - 24px)'>{JSON.stringify(watch(), null, 2)}</Code></pre>
+              <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
               <Button
-                variant='primary'
+                variant='success'
                 onClick={() => {
                   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                     JSON.stringify(watch(), null, 2)

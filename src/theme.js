@@ -3,6 +3,7 @@ import { mode } from '@chakra-ui/theme-tools';
 
 const colours =  {
   'blurple': '#5865F2',
+  'green': '#46c46e',
   'red': '#ED4245',
   'grey.extralight': '#ebedef',
   'grey.light': '#4f545c',
@@ -45,6 +46,9 @@ const theme = extendTheme({
         },
         secondary: {
           bg: 'grey.light'
+        },
+        success: {
+          bg: 'green'
         },
         destructive: {
           bg: 'red'

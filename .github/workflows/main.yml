@@ -6,9 +6,4 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci && cd workers-site && npm ci
       - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          preCommands: npm install && npm run build

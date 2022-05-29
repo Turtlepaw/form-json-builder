@@ -28,7 +28,7 @@ export default function Fields({ control, register, setValue, getValues }) {
                   <Box>
                     The Discord webhook URL to post submissions. Keep this secret!
                   </Box>
-                } placement='top' shouldWrapChildren bg="blurple">
+                } placement='right' shouldWrapChildren bg="#18191c" borderRadius={6} padding='4px 2px 4px 12px'>
                   <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                 </Tooltip>
               </FormLabel>

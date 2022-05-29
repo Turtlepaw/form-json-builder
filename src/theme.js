@@ -3,6 +3,7 @@ import { mode } from '@chakra-ui/theme-tools';
 
 const colours =  {
   'blurple': '#5865F2',
+  'blurple.500': '#5865F2',
   'green': '#46c46e',
   'red': '#ED4245',
   'grey.extralight': '#ebedef',

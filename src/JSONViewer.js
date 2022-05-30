@@ -41,7 +41,15 @@ function JSONViewer({ children }) {
               Download
             </Box>
           } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6}>
-            <MdOutlineFileDownload size={24} color='#46c46e' />
+            <MdOutlineFileDownload onClick={() => {
+              const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+                children
+              )}`;
+              const link = document.createElement("a");
+              link.href = jsonString;
+              link.download = 'form.json';
+              link.click();
+            }} size={24} color='#46c46e' />
           </Tooltip>
         </HStack>
       </Box>

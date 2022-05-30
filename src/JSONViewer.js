@@ -1,5 +1,6 @@
 import React from "react"
-import { Box, Button, Collapse, Tooltip } from "@chakra-ui/react"
+import { Box, Button, Collapse, HStack, Text, Tooltip } from '@chakra-ui/react'
+import { MdOutlineFileDownload } from 'react-icons/md'
 
 function JSONViewer({ children }) {
   const [show, setShow] = React.useState(false)
@@ -7,33 +8,43 @@ function JSONViewer({ children }) {
   const handleToggle = () => setShow(!show)
 
   return (
-    <Box style={{ background: '#2f3136', padding: '8px 8px 1px 8px', width: 'calc(100vw - 24px)' }}>
+    <Box style={{ background: '#2f3136', padding: '8px 8px 4px 8px', width: 'calc(100vw - 24px)' }}>
       <Collapse startingHeight={147} style={{ overflow: 'scroll', bg: '#2f3136', borderRadius: '4px' }} in={show}>
         <pre>
           <code>{children}</code>
         </pre>
       </Collapse>
-      <hr/>
-      <Box display='flex' alignItems='center' onClick={handleToggle}>
-        <Tooltip hasArrow label={
-          <Box>
-            {show ? 'Collapse' : 'Expand'} ({children.split(/\r\n|\r|\n/).length} Lines)
-          </Box>
-        } placement='top' shouldWrapChildren bg="blurple">
-          <svg style={{ margin: '8px', transition: 'transform 0.2s', transform: `rotate(${(show ? 0 : 180)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M12 10L8 6L4 10"
-              stroke="#bcbcbc"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Tooltip>
-        {show ? 'Collapse' : 'Expand'}
-
+      <Box marginBottom='4px'><hr /></Box>
+      <Box display='flex' alignItems='center' justifyContent='space-between' color='#b9bbbe'>
+        <Box display='flex' alignItems='center' onClick={handleToggle}>
+          <Tooltip hasArrow label={
+            <Box>
+              {show ? 'Collapse' : 'Expand'} ({children.split(/\r\n|\r|\n/).length} Lines)
+            </Box>
+          } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6}>
+            <svg style={{ margin: '8px', transition: 'transform 0.2s', transform: `rotate(${(show ? 0 : 180)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M12 10L8 6L4 10"
+                stroke="#bcbcbc"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Tooltip>
+          {show ? 'Collapse' : 'Expand'}
+        </Box>
+        <HStack>
+          <Text>form.json</Text>
+          <Tooltip hasArrow label={
+            <Box>
+              Download
+            </Box>
+          } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6}>
+            <MdOutlineFileDownload size={24} color='#46c46e' />
+          </Tooltip>
+        </HStack>
       </Box>
-
     </Box>
   )
 }

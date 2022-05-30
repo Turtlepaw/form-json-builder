@@ -60,8 +60,7 @@ const theme = extendTheme({
       }
     },
     Input: { defaultProps: { variant: 'normal' } },
-    FormLabel: { baseStyle: { marginBottom: '0px' } }
-  }
+    FormLabel: { baseStyle: { marginBottom: '0px' } }  }
 });
 
 export default theme

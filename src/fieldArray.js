@@ -65,7 +65,8 @@ export default function Fields({ control, register, setValue, getValues }) {
                 id={`forms[${index}].modal.title`}
               />
 
-              <NestedArray nestIndex={index} {...{ control, register }} />
+              <FormLabel marginTop='8px' htmlFor={`forms[${index}].modal.components`} >Text Inputs</FormLabel>
+              <NestedArray id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register }} />
             </Collapsible>
           );
         })}
@@ -74,7 +75,7 @@ export default function Fields({ control, register, setValue, getValues }) {
       <section>
         <Button
           variant='primary'
-          disabled={getValues('forms').length >= 10 ? true : false}
+          disabled={getValues('forms').length >= 5 ? true : false}
           onClick={() => append({
             webhook_url: "",
             modal: {

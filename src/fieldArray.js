@@ -6,6 +6,7 @@ import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import NestedArray from "./nestedFieldArray";
+import ErrorMessage from "./ErrorMessage";
 
 export default function Fields({ control, register, setValue, getValues }) {
   const { fields, append, remove } = useFieldArray({
@@ -40,7 +41,9 @@ export default function Fields({ control, register, setValue, getValues }) {
                 onBlur={() => webhookUrlSetFocused(false)}
                 type={webhookUrlFocused ? 'text' : 'password'}
                 placeholder='https://discord.com/api/webhooks/ ...'
+                required={true}
               />
+              {/* <ErrorMessage>{(errors.location?.channel_id.type === 'required' && 'The channel ID is required') || (errors.location?.channel_id.type === 'pattern' && 'Invalid Channel ID')}</ErrorMessage> */}
               <HStack marginBottom='8px'>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.label`}>Button Label</FormLabel>

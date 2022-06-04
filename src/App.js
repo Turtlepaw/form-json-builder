@@ -33,6 +33,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Collapsible from './Collapsible';
 import { Link } from './Link';
 import JSONViewer from './JSONViewer';
+import ErrorMessage from './ErrorMessage';
 
 const defaultValues = {
   location: {
@@ -78,6 +79,7 @@ function App() {
     setValue,
     formState: { errors }
   } = useForm({
+    mode: 'onChange',
     defaultValues
   });
 
@@ -105,11 +107,11 @@ function App() {
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
 
-                <HStack marginBottom='8px'>
+                <HStack marginBottom='8px' alignItems='flex-start'>
                   <Box width='100%'>
-                    <FormLabel htmlFor="location.channel_id">Channel ID</FormLabel>
+                    <FormLabel htmlFor="location.channel_id" _after={{ content: '" *"', color: '#ed4245' }}>Channel ID</FormLabel>
                     <input {...register('location.channel_id', { required: true, pattern: /^\d{7,30}$/ })} type='number' id='location.channel_id' placeholder='943471614580903956' />
-                    {/* {errors.location?.channel_id?.type === 'required' && "This field is required"} */}
+                    <ErrorMessage>{errors.location?.channel_id.type === 'required' && "This field is required"}</ErrorMessage>
                   </Box>
                   <Box width='100%'>
                     <FormLabel htmlFor="location.channel_id">Message</FormLabel>

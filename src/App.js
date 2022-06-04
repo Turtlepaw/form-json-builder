@@ -38,7 +38,9 @@ import ErrorMessage from './ErrorMessage';
 const defaultValues = {
   location: {
     channel_id: '',
-    message: ''
+    message: {
+      content: ''
+    }
   },
   forms: [
     {
@@ -115,7 +117,7 @@ function App() {
                   </Box>
                   <Box width='100%'>
                     <FormLabel htmlFor="location.channel_id">Message</FormLabel>
-                    <input {...register('location.message')} id='location.message' />
+                    <input {...register('location.message.content')} id='location.message.content' />
                   </Box>
                 </HStack>
 

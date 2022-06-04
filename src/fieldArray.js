@@ -24,7 +24,7 @@ export default function Fields({ control, register, setValue, getValues, errors 
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index].modal.title && getValues('forms')[index].modal.title.match(/\S/) ? ` – ${getValues('forms')[index].modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index)} /> : null} key={item.id}>
 
               <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
-                <Text marginRight='5px'>Webhook URL</Text>
+                <Text marginRight='5px' _after={{ content: '" *"', color: '#ed4245' }}>Webhook URL</Text>
                 <Tooltip hasArrow label={
                   <Box>
                     The Discord webhook URL to post submissions. Keep this secret!
@@ -42,15 +42,16 @@ export default function Fields({ control, register, setValue, getValues, errors 
                 type={webhookUrlFocused ? 'text' : 'password'}
                 placeholder='https://discord.com/api/webhooks/ ...'
               />
-              <ErrorMessage>{(errors.forms?.[index].webhook_url.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index].webhook_url.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
-              <HStack marginBottom='8px'>
+              <ErrorMessage>{(errors.forms?.[index].webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index].webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
+              <HStack marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>
-                  <FormLabel htmlFor={`forms[${index}].button.label`}>Button Label</FormLabel>
+                  <FormLabel htmlFor={`forms[${index}].button.label`} _after={{ content: '" *"', color: '#ed4245' }}>Button Label</FormLabel>
                   <input
-                    {...register(`forms[${index}].button.label`)}
+                    {...register(`forms[${index}].button.label`, { required: true, maxLength: 80 })}
                     id={`forms[${index}].button.label`}
                     placeholder='Open Form'
                   />
+                <ErrorMessage>{(errors.forms?.[index].button.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index].button.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
                 </Box>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.style`}>Button Style</FormLabel>

@@ -30,7 +30,7 @@ const theme = extendTheme({
         border: `2px solid transparent`,
         transition: '0.2s',
         outline: 'none',
-        borderRadius: 3,
+        borderRadius: 4,
         _focus: { border: `2px solid ${blurple}` }
       },
       hr: { borderColor: '#ffffff0f' }

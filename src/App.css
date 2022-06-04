@@ -54,3 +54,4 @@ input { transition: border-color .2s ease-in-out; }
 
 body { font-family: 'Whitney' !important; }
 label { font-family: 'Whitney Bold' !important; }
+select { height: 36px !important; }

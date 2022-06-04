@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Button, CloseButton, FormLabel, HStack, Select, Text, Tooltip } from "@chakra-ui/react";
 import { Link } from "./Link";
 import React from "react";
 import { useFieldArray } from "react-hook-form";
@@ -55,10 +55,12 @@ export default function Fields({ control, register, setValue, getValues, errors 
                 </Box>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.style`}>Button Style</FormLabel>
-                  <input
-                    {...register(`forms[${index}].button.style`)}
-                    id={`forms[${index}].button.style`}
-                  />
+                  <Select {...register(`forms[${index}].button.style`)} id={`forms[${index}].button.style`}>
+                    <option value="1">Blurple | Primary (CTA)</option>
+                    <option value="2">Grey | Secondary</option>
+                    <option value="3">Green | Primary (Success)</option>
+                    <option value="4">Red | Danger/Destructive</option>
+                  </Select>
                 </Box>
               </HStack>
 

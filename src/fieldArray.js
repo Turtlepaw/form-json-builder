@@ -8,7 +8,7 @@ import Collapsible from "./Collapsible";
 import NestedArray from "./nestedFieldArray";
 import ErrorMessage from "./ErrorMessage";
 
-export default function Fields({ control, register, setValue, getValues }) {
+export default function Fields({ control, register, setValue, getValues, errors }) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
@@ -35,15 +35,14 @@ export default function Fields({ control, register, setValue, getValues }) {
               </FormLabel>
               <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
               <input
-                {...register(`forms[${index}].webhook_url`)}
+                {...register(`forms[${index}].webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord.com\/api\/webhooks\/\d{7,30}\/.+$/ })}
                 id={`forms[${index}].webhook_url`}
                 onFocus={() => webhookUrlSetFocused(true)}
                 onBlur={() => webhookUrlSetFocused(false)}
                 type={webhookUrlFocused ? 'text' : 'password'}
                 placeholder='https://discord.com/api/webhooks/ ...'
-                required={true}
               />
-              {/* <ErrorMessage>{(errors.location?.channel_id.type === 'required' && 'The channel ID is required') || (errors.location?.channel_id.type === 'pattern' && 'Invalid Channel ID')}</ErrorMessage> */}
+              <ErrorMessage>{(errors.forms?.[index].webhook_url.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index].webhook_url.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
               <HStack marginBottom='8px'>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.label`}>Button Label</FormLabel>

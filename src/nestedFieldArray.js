@@ -6,7 +6,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 
-export default ({ nestIndex, control, register, formState, formState: { errors } }) => {
+export default ({ nestIndex, control, register, formState, formState: { errors }, watch }) => {
   const { fields, remove, append } = useFieldArray({
     control,
     name: `forms[${nestIndex}].modal.components`
@@ -16,11 +16,11 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
   return (
     <div>
       {fields.map((item, k) => {
+        let textInput = watch(`forms[${nestIndex}].modal.components[${k}].components[0]`)
         return (
           <Box key={item.id}>
-            <Collapsible name={`Text Input ${k + 1}${fields[k].components?.[0].label && fields[k].components[0].label.match(/\S/) ? ` – ${fields[k].components[0].label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ marginLeft: 20 }}>
-
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (fields[k].components?.[0].label?.length > 45 || fields[k].components?.[0].label?.length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{fields[k].components?.[0].label?.length || 0}/45</span></FormLabel>
+            <Collapsible name={`Text Input ${k + 1}${textInput.label && textInput.label.match(/\S/) ? ` – ${textInput.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ marginLeft: 20 }}>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput.label.length > 45 || textInput.label.length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{textInput.label.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`, { required: true, maxLength: 45 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}

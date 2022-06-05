@@ -124,7 +124,7 @@ function App() {
 
 
                 <FieldArray
-                  {...{ control, register, defaultValues, getValues, setValue, formState }}
+                  {...{ control, register, defaultValues, getValues, setValue, formState, watch }}
                 />
 
               </form>
@@ -132,6 +132,7 @@ function App() {
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
               <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+              <HStack>
               <Button
                 variant='success'
                 disabled={!formState.isValid}
@@ -147,6 +148,8 @@ function App() {
               >
                 Download JSON
               </Button>
+              {!formState.isValid && <ErrorMessage>Fill out all fields correctly before downloading the JSON file.</ErrorMessage>}
+              </HStack>
             </VStack>
           </VStack>
         </Grid>

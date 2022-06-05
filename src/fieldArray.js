@@ -45,17 +45,17 @@ export default function Fields({ control, register, setValue, getValues, errors 
               <ErrorMessage>{(errors.forms?.[index].webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index].webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
               <HStack marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>
-                  <FormLabel htmlFor={`forms[${index}].button.label`} _after={{ content: '" *"', color: '#ed4245' }}>Button Label</FormLabel>
+                  <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ed4245' }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button.label.length > 80 ? '#ed4245' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button.label.length}/80</span></FormLabel>
                   <input
                     {...register(`forms[${index}].button.label`, { required: true, maxLength: 80 })}
                     id={`forms[${index}].button.label`}
                     placeholder='Open Form'
                   />
-                <ErrorMessage>{(errors.forms?.[index].button.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index].button.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                <ErrorMessage>{(errors.forms?.[index].button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index].button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
                 </Box>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.style`}>Button Style</FormLabel>
-                  <Select {...register(`forms[${index}].button.style`)} id={`forms[${index}].button.style`}>
+                  <Select {...register(`forms[${index}].button.style`)} id={`forms[${index}].button.style`} variant='unstyled'>
                     <option value="1">Blurple | Primary (CTA)</option>
                     <option value="2">Grey | Secondary</option>
                     <option value="3">Green | Primary (Success)</option>

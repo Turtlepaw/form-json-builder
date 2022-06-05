@@ -48,8 +48,18 @@ input { transition: border-color .2s ease-in-out; }
 }
 
 @font-face {
+    font-family: 'Whitney Italic';
+    src: url('./Fonts/Whitney/whitneymediumitalic.otf');
+}
+
+@font-face {
     font-family: 'Whitney Bold';
     src: url('./Fonts/Whitney/whitneysemibold.otf');
+}
+
+@font-face {
+    font-family: 'Whitney Bold Italic';
+    src: url('./Fonts/Whitney/WhitneySemiboldItalic.otf');
 }
 
 body { font-family: 'Whitney' !important; }

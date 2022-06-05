@@ -20,7 +20,7 @@ export default ({ nestIndex, control, register, errors }) => {
           <Box key={item.id}>
             <Collapsible name={`Text Input ${k + 1}${fields[k].components?.[0].label && fields[k].components[0].label.match(/\S/) ? ` – ${fields[k].components[0].label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ marginLeft: 20 }}>
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (fields[k].components?.[0].label?.length > 45 || fields[k].components?.[0].label?.length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{fields[k].components?.[0].label?.length}/45</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (fields[k].components?.[0].label?.length > 45 || fields[k].components?.[0].label?.length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{fields[k].components?.[0].label?.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`)}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}

@@ -4,7 +4,7 @@ import { Text } from '@chakra-ui/react'
 function ErrorMessage({ children }) {
 
   return (
-    <Text color='#ed4245'>{children}</Text>
+    <Text color='#ff7a6b'>{children}</Text>
   )
 }
 

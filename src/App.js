@@ -111,7 +111,7 @@ function App() {
 
                 <HStack marginBottom='8px' alignItems='flex-start'>
                   <Box width='100%'>
-                    <FormLabel htmlFor="location.channel_id" _after={{ content: '" *"', color: '#ed4245' }}>Channel ID</FormLabel>
+                    <FormLabel htmlFor="location.channel_id" _after={{ content: '" *"', color: '#ff7a6b' }}>Channel ID</FormLabel>
                     <input {...register('location.channel_id', { required: true, pattern: /^\d{7,30}$/ })} type='number' id='location.channel_id' placeholder='943471614580903956' />
                     <ErrorMessage>{(errors.location?.channel_id.type === 'required' && 'The Channel ID is required') || (errors.location?.channel_id.type === 'pattern' && 'Invalid Channel ID')}</ErrorMessage>
                   </Box>

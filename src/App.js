@@ -69,7 +69,6 @@ const defaultValues = {
 
 
 function App() {
-  const [json, setJson] = useState('{}')
 
   const {
     control,
@@ -79,6 +78,7 @@ function App() {
     getValues,
     reset,
     setValue,
+    formState,
     formState: { errors }
   } = useForm({
     mode: 'onChange',
@@ -124,7 +124,7 @@ function App() {
 
 
                 <FieldArray
-                  {...{ control, register, defaultValues, getValues, setValue, errors }}
+                  {...{ control, register, defaultValues, getValues, setValue, formState }}
                 />
 
               </form>
@@ -134,6 +134,7 @@ function App() {
               <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
               <Button
                 variant='success'
+                disabled={!formState.isValid}
                 onClick={() => {
                   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                     JSON.stringify(watch(), null, 2)

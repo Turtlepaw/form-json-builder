@@ -8,7 +8,7 @@ import Collapsible from "./Collapsible";
 import NestedArray from "./nestedFieldArray";
 import ErrorMessage from "./ErrorMessage";
 
-export default function Fields({ control, register, setValue, getValues, errors }) {
+export default function Fields({ control, register, setValue, getValues, formState, formState: { errors } }) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
@@ -73,7 +73,7 @@ export default function Fields({ control, register, setValue, getValues, errors 
 
 
               <FormLabel marginTop='8px' htmlFor={`forms[${index}].modal.components`} >Text Inputs</FormLabel>
-              <NestedArray id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, errors }} />
+              <NestedArray id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState }} />
             </Collapsible>
           );
         })}

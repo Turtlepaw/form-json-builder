@@ -6,7 +6,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 
-export default ({ nestIndex, control, register, errors }) => {
+export default ({ nestIndex, control, register, formState, formState: { errors } }) => {
   const { fields, remove, append } = useFieldArray({
     control,
     name: `forms[${nestIndex}].modal.components`
@@ -22,7 +22,7 @@ export default ({ nestIndex, control, register, errors }) => {
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (fields[k].components?.[0].label?.length > 45 || fields[k].components?.[0].label?.length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{fields[k].components?.[0].label?.length || 0}/45</span></FormLabel>
               <input
-                {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`)}
+                {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`, { required: true, maxLength: 45 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}
                 defaultValue={item.label}
                 style={{ marginRight: "25px" }}

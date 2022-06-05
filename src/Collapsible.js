@@ -16,6 +16,7 @@ function Collapsible({ name, deleteButton, children, variant }) {
       marginBottom={variant === 'large' ? '8px' : '0px'}>
       <Button
         onClick={onToggle}
+        as='div'
         margin={0}
         padding={variant === 'large' ? '0px 6px 0px 10px' : '0px'}
         justifyContent='space-between'

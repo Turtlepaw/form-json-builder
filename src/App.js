@@ -57,7 +57,8 @@ const defaultValues = {
             components: [
               {
                 label: '',
-                style: '1'
+                style: '1',
+                min: '1'
               }
             ]
           }
@@ -84,8 +85,6 @@ function App() {
     mode: 'onChange',
     defaultValues
   });
-
-
 
   const onSubmit = (data) => console.log("data", data);
 

@@ -1,5 +1,20 @@
-import { Button, CloseButton, FormLabel, Box, Radio, RadioGroup, Stack, Text, Tooltip } from "@chakra-ui/react";
-import React from "react";
+import {
+  Button,
+  CloseButton,
+  FormLabel,
+  Box,
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+  Tooltip,
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+  RangeSliderMark
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
@@ -12,6 +27,13 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
     name: `forms[${nestIndex}].modal.components`
   });
   const [textInputStyle, setTextInputStyle] = React.useState(['1', '1', '1', '1', '1'])
+  const [sliderValue, setSliderValue] = useState([1, 1024])
+  const labelStyles = {
+    mt: '2',
+    ml: '-1.5',
+    fontSize: 'sm',
+  }
+
 
   return (
     <div>
@@ -63,6 +85,47 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                   </Radio>
                 </Stack>
               </RadioGroup>
+
+              {/* <FormLabel>Minimum and Maximum Characters</FormLabel>
+              <RangeSlider aria-label={['min', 'max']} min={1} max={1024} defaultValue={[1, 1024]} onChange={(val) => setSliderValue(val)} margin='50px 30px 25px 30px' width='600px' maxWidth="86%" colorScheme='blurple'>
+                <RangeSliderTrack>
+                  <RangeSliderFilledTrack />
+                </RangeSliderTrack>
+
+                <RangeSliderThumb index={0} />
+                <RangeSliderThumb index={1} />
+                <RangeSliderMark value={1} {...labelStyles} >1</RangeSliderMark>
+                <RangeSliderMark value={250} {...labelStyles} >250</RangeSliderMark>
+                <RangeSliderMark value={500} {...labelStyles} >500</RangeSliderMark>
+                <RangeSliderMark value={750} {...labelStyles} >750</RangeSliderMark>
+                <RangeSliderMark value={1024} {...labelStyles} >1024</RangeSliderMark>
+                <RangeSliderMark
+                  value={sliderValue[0]}
+                  textAlign='center'
+                  bg='blurple'
+                  color='white'
+                  mt='-10'
+                  ml='-8'
+                  minWidth={sliderValue[0] > 955 ? '85px' : '0px'}
+                  borderRadius='3px'
+                  p='0px 6px'
+                >
+                  Min: {sliderValue[0]}
+                </RangeSliderMark>
+                <RangeSliderMark
+                  value={sliderValue[1]}
+                  textAlign='center'
+                  bg='blurple'
+                  color='white'
+                  mt='-10'
+                  ml='-8'
+                  minWidth={sliderValue[0] === sliderValue[1] ? '101px' : (sliderValue[1] > 947 ? '85px' : '0px')}
+                  borderRadius='3px'
+                  p='0px 6px'
+                >
+                  {sliderValue[0] === sliderValue[1] ? `Exactly: ${sliderValue[1]}` : `Max: ${sliderValue[1]}`}
+                </RangeSliderMark>
+              </RangeSlider> */}
 
             </Collapsible>
             {k + 1 === fields.length || k + 1 === 0 ? null : <hr />}

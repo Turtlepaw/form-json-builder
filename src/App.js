@@ -58,7 +58,6 @@ const defaultValues = {
               {
                 label: '',
                 style: '1',
-                min: '1'
               }
             ]
           }

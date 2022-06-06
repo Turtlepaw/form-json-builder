@@ -34,6 +34,7 @@ import Collapsible from './Collapsible';
 import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
+import FormPreview from './FormPreview';
 
 const defaultValues = {
   location: {
@@ -106,37 +107,37 @@ function App() {
         </Box>
         <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
       </header>
-      <Box>
-        <Grid p={3}>
-          <VStack spacing={3} width='calc(100vw - 24px)' alignItems='flex-start'>
-            <Button onClick={() => reset(defaultValues)}>Clear All</Button>
-            <Box width='100%'>
-              <form onSubmit={handleSubmit(onSubmit)}>
 
-                <HStack marginBottom='8px' alignItems='flex-start'>
-                  <Box width='100%'>
-                    <FormLabel htmlFor="location.channel_id" _after={{ content: '" *"', color: '#ff7a6b' }}>Channel ID</FormLabel>
-                    <input {...register('location.channel_id', { required: true, pattern: /^\d{7,30}$/ })} type='number' id='location.channel_id' placeholder='943471614580903956' />
-                    <ErrorMessage>{(errors.location?.channel_id.type === 'required' && 'The Channel ID is required') || (errors.location?.channel_id.type === 'pattern' && 'Invalid Channel ID')}</ErrorMessage>
-                  </Box>
-                  <Box width='100%'>
-                    <FormLabel htmlFor="location.channel_id">Message</FormLabel>
-                    <input {...register('location.message.content')} id='location.message.content' />
-                  </Box>
-                </HStack>
+      <Grid p={3} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
+        <VStack spacing={3} alignItems='flex-start'>
+          <Button onClick={() => reset(defaultValues)}>Clear All</Button>
+          <Box width='100%'>
+            <form onSubmit={handleSubmit(onSubmit)}>
+
+              <HStack marginBottom='8px' alignItems='flex-start'>
+                <Box width='100%'>
+                  <FormLabel htmlFor="location.channel_id" _after={{ content: '" *"', color: '#ff7a6b' }}>Channel ID</FormLabel>
+                  <input {...register('location.channel_id', { required: true, pattern: /^\d{7,30}$/ })} type='number' id='location.channel_id' placeholder='943471614580903956' />
+                  <ErrorMessage>{(errors.location?.channel_id.type === 'required' && 'The Channel ID is required') || (errors.location?.channel_id.type === 'pattern' && 'Invalid Channel ID')}</ErrorMessage>
+                </Box>
+                <Box width='100%'>
+                  <FormLabel htmlFor="location.channel_id">Message</FormLabel>
+                  <input {...register('location.message.content')} id='location.message.content' />
+                </Box>
+              </HStack>
 
 
 
-                <FieldArray
-                  {...{ control, register, defaultValues, getValues, setValue, formState, watch }}
-                />
+              <FieldArray
+                {...{ control, register, defaultValues, getValues, setValue, formState, watch }}
+              />
 
-              </form>
-            </Box>
-            <VStack width='100%' align='flex-start'>
-              <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
-              <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
-              <HStack>
+            </form>
+          </Box>
+          <VStack width='100%' align='flex-start'>
+            <Heading size='sm' marginBottom='5px'>JSON Data</Heading>
+            <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+            <HStack>
               <Button
                 variant='success'
                 disabled={!formState.isValid}
@@ -153,11 +154,12 @@ function App() {
                 Download JSON
               </Button>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the JSON file.</ErrorMessage>}
-              </HStack>
-            </VStack>
+            </HStack>
           </VStack>
-        </Grid>
-      </Box>
+        </VStack>
+        <FormPreview forms={watch('forms')} />
+      </Grid>
+
       <Box className="text-sm pt-5 text-center pb-10">
         <p className="font-medium">©️ 2022 Forms Discord Bot</p>
         <p className="text-muted">

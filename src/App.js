@@ -148,7 +148,7 @@ function App() {
               >
                 Download JSON
               </Button>
-              {!formState.isValid && <ErrorMessage>Fill out all fields correctly before downloading the JSON file.</ErrorMessage>}
+              {!formState.isValid && formState.isDirty && <ErrorMessage>Fill out all fields correctly before downloading the JSON file.</ErrorMessage>}
               </HStack>
             </VStack>
           </VStack>

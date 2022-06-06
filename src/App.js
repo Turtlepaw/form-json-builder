@@ -56,8 +56,12 @@ const defaultValues = {
             type: 1,
             components: [
               {
+                type: 2,
                 label: '',
                 style: '1',
+                placeholder: '',
+                value: '',
+                required: true
               }
             ]
           }

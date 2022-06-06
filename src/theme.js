@@ -33,6 +33,20 @@ const theme = extendTheme({
         borderRadius: 4,
         _focus: { border: `2px solid ${blurple}` }
       },
+      textarea: {
+        bg: mode('grey.extradark', 'grey.extralight')(props),
+        height: '36px',
+        width: '100%',
+        padding: '6px 9px',
+        border: `2px solid transparent`,
+        height: '95px',
+        minHeight: '43px',
+        transition: '0.2s',
+        outline: 'none',
+        borderRadius: 4,
+        resize: 'vertical',
+        _focus: { border: `2px solid ${blurple}` }
+      },
       hr: { borderColor: '#ffffff0f' }
     })
   },

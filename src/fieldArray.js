@@ -84,15 +84,24 @@ export default function Fields({ control, register, setValue, getValues, formSta
           variant='primary'
           disabled={getValues('forms').length >= 5 ? true : false}
           onClick={() => append({
-            webhook_url: "",
+            webhook_url: '',
+            button: {
+              label: '',
+              style: '1'
+            },
             modal: {
+              title: '',
               components: [
                 {
                   type: 1,
                   components: [
                     {
-                      label: "",
-                      style: "1"
+                      type: 2,
+                      label: '',
+                      style: '1',
+                      placeholder: '',
+                      value: '',
+                      required: true
                     }
                   ]
                 }

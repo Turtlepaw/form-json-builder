@@ -57,7 +57,9 @@ const theme = extendTheme({
   components: {
     Button: {
       baseStyle: {
-        color: 'white'
+        color: 'white',
+        padding: '16px 2px',
+        borderRadius: '3px'
       },
       variants: {
         primary: {
@@ -71,6 +73,13 @@ const theme = extendTheme({
         },
         destructive: {
           bg: 'red'
+        },
+        link: {
+          bg: 'transparent',
+          color: 'white',
+          _hover: {
+            textDecoration: 'underline'
+          }
         }
       },
       defaultProps: {

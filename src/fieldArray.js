@@ -8,7 +8,7 @@ import Collapsible from "./Collapsible";
 import NestedArray from "./nestedFieldArray";
 import ErrorMessage from "./ErrorMessage";
 
-export default function Fields({ control, register, setValue, getValues, formState, formState: { errors }, watch }) {
+export default function Fields({ control, register, setValue, getValues, formState, formState: { errors }, watch, displayForm, setDisplayForm }) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
@@ -21,8 +21,10 @@ export default function Fields({ control, register, setValue, getValues, formSta
       <ul>
         {fields.map((item, index) => {
           return (
-            <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => remove(index)} /> : null} key={item.id}>
-
+            <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
+              remove(index)
+              setDisplayForm(displayForm-1)
+              }} /> : null} key={item.id}>
               <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
                 <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Webhook URL</Text>
                 <Tooltip hasArrow label={

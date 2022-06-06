@@ -40,6 +40,44 @@ const defaultValues = {
   location: {
     channel_id: '',
     message: {
+      content: 'Fill out the form below!'
+    }
+  },
+  forms: [
+    {
+      webhook_url: '',
+      button: {
+        label: 'Open Form',
+        style: '1'
+      },
+      modal: {
+        title: 'Example Form',
+        components: [
+          {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                label: 'Example Text Input',
+                style: '2',
+                placeholder: 'Write text here',
+                value: '',
+                min_length: '0',
+                max_length: '1024',
+                required: true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+};
+
+const clearValues = {
+  location: {
+    channel_id: '',
+    message: {
       content: ''
     }
   },
@@ -94,6 +132,8 @@ function App() {
 
   const onSubmit = (data) => console.log("data", data);
 
+  const [displayForm, setDisplayForm] = useState(0)
+
   return (
     <ChakraProvider theme={theme}>
       <header>
@@ -110,7 +150,7 @@ function App() {
 
       <Grid p={3} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
         <VStack spacing={3} alignItems='flex-start'>
-          <Button onClick={() => reset(defaultValues)}>Clear All</Button>
+          <Button onClick={() => reset(clearValues)}>Clear All</Button>
           <Box width='100%'>
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -129,7 +169,7 @@ function App() {
 
 
               <FieldArray
-                {...{ control, register, defaultValues, getValues, setValue, formState, watch }}
+                {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
               />
 
             </form>
@@ -157,7 +197,7 @@ function App() {
             </HStack>
           </VStack>
         </VStack>
-        <FormPreview forms={watch('forms')} />
+        <FormPreview forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
       </Grid>
 
       <Box className="text-sm pt-5 text-center pb-10">

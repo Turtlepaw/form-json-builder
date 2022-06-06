@@ -56,8 +56,14 @@ const defaultValues = {
             type: 1,
             components: [
               {
+                type: 2,
                 label: '',
-                style: '1'
+                style: '1',
+                placeholder: '',
+                value: '',
+                min_length: '0',
+                max_length: '1024',
+                required: true
               }
             ]
           }
@@ -84,8 +90,6 @@ function App() {
     mode: 'onChange',
     defaultValues
   });
-
-
 
   const onSubmit = (data) => console.log("data", data);
 
@@ -148,7 +152,7 @@ function App() {
               >
                 Download JSON
               </Button>
-              {!formState.isValid && formState.isDirty && <ErrorMessage>Fill out all fields correctly before downloading the JSON file.</ErrorMessage>}
+              {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the JSON file.</ErrorMessage>}
               </HStack>
             </VStack>
           </VStack>

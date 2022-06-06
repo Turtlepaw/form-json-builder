@@ -61,6 +61,8 @@ const defaultValues = {
                 style: '1',
                 placeholder: '',
                 value: '',
+                min_length: '0',
+                max_length: '1024',
                 required: true
               }
             ]
@@ -150,7 +152,7 @@ function App() {
               >
                 Download JSON
               </Button>
-              {!formState.isValid && <ErrorMessage>Fill out all fields correctly before downloading the JSON file.</ErrorMessage>}
+              {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the JSON file.</ErrorMessage>}
               </HStack>
             </VStack>
           </VStack>

@@ -100,6 +100,8 @@ export default function Fields({ control, register, setValue, getValues, formSta
                       label: '',
                       style: '1',
                       placeholder: '',
+                      min_length: '0',
+                      max_length: '1024',
                       value: '',
                       required: true
                     }

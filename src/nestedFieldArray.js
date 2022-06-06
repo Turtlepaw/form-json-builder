@@ -123,46 +123,79 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 style={{ marginRight: "25px" }}
               />
 
-              {/* <FormLabel>Minimum and Maximum Characters</FormLabel>
-              <RangeSlider aria-label={['min', 'max']} min={1} max={1024} defaultValue={[1, 1024]} onChange={(val) => setSliderValue(val)} margin='50px 30px 25px 30px' width='600px' maxWidth="86%" colorScheme='blurple'>
-                <RangeSliderTrack>
-                  <RangeSliderFilledTrack />
-                </RangeSliderTrack>
+              <HStack marginBottom='8px' alignItems='flex-start'>
+                <Box width='100%'>
+                  <FormLabel display='flex' alignItems='flex-end'><Text>Minimum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.min_length > 1024 || textInput?.min_length < 0) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 0 and 1024</span></FormLabel>
+                  <input
+                    {...register(`forms[${nestIndex}].modal.components[${k}].components[0].min_length`, { min: 0, max: 1024 })}
+                    id={`forms[${nestIndex}].modal.components[${k}].components[0].min_length`}
+                    defaultValue={item.min_length}
+                    type='number'
+                    style={{ marginRight: "25px" }}
+                  />
+                </Box>
+                <Box width='100%'>
+                <FormLabel display='flex' alignItems='flex-end'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.max_length > 1024 || textInput?.max_length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 1 and 1024</span></FormLabel>
+                  <input
+                    {...register(`forms[${nestIndex}].modal.components[${k}].components[0].max_length`, { min: 1, max: 1024 })}
+                    id={`forms[${nestIndex}].modal.components[${k}].components[0].max_length`}
+                    defaultValue={item.max_length}
+                    type='number'
+                    style={{ marginRight: "25px" }}
+                  />
+                </Box>
+              </HStack>
 
-                <RangeSliderThumb index={0} />
-                <RangeSliderThumb index={1} />
-                <RangeSliderMark value={1} {...labelStyles} >1</RangeSliderMark>
-                <RangeSliderMark value={250} {...labelStyles} >250</RangeSliderMark>
-                <RangeSliderMark value={500} {...labelStyles} >500</RangeSliderMark>
-                <RangeSliderMark value={750} {...labelStyles} >750</RangeSliderMark>
-                <RangeSliderMark value={1024} {...labelStyles} >1024</RangeSliderMark>
-                <RangeSliderMark
-                  value={sliderValue[0]}
-                  textAlign='center'
-                  bg='blurple'
-                  color='white'
-                  mt='-10'
-                  ml='-8'
-                  minWidth={sliderValue[0] > 955 ? '85px' : '0px'}
-                  borderRadius='3px'
-                  p='0px 6px'
-                >
-                  Min: {sliderValue[0]}
-                </RangeSliderMark>
-                <RangeSliderMark
-                  value={sliderValue[1]}
-                  textAlign='center'
-                  bg='blurple'
-                  color='white'
-                  mt='-10'
-                  ml='-8'
-                  minWidth={sliderValue[0] === sliderValue[1] ? '101px' : (sliderValue[1] > 947 ? '85px' : '0px')}
-                  borderRadius='3px'
-                  p='0px 6px'
-                >
-                  {sliderValue[0] === sliderValue[1] ? `Exactly: ${sliderValue[1]}` : `Max: ${sliderValue[1]}`}
-                </RangeSliderMark>
-              </RangeSlider> */}
+              {/* <Controller
+                control={control}
+                name={`forms.${nestIndex}.modal.components.${k}.components.0.min`}
+                render={({ field }) => (
+                  <RangeSlider aria-label={['min', 'max']} min={1} max={1024} defaultValue={[1, 1024]} onChange={(val) => {
+                    // field.onChange(e.target.checked);
+                    setSliderValue(val)
+                  }} margin='50px 30px 25px 30px' width='600px' maxWidth="86%" colorScheme='blurple'>
+                    <RangeSliderTrack>
+                      <RangeSliderFilledTrack />
+                    </RangeSliderTrack>
+
+                    <RangeSliderThumb index={0} />
+                    <RangeSliderThumb index={1} />
+                    <RangeSliderMark value={1} {...labelStyles} >1</RangeSliderMark>
+                    <RangeSliderMark value={250} {...labelStyles} >250</RangeSliderMark>
+                    <RangeSliderMark value={500} {...labelStyles} >500</RangeSliderMark>
+                    <RangeSliderMark value={750} {...labelStyles} >750</RangeSliderMark>
+                    <RangeSliderMark value={1024} {...labelStyles} >1024</RangeSliderMark>
+                    <RangeSliderMark
+                      value={sliderValue[0]}
+                      textAlign='center'
+                      bg='blurple'
+                      color='white'
+                      mt='-10'
+                      ml='-8'
+                      minWidth={sliderValue[0] > 955 ? '85px' : '0px'}
+                      borderRadius='3px'
+                      p='0px 6px'
+                    >
+                      Min: {sliderValue[0]}
+                    </RangeSliderMark>
+                    <RangeSliderMark
+                      value={sliderValue[1]}
+                      textAlign='center'
+                      bg='blurple'
+                      color='white'
+                      mt='-10'
+                      ml='-8'
+                      minWidth={sliderValue[0] === sliderValue[1] ? '101px' : (sliderValue[1] > 947 ? '85px' : '0px')}
+                      borderRadius='3px'
+                      p='0px 6px'
+                    >
+                      {sliderValue[0] === sliderValue[1] ? `Exactly: ${sliderValue[1]}` : `Max: ${sliderValue[1]}`}
+                    </RangeSliderMark>
+                  </RangeSlider>
+                )}
+              /> */}
+
+
 
             </Collapsible>
             {k + 1 === fields.length || k + 1 === 0 ? null : <hr />}
@@ -170,7 +203,21 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
 
         );
       })}
-      <Button variant="primary" disabled={fields.length >= 5 ? true : false} onClick={() => append()}>Add Text Input</Button>
+      <Button variant="primary" disabled={fields.length >= 5 ? true : false} onClick={() => append({
+        type: 1,
+        components: [
+          {
+            type: 2,
+            label: '',
+            style: '1',
+            placeholder: '',
+            min_length: '0',
+            max_length: '1024',
+            value: '',
+            required: true
+          }
+        ]
+      })}>Add Text Input</Button>
     </div>
   );
 };

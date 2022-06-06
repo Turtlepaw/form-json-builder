@@ -41,6 +41,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
                 onBlur={() => webhookUrlSetFocused(false)}
                 type={webhookUrlFocused ? 'text' : 'password'}
                 placeholder='https://discord.com/api/webhooks/ ...'
+                style={{ marginBottom: '8px' }}
               />
               <ErrorMessage>{(errors.forms?.[index]?.webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index]?.webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
               <HStack marginBottom='8px' alignItems='flex-start'>
@@ -68,6 +69,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
               <input
                 {...register(`forms[${index}].modal.title`, { required: true, maxLength: 45 })}
                 id={`forms[${index}].modal.title`}
+                style={{ marginBottom: '8px' }}
               />
               <ErrorMessage>{(errors.forms?.[index]?.modal?.title?.type === 'required' && 'The Title is required') || (errors.forms?.[index]?.modal?.title?.type === 'maxLength' && 'The Title is too long')}</ErrorMessage>
 

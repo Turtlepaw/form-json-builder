@@ -49,7 +49,8 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].label`, { required: true, maxLength: 45 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].label`}
                 defaultValue={item.label}
-                style={{ marginRight: "25px" }}
+                style={{ marginRight: "25px", marginBottom:'8px' }}
+                
               />
 
               <HStack marginBottom='8px' alignItems='flex-start'>
@@ -111,7 +112,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`, { maxLength: 100 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`}
                 defaultValue={item.placeholder}
-                style={{ marginRight: "25px" }}
+                style={{ marginRight: "25px", marginBottom:'8px' }}
               />
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length > 1024) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{textInput?.value?.length || 0}/1024</span></FormLabel>
@@ -120,7 +121,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 {...register(`forms[${nestIndex}].modal.components[${k}].components[0].value`, { maxLength: 1024 })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
                 defaultValue={item.value}
-                style={{ marginRight: "25px" }}
+                style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
               <HStack marginBottom='8px' alignItems='flex-start'>

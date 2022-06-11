@@ -148,8 +148,8 @@ function App() {
         <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
       </header>
 
-      <Grid p={3} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
-        <VStack spacing={3} alignItems='flex-start'>
+      <Grid p={3} paddingBottom={0} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
+        <VStack spacing={3} alignItems='flex-start' overflowY='scroll' maxHeight='92.3vh'>
           <Button onClick={() => reset(clearValues)}>Clear All</Button>
           <Box width='100%'>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -195,19 +195,19 @@ function App() {
               </Button>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the JSON file.</ErrorMessage>}
             </HStack>
+            <Text>After downloading use /form create on the <a style={{ color: '#00b0f4', textDecoration: 'underline' }} href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot' target="_blank" rel="noopener noreferrer">forms bot</a> and upload the JSON file.</Text>
           </VStack>
+          <Box className="text-sm pt-5 pb-10" paddingBottom='10px'>
+            <p className="font-medium">©️ 2022 Forms Discord Bot</p>
+            <p className="text-muted">
+              Not affiliated with Discord, Inc.
+              <br />
+              Discord is a registered trademark of Discord, Inc.
+            </p>
+          </Box>
         </VStack>
         <FormPreview forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
       </Grid>
-
-      <Box className="text-sm pt-5 text-center pb-10">
-        <p className="font-medium">©️ 2022 Forms Discord Bot</p>
-        <p className="text-muted">
-          Not affiliated with Discord, Inc.
-          <br />
-          Discord is a registered trademark of Discord, Inc.
-        </p>
-      </Box>
     </ChakraProvider>
   );
 }

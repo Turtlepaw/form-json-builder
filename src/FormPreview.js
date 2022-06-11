@@ -9,7 +9,7 @@ function FormPreview({ forms, displayForm, setDisplayForm }) {
     if (displayForm < 0) displayForm = 0;
 
     return (
-        <Box>
+        <Box overflowY='scroll' maxHeight='92.3vh'>
             <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
                 <Button disabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
                 Form {displayForm + 1} Preview
@@ -44,6 +44,8 @@ function FormPreview({ forms, displayForm, setDisplayForm }) {
                 </Box>
             </Box>
             <Text mt={1} fontSize='11px'>Disclaimer: Form preview does not include all info yet.</Text>
+            Forms Demo
+            <img src='https://cdn.discordapp.com/attachments/944646735643410482/953299030669152256/forms_demo.png'/>
         </Box>
     );
 }

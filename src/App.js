@@ -59,7 +59,7 @@ const defaultValues = {
               {
                 type: 2,
                 label: 'Example Text Input',
-                style: '2',
+                style: '1',
                 placeholder: 'Write text here',
                 value: '',
                 min_length: '0',

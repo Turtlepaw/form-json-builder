@@ -6,6 +6,8 @@ function FormPreview({ forms, displayForm, setDisplayForm }) {
 
     const { colorMode } = useColorMode();
 
+    if (displayForm < 0) displayForm = 0;
+
     return (
         <Box>
             <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>

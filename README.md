@@ -1,6 +1,6 @@
 <div align="center">
 
-## [form-builder.pages.dev][website]
+### [form-builder.pages.dev][website]
 # Forms Discord Bot - JSON Builder
 
 </div>

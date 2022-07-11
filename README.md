@@ -1,7 +1,15 @@
-# Forms builder
+# Forms Discord Bot - JSON Builder
 
-The official Forms (discord bot) builder website.
+This is the official Github repository for the JSON builder for the Forms Discord Bot. [Check it out!][website]
 
-[View](https://forms-builder.pages.dev/)
+## What's the Forms Discord Bot?
+Forms is a Discord bot that allows you to create forms (aka modals) and receive form submissions.
 
-No licence
+<details>
+    <summary>💡 What are Modals/Forms?</summary>
+
+> Modals are kinda like Google Forms but in Discord, cool, right?
+
+</details>
+
+[website]: https://form-builder.pages.dev/

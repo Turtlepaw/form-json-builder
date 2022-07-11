@@ -1,4 +1,9 @@
+<div align="center">
+
+## [form-builder.pages.dev][website]
 # Forms Discord Bot - JSON Builder
+
+</div>
 
 This is the official Github repository for the JSON builder for the Forms Discord Bot. [Check it out!][website]
 

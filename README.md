@@ -2,7 +2,11 @@
 
 This is the official Github repository for the JSON builder for the Forms Discord Bot. [Check it out!][website]
 
-## What's the Forms Discord Bot?
+## FAQ
+
+> Here's a quick little FAQ
+
+### What's the Forms Discord Bot?
 Forms is a Discord bot that allows you to create forms (aka modals) and receive form submissions.
 
 <details>
@@ -22,12 +26,12 @@ Forms is a Discord bot that allows you to create forms (aka modals) and receive 
 
 </details>
 
-## What's this website about?
+### What's this website about?
 Forms creates modals by JSON files, but don't worry, you can create JSON's without a JSON editor.
 
 This site is a modal builder built for Forms, it creates modal JSONs for Forms to use by just clicking a few text box's and boom! You've got a modal 🎉
 
-## How do I use this?
+### How do I use this?
 
 1. Create a webhook (on [Discord](https://discord.com/app)), you'll need this for later.
 2. Go to [form-builder.pages.dev][website]

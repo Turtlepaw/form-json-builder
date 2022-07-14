@@ -38,7 +38,6 @@ import FormPreview from './FormPreview';
 
 const defaultValues = {
   location: {
-    channel_id: '',
     message: {
       content: 'Fill out the form below!'
     }
@@ -76,7 +75,6 @@ const defaultValues = {
 
 const clearValues = {
   location: {
-    channel_id: '',
     message: {
       content: ''
     }
@@ -154,17 +152,11 @@ function App() {
           <Box width='100%'>
             <form onSubmit={handleSubmit(onSubmit)}>
 
-              <HStack marginBottom='8px' alignItems='flex-start'>
-                <Box width='100%'>
-                  <FormLabel htmlFor="location.channel_id" _after={{ content: '" *"', color: '#ff7a6b' }}>Channel ID</FormLabel>
-                  <input {...register('location.channel_id', { required: true, pattern: /^\d{7,30}$/ })} type='number' id='location.channel_id' placeholder='943471614580903956' />
-                  <ErrorMessage>{(errors.location?.channel_id.type === 'required' && 'The Channel ID is required') || (errors.location?.channel_id.type === 'pattern' && 'Invalid Channel ID')}</ErrorMessage>
-                </Box>
-                <Box width='100%'>
-                  <FormLabel htmlFor="location.channel_id">Message</FormLabel>
-                  <input {...register('location.message.content')} id='location.message.content' />
-                </Box>
-              </HStack>
+
+              <Box width='100%' marginBottom="8px">
+                <FormLabel htmlFor="location.message.content">Message</FormLabel>
+                <input {...register('location.message.content')} id='location.message.content' />
+              </Box>
 
 
 

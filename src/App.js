@@ -37,10 +37,8 @@ import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
 
 const defaultValues = {
-  location: {
-    message: {
-      content: 'Fill out the form below!'
-    }
+  message: {
+    content: 'Fill out the form below!'
   },
   forms: [
     {
@@ -74,10 +72,8 @@ const defaultValues = {
 };
 
 const clearValues = {
-  location: {
-    message: {
-      content: ''
-    }
+  message: {
+    content: ''
   },
   forms: [
     {
@@ -154,8 +150,8 @@ function App() {
 
 
               <Box width='100%' marginBottom="8px">
-                <FormLabel htmlFor="location.message.content">Message</FormLabel>
-                <input {...register('location.message.content')} id='location.message.content' />
+                <FormLabel htmlFor="message.content">Message</FormLabel>
+                <input {...register('message.content')} id='message.content' />
               </Box>
 
 

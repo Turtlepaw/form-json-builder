@@ -58,6 +58,11 @@ input { transition: border-color .2s ease-in-out; }
 }
 
 @font-face {
+    font-family: 'Whitney Black';
+    src: url('./Fonts/Whitney/whitneybold.otf');
+}
+
+@font-face {
     font-family: 'Whitney Bold Italic';
     src: url('./Fonts/Whitney/WhitneySemiboldItalic.otf');
 }

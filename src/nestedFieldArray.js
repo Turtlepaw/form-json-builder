@@ -41,6 +41,8 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
     <div>
       {fields.map((item, k) => {
         let textInput = watch(`forms[${nestIndex}].modal.components[${k}].components[0]`)
+        let minimumLength = watch(`forms[${nestIndex}].modal.components[${k}].components[0].min_length`)
+        let maximumLength = watch(`forms[${nestIndex}].modal.components[${k}].components[0].max_length`)
         return (
           <Box key={item.id}>
             <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ marginLeft: 20 }}>
@@ -115,10 +117,10 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                 style={{ marginRight: "25px", marginBottom:'8px' }}
               />
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length > 1024) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{textInput?.value?.length || 0}/1024</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length < minimumLength || textInput?.value?.length > maximumLength) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{minimumLength <= maximumLength ? `Must be betweeen ${minimumLength < 1024 ? minimumLength : 1023} and ${maximumLength <= 1024 ? maximumLength : 1024}` : 'Invalid minimum/maximum characters, fix these first'}</span></FormLabel>
               <Box
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
-                {...register(`forms[${nestIndex}].modal.components[${k}].components[0].value`, { maxLength: 1024 })}
+                {...register(`forms[${nestIndex}].modal.components[${k}].components[0].value`, { minLength: minimumLength, maxLength: maximumLength })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
                 defaultValue={item.value}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
@@ -126,7 +128,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
 
               <HStack marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>
-                  <FormLabel display='flex' alignItems='flex-end'><Text>Minimum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.min_length > 1024 || textInput?.min_length < 0) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 0 and 1024</span></FormLabel>
+                  <FormLabel display='flex' alignItems='flex-end'><Text>Minimum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.min_length > maximumLength || textInput?.min_length < 0) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 0 and {maximumLength > 1024 ? 1024 : maximumLength}</span></FormLabel>
                   <input
                     {...register(`forms[${nestIndex}].modal.components[${k}].components[0].min_length`, { min: 0, max: 1024 })}
                     id={`forms[${nestIndex}].modal.components[${k}].components[0].min_length`}
@@ -136,7 +138,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
                   />
                 </Box>
                 <Box width='100%'>
-                <FormLabel display='flex' alignItems='flex-end'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.max_length > 1024 || textInput?.max_length < 1) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 1 and 1024</span></FormLabel>
+                <FormLabel display='flex' alignItems='flex-end'><Text>Maximum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.max_length > 1024 || textInput?.max_length < minimumLength) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>Must be betweeen {minimumLength > 1024 ? 1024 : minimumLength} and 1024</span></FormLabel>
                   <input
                     {...register(`forms[${nestIndex}].modal.components[${k}].components[0].max_length`, { min: 1, max: 1024 })}
                     id={`forms[${nestIndex}].modal.components[${k}].components[0].max_length`}

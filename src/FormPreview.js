@@ -1,8 +1,8 @@
-import { Box, Button, CloseButton, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Button, CloseButton, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { HiChevronRight, HiChevronLeft } from 'react-icons/hi'
 
-function FormPreview({ forms, displayForm, setDisplayForm }) {
+function FormPreview({ message, forms, displayForm, setDisplayForm }) {
 
     const { colorMode } = useColorMode();
 
@@ -10,6 +10,28 @@ function FormPreview({ forms, displayForm, setDisplayForm }) {
 
     return (
         <Box overflowY='scroll' maxHeight='92.3vh'>
+            {/* <Box pl='66px'>
+                <Image src='https://cdn.discordapp.com/attachments/944646735643410482/946845836879462420/forms.png' position='absolute' width='40px' clipPath='circle(50%)' left='calc(50% + 16px)' mt='5px' />
+                <Box display='flex' alignItems='center'>
+                    <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Forms</Text>
+                    <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' width='39px'>
+                        <Tooltip hasArrow label={
+                            <Box>
+                                Verified Bot
+                            </Box>
+                        } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6} padding='6px 12px'>
+                            <svg width="16" height="16" viewBox="0 0 16 15.2"><path d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z" fill="currentColor"></path></svg>
+                        </Tooltip>
+                        <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
+                    </Box>
+                    <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours()}:{new Date().getMinutes()}</Text>
+                    
+                </Box>
+
+                <Text><pre style={{ fontFamily: 'Whitney' }}>{message.content || ' '}</pre></Text>
+
+
+            </Box> */}
             <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
                 <Button disabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
                 Form {displayForm + 1} Preview

@@ -22,7 +22,8 @@ import {
   useTheme,
   Tooltip,
   RadioGroup,
-  Stack
+  Stack,
+  Textarea
 } from '@chakra-ui/react';
 import { Rest, sendForm } from "./Discord";
 import './App.css';
@@ -151,7 +152,7 @@ function App() {
 
               <Box width='100%' marginBottom="8px">
                 <FormLabel htmlFor="message.content">Message</FormLabel>
-                <input {...register('message.content')} id='message.content' />
+                <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.content')} id='message.content' />
               </Box>
 
 
@@ -194,7 +195,7 @@ function App() {
             </p>
           </Box>
         </VStack>
-        <FormPreview forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
+        <FormPreview message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
       </Grid>
     </ChakraProvider>
   );

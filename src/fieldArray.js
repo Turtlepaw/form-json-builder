@@ -87,7 +87,9 @@ export default function Fields({ control, register, setValue, getValues, formSta
         <Button
           variant='primary'
           disabled={getValues('forms').length >= 5 ? true : false}
-          onClick={() => append({
+          onClick={() => {
+            setDisplayForm(fields.length)
+            append({
             webhook_url: '',
             button: {
               label: '',
@@ -113,7 +115,8 @@ export default function Fields({ control, register, setValue, getValues, formSta
                 }
               ]
             }
-          })}
+          })
+          }}
         >
           Add Form
         </Button>

@@ -10,7 +10,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
 
     return (
         <Box overflowY='scroll' maxHeight='92.3vh'>
-            {/* <Box pl='66px'>
+            <Box pl='66px'>
                 <Image src='https://cdn.discordapp.com/attachments/944646735643410482/946845836879462420/forms.png' position='absolute' width='40px' clipPath='circle(50%)' left='calc(50% + 16px)' mt='5px' />
                 <Box display='flex' alignItems='center'>
                     <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Forms</Text>
@@ -29,16 +29,18 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                 </Box>
 
                 <Text><pre style={{ fontFamily: 'Whitney' }}>{message.content || ' '}</pre></Text>
+                <Box p='4px 0'>
+                    {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button.style == 1 ? 'primary' : (form.button.style == 2 ? 'secondary' : (form.button.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
+                </Box>
 
-
-            </Box> */}
-            <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
+            </Box>
+            {/* <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
                 <Button disabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
                 Form {displayForm + 1} Preview
                 <Button disabled={displayForm > forms.length - 2} onClick={() => setDisplayForm(displayForm + 1)}><HiChevronRight /></Button>
 
-            </Box>
-            <Box display='flex' justifyContent='center'>
+            </Box> */}
+            <Box display='flex' justifyContent='center' mt='30px'>
                 <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px' overflowY='scroll'>
                     <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                         <Box display='flex' alignItems='center' height='24px'>

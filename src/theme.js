@@ -1,10 +1,10 @@
-import { extendTheme } from "@chakra-ui/react"
+import { border, extendTheme } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 
 const colours =  {
   'blurple': '#5865F2',
   'blurple.500': '#5865F2',
-  'green': '#46c46e',
+  'green': '#2d7d46',
   'red': '#ED4245',
   'grey.extralight': '#ebedef',
   'grey.light': '#4f545c',
@@ -58,21 +58,28 @@ const theme = extendTheme({
     Button: {
       baseStyle: {
         color: 'white',
+        fontFamily: 'Whitney Bold',
+        fontWeight: '500',
         padding: '16px 2px',
-        borderRadius: '3px'
+        borderRadius: '3px',
+        _focus: { boxShadow: 'none' }
       },
       variants: {
         primary: {
-          bg: 'blurple'
+          bg: 'blurple',
+          _hover: { bg: '#4752c4' }
         },
         secondary: {
-          bg: 'grey.light'
+          bg: 'grey.light',
+          _hover: { bg: '#686d73' }
         },
         success: {
-          bg: 'green'
+          bg: 'green',
+          _hover: { bg: '#215b32' }
         },
-        destructive: {
-          bg: 'red'
+        danger: {
+          bg: 'red',
+          _hover: { bg: '#a12d2f' }
         },
         link: {
           bg: 'transparent',

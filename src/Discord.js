@@ -67,7 +67,7 @@
 //     const json = JSON.parse(Json);
 
 //     const body = {
-//         content: json.location.message.content
+//         content: json.message.content
 //     }
 //     console.log(Routes.channelMessages(json.location.channel_id), json.location.channel_id)
 //     const res = await Rest.post(Routes.channelMessages(json.location.channel_id), {

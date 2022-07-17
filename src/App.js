@@ -133,7 +133,7 @@ function App() {
     <ChakraProvider theme={theme}>
       <header>
         <Box display='flex' alignItems='center'>
-          <img src="https://cdn.discordapp.com/attachments/944646735643410482/946845836879462420/forms.png" alt="Forms Logo" width="28px" style={{ clipPath: 'circle(50%)' }} />
+          <img src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="28px" style={{ clipPath: 'circle(50%)' }} />
           <nav>
             <a href="https://discord.gg/ebE2pbA4dT" target="_blank" rel="noopener noreferrer">Support Server</a>
             <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>

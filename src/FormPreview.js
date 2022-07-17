@@ -26,7 +26,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                                 </Tooltip>
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
                             </Box>
-                            <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours()}:{new Date().getMinutes()}</Text>
+                            <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
 
                         </Box>
                         <Box>
@@ -71,6 +71,45 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                     <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
                         <Button variant='link' color={colorMode === 'dark' ? '#747f8d' : 'white'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
                         <Button variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
+                    </Box>
+                </Box>
+            </Box>
+            <Box mt='12px'>
+                <Box display='flex'>
+                    <Image src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                    <Box>
+                        <Box display='flex' alignItems='center'>
+                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Webhook</Text>
+                            <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
+                                <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
+                            </Box>
+                            <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
+
+                        </Box>
+                        <Box bg='#2f3136' borderLeft='4px solid rgb(32, 34, 37)' maxWidth='520px' borderRadius='4px'>
+                            <Box padding='0.5rem 1rem 1rem 0.75rem'>
+                                <Box display='flex' alignItems='center' m='8px 0px 0px'>
+                                    <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
+                                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap'>User#0000</Box>
+                                </Box>
+                                <Box>
+                                    {forms[displayForm].modal.components.map(actionRow => (
+                                        <Box key={Math.random()}>
+                                            <Text fontFamily='Whitney Black' fontSize='0.875rem' mt='8px'>
+                                                {actionRow.components[0].label}
+                                            </Text>
+                                            <Text fontSize='0.875rem' color={actionRow.components[0].value ? 'white' : '#a3a6aa'}>
+                                                {actionRow.components[0].value || '< Answer will be displayed here >'}
+                                            </Text>
+                                        </Box>
+                                    ))}
+                                </Box>
+                                <Box display='flex' alignItems='center' mt='8px'>
+                                    <Image src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%'/>
+                                    <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#fbfbfb'>643945264868098049</Text>
+                                </Box>
+                            </Box>
+                        </Box>
                     </Box>
                 </Box>
             </Box>

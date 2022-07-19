@@ -156,7 +156,6 @@ function App() {
               </Box>
 
 
-
               <FieldArray
                 {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
               />

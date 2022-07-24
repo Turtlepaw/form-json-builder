@@ -37,7 +37,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
               </FormLabel>
               <Link href='https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks'>Webhook Guide</Link>
               <input
-                {...register(`forms[${index}].webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord.com\/api\/webhooks\/\d{7,30}\/.+$/ })}
+                {...register(`forms[${index}].webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord.com\/api(\/v\d+)?\/webhooks\/\d{7,30}\/.+$/ })}
                 id={`forms[${index}].webhook_url`}
                 onFocus={() => webhookUrlSetFocused(true)}
                 onBlur={() => webhookUrlSetFocused(false)}

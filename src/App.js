@@ -55,7 +55,7 @@ const defaultValues = {
             type: 1,
             components: [
               {
-                type: 2,
+                type: 4,
                 label: 'Example Text Input',
                 style: '1',
                 placeholder: 'Write text here',
@@ -90,7 +90,7 @@ const clearValues = {
             type: 1,
             components: [
               {
-                type: 2,
+                type: 4,
                 label: '',
                 style: '1',
                 placeholder: '',

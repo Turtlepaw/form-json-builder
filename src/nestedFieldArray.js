@@ -209,7 +209,7 @@ export default ({ nestIndex, control, register, formState, formState: { errors }
         type: 1,
         components: [
           {
-            type: 2,
+            type: 4,
             label: '',
             style: '1',
             placeholder: '',

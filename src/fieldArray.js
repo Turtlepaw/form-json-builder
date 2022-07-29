@@ -102,7 +102,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
                   type: 1,
                   components: [
                     {
-                      type: 2,
+                      type: 4,
                       label: '',
                       style: '1',
                       placeholder: '',

@@ -143,9 +143,9 @@ function App() {
         <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
       </header>
 
-      <Grid p={3} paddingBottom={0} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
-        <VStack spacing={3} alignItems='flex-start' overflowY='scroll' maxHeight='92.3vh'>
-          <Button onClick={() => reset(clearValues)}>Clear All</Button>
+      <Grid pl={3} pr={3} paddingBottom={0} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
+        <VStack spacing={3} alignItems='flex-start' overflowY='scroll' maxHeight='calc(100vh - 35px);'>
+          <Button mt='12px' onClick={() => reset(clearValues)}>Clear All</Button>
           <Box width='100%'>
             <form onSubmit={handleSubmit(onSubmit)}>
 

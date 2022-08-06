@@ -9,8 +9,8 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
     if (displayForm < 0) displayForm = 0;
 
     return (
-        <Box overflowY='scroll' maxHeight='92.3vh'>
-            <Box>
+        <Box overflowY='scroll' maxHeight='calc(100vh - 35px);'>
+            <Box mt='12px'>
                 <Box display='flex' >
                     <Image src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
@@ -51,14 +51,14 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                     <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                         <Box display='flex' alignItems='center' height='24px'>
                             <img src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
-                            <Text fontSize='24px' color={colorMode === 'dark' ? '#060607' : 'white'}>{forms[displayForm].modal.title}</Text>
+                            <Text fontSize='24px' color={colorMode === 'dark' ? '#060607' : 'white'}>{forms[displayForm]?.modal.title}</Text>
                         </Box>
                         <Box display='flex' p='4px' cursor='pointer'>
                             <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
                         </Box>
                     </Box>
                     <Box>
-                        {forms[displayForm].modal.components.map(actionRow => (
+                        {forms[displayForm]?.modal.components.map(actionRow => (
                             <Box key={Math.random()} m='0 1em 1em'>
                                 <Text textTransform='uppercase' fontFamily='Helvetica Neue' fontWeight='black' fontSize='12px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
                                     {actionRow.components[0].label}
@@ -93,7 +93,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                                     <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap'>User#0000</Box>
                                 </Box>
                                 <Box>
-                                    {forms[displayForm].modal.components.map(actionRow => (
+                                    {forms[displayForm]?.modal.components.map(actionRow => (
                                         <Box key={Math.random()}>
                                             <Text fontFamily='Whitney Black' fontSize='0.875rem' mt='8px'>
                                                 {actionRow.components[0].label}

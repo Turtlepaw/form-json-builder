@@ -7,7 +7,7 @@ function ErrorMessage({ children }) {
 
   return (
     <HStack>
-      {children ? <AiFillExclamationCircle color='#ff7a6b' /> : null}
+      {children ? <AiFillExclamationCircle color='#ff7a6b' size={28} /> : null}
       <Text color='#ff7a6b'>{children}</Text>
     </HStack>
   )

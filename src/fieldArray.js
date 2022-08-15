@@ -36,7 +36,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
                 </Tooltip>
               </FormLabel>
               <input
-                {...register(`forms[${index}].webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/ })}
+                {...register(`forms[${index}].webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/ })}
                 id={`forms[${index}].webhook_url`}
                 onFocus={() => webhookUrlSetFocused(true)}
                 onBlur={() => webhookUrlSetFocused(false)}

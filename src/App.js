@@ -129,7 +129,6 @@ function App() {
   const onSubmit = (data) => console.log("data", data);
 
   const [displayForm, setDisplayForm] = useState(0)
-  const [advancedMode, setAdvancedMode] = useState(false)
 
   return (
     <ChakraProvider theme={theme}>
@@ -145,15 +144,9 @@ function App() {
         <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
       </header>
 
-      <Grid pl={3} pr={3} paddingBottom={0} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' >
+      <Grid pl={3} pr={3} paddingBottom={0} gridTemplateColumns='repeat(auto-fit, minmax(min(400px, 100%), 1fr))' gap='12px' mt='12px'>
         <VStack spacing={3} alignItems='flex-start' overflowY='scroll' maxHeight='calc(100vh - 35px);'>
-          <Box display='flex' mt='12px' justifyContent='space-between' alignItems='center' width='100%'>
-            <Button onClick={() => reset(clearValues)}>Clear All</Button>
-            <Box display='flex' bg='#292b2f' p='4px 10px 4px 10px' borderRadius='16px' alignItems='center' >
-              <Switch id='advanced' onChange={() => setAdvancedMode(!advancedMode)}/>
-              <Text fontFamily='Whitney Bold' ml='8px'>Advanced Mode</Text>
-            </Box>
-          </Box>
+          <Button onClick={() => reset(clearValues)}>Clear All</Button>
           <Box width='100%'>
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -171,9 +164,9 @@ function App() {
             </form>
           </Box>
           <VStack width='100%' align='flex-start'>
-            <Heading size='sm' marginBottom='5px'>{advancedMode ? 'JSON Data' : 'Form Configuration File'}</Heading>
+            <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
             <Text>This is the configuration file you'll need to give the <Link href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot'>forms bot</Link> to create your form in discord.<br/>You'll need to add the forms bot to your server.</Text>
-            {advancedMode && <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>}
+            <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <Button
                 variant='success'
@@ -188,11 +181,11 @@ function App() {
                   link.click();
                 }}
               >
-                Download {advancedMode ? 'JSON' : 'Configuration'} File
+                Download Configuration File
               </Button>
-              {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the {advancedMode ? 'JSON' : 'configuration'} file.</ErrorMessage>}
+              {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>
-            <Text>Upload the {advancedMode ? 'JSON' : 'configuration'} file to the /form create command on the forms bot.</Text>
+            <Text>Upload the configuration' file to the /form create command on the forms bot.</Text>
           </VStack>
           <Box className="text-sm pt-5 pb-10" paddingBottom='10px'>
             <p className="font-medium">©️ 2022 Forms Discord Bot</p>

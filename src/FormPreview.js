@@ -10,7 +10,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
 
     return (
         <Box overflowY='scroll' maxHeight='calc(100vh - 35px);'>
-            <Box mt='12px'>
+            <Box>
                 <Box display='flex' >
                     <Image src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
@@ -30,7 +30,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
 
                         </Box>
                         <Box>
-                            <Text><pre style={{ fontFamily: 'Whitney' }}>{message.content || ' '}</pre></Text>
+                            <Text fontFamily='Whitney'>{message.content || ' '}</Text>
                             <Box p='4px 0'>
                                 {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button.style == 1 ? 'primary' : (form.button.style == 2 ? 'secondary' : (form.button.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
                             </Box>

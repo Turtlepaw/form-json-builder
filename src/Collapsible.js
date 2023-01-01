@@ -13,7 +13,9 @@ function Collapsible({ name, deleteButton, children, variant }) {
       border={variant === 'large' ? `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}` : 'none'}
       borderRadius='4px'
       boxShadow={variant === 'large' ? 'rgb(0 0 0 / 16%) 0px 4px 4px' : 'none'}
-      marginBottom={variant === 'large' ? '8px' : '0px'}>
+      marginBottom={variant === 'large' ? '16px' : '0px'}
+      pt={1}
+      pb={1}>
       <Button
         onClick={onToggle}
         as='div'

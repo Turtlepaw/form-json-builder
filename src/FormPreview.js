@@ -80,17 +80,17 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                     <Box>
                         <Box display='flex' alignItems='center'>
                             <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Webhook</Text>
-                            <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
+                            <Box display='flex' backgroundColor='#5865F2' color='white'  borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
 
                         </Box>
-                        <Box bg='#2f3136' borderLeft='4px solid rgb(32, 34, 37)' maxWidth='520px' borderRadius='4px'>
+                        <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'}  borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
                                     <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
-                                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap'>User#0000</Box>
+                                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >User#0000</Box>
                                 </Box>
                                 <Box>
                                     {forms[displayForm]?.modal.components.map(actionRow => (

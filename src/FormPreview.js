@@ -9,7 +9,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
     if (displayForm < 0) displayForm = 0;
 
     return (
-        <Box overflowY='scroll' p='12px 0 12px 0' maxHeight='calc(100vh - 48px);'>
+        <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);'>
             <Box>
                 <Box display='flex' >
                     <Image src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
@@ -47,7 +47,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
 
             </Box> */}
             <Box display='flex' mt='30px'>
-                <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px' overflowY='scroll'>
+                <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                     <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                         <Box display='flex' alignItems='center' height='24px'>
                             <img src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />

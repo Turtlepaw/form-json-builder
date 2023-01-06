@@ -133,7 +133,7 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
-      <DarkMode>
+
       <Grid gridTemplateRows='48px 1fr'>
         <header>
           <Box display='flex' alignItems='center'>
@@ -144,7 +144,7 @@ function App() {
               <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Documentation</a>
             </nav>
           </Box>
-          {/* <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} /> */}
+          <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
         </header>
 
         <Grid paddingBottom={0} gridTemplateColumns='1fr 1fr'>
@@ -204,7 +204,7 @@ function App() {
           <FormPreview message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
         </Grid>
       </Grid>
-      </DarkMode>
+
     </ChakraProvider>
   );
 }

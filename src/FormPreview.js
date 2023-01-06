@@ -47,11 +47,11 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
 
             </Box> */}
             <Box display='flex' mt='30px'>
-                <Box border={`1px solid ${colorMode === 'light' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
+                <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                     <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                         <Box display='flex' alignItems='center' height='24px'>
                             <img src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
-                            <Text fontSize='24px' color={colorMode === 'light' ? '#060607' : 'white'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
+                            <Text fontSize='24px' color={colorMode === 'dark' ? '#060607' : 'white'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
                         </Box>
                         <Box display='flex' p='4px' cursor='pointer'>
                             <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
@@ -60,16 +60,16 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                     <Box>
                         {forms[displayForm]?.modal.components.map(actionRow => (
                             <Box key={Math.random()} m='0 1em 1em'>
-                                <Text textTransform='uppercase' fontFamily='Helvetica Neue' fontWeight='black' fontSize='12px' mb='8px' color={colorMode === 'light' ? '#4f5660' : '#b9bbbe'}>
+                                <Text textTransform='uppercase' fontFamily='Helvetica Neue' fontWeight='black' fontSize='12px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
                                     {actionRow.components[0].label}
                                     {actionRow.components[0].required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
-                                <Box as={actionRow.components[0].style === '1' ? 'input' : 'textarea'} bg={colorMode === 'light' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0].placeholder} defaultValue={actionRow.components[0].value} />
+                                <Box as={actionRow.components[0].style === '1' ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0].placeholder} defaultValue={actionRow.components[0].value} />
                             </Box>
                         ))}
                     </Box>
-                    <Box bg={colorMode === 'light' ? '#f2f3f5' : '#2f3136'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
-                        <Button variant='link' color={colorMode === 'light' ? '#747f8d' : 'white'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
+                    <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
+                        <Button variant='link' color={colorMode === 'dark' ? '#747f8d' : 'white'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
                         <Button variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
                     </Box>
                 </Box>
@@ -86,7 +86,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm }) {
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
 
                         </Box>
-                        <Box bg={colorMode === 'light' ? '#f2f3f5' : '#2f3136'}  borderLeft={colorMode === 'light' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
+                        <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'}  borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
                                     <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />

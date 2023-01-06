@@ -17,7 +17,7 @@ const { blurple } = colours;
 const theme = extendTheme({
   colors: colours,
   config: {
-    initialColorMode: 'light',
+    initialColorMode: 'dark',
     useSystemColorMode: false,
   },
   styles: {

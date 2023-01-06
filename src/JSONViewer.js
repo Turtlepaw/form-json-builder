@@ -8,13 +8,13 @@ function JSONViewer({ children }) {
   const handleToggle = () => setShow(!show)
 
   return (
-    <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#f2f3f5' : '#2f3136', color: colorMode === 'dark' ? '#4f5660' : '#b9bbbe', width: '100%' }}>
+    <Box style={{ border: `1px solid ${colorMode === 'light' ? '#e3e5e8' : '#292b2f'}`, borderRadius: '4px', background: colorMode === 'light' ? '#f2f3f5' : '#2f3136', color: colorMode === 'light' ? '#4f5660' : '#b9bbbe', width: '100%' }}>
       <Collapse startingHeight={147} style={{ overflow: 'scroll', bg: '#2f3136', borderRadius: '4px', padding: '8px' }} in={show}>
         <pre>
           <code>{children}</code>
         </pre>
       </Collapse>
-      <Box display='flex' alignItems='center' justifyContent='space-between' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'} padding='4px 12px 4px 4px' borderTop={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`}>
+      <Box display='flex' alignItems='center' justifyContent='space-between' color={colorMode === 'light' ? '#4f5660' : '#b9bbbe'} padding='4px 12px 4px 4px' borderTop={`1px solid ${colorMode === 'light' ? '#e3e5e8' : '#292b2f'}`}>
         <Box display='flex' alignItems='center' onClick={handleToggle}>
           <Tooltip hasArrow label={
             <Box>
@@ -24,7 +24,7 @@ function JSONViewer({ children }) {
             <svg className="pointer" style={{ margin: '8px', transition: 'transform 0.2s', transform: `rotate(${(show ? 0 : 180)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M12 10L8 6L4 10"
-                stroke={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}
+                stroke={colorMode === 'light' ? '#4f5660' : '#b9bbbe'}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"

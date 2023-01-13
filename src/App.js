@@ -5,23 +5,39 @@ import {
   ChakraProvider,
   Box,
   VStack,
+  Code,
   Grid,
+  Input,
   Radio,
   Text,
+  Checkbox,
+  extendTheme,
   Button,
   Heading,
+  HStack,
+  FormControl,
   FormLabel,
+  FormErrorMessage,
+  CloseButton,
+  useTheme,
+  Tooltip,
   RadioGroup,
-  Stack
+  Switch,
+  Stack,
+  Textarea,
+  DarkMode
 } from '@chakra-ui/react';
+import { Rest, sendForm } from "./Discord";
 import './App.css';
+import { IconContext } from "react-icons";
+import { IoInformationCircle } from 'react-icons/io5';
 import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+import Collapsible from './Collapsible';
 import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
-import Collapsible from './Collapsible';
 
 const Defaults = {
   Embed: {
@@ -51,7 +67,7 @@ const defaultValues = {
       webhook_url: '',
       button: {
         label: 'Open Form',
-        style: 1
+        style: '1'
       },
       modal: {
         title: 'Example Form',
@@ -62,11 +78,11 @@ const defaultValues = {
               {
                 type: 4,
                 label: 'Example Text Input',
-                style: 1,
+                style: '1',
                 placeholder: 'Write text here',
                 value: '',
-                min_length: 0,
-                max_length: 1024,
+                min_length: '0',
+                max_length: '1024',
                 required: true
               }
             ]
@@ -79,28 +95,14 @@ const defaultValues = {
 
 const clearValues = {
   message: {
-    content: '',
-    embeds: [{
-      color: "",
-      title: "",
-      description: "",
-      author: {
-        name: "",
-        url: "",
-        icon_url: ""
-      },
-      footer: {
-        text: "",
-        icon_url: ""
-      }
-    }]
+    content: ''
   },
   forms: [
     {
       webhook_url: '',
       button: {
         label: '',
-        style: 1
+        style: '1'
       },
       modal: {
         title: '',
@@ -111,11 +113,11 @@ const clearValues = {
               {
                 type: 4,
                 label: '',
-                style: 1,
+                style: '1',
                 placeholder: '',
                 value: '',
-                min_length: 0,
-                max_length: 1024,
+                min_length: '0',
+                max_length: '1024',
                 required: true
               }
             ]
@@ -128,6 +130,7 @@ const clearValues = {
 
 
 function App() {
+
   const {
     control,
     register,
@@ -138,8 +141,6 @@ function App() {
     setValue,
     formState,
     // eslint-disable-next-line no-unused-vars
-    resetField,
-    // eslint-disable-next-line no-unused-vars
     formState: { errors }
   } = useForm({
     mode: 'onChange',
@@ -147,7 +148,6 @@ function App() {
   });
 
   const onSubmit = (data) => console.log("data", data);
-
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
   const MessageType = {
@@ -155,6 +155,7 @@ function App() {
     Embed: "embed",
     ContentAndEmbed: "both"
   };
+  
   const Embed = () => (
     <>
       <FormLabel pb={2}>Embed</FormLabel>
@@ -224,6 +225,7 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
+
       <Grid gridTemplateRows='48px 1fr'>
         <header>
           <Box display='flex' alignItems='center'>
@@ -238,7 +240,7 @@ function App() {
         </header>
 
         <Grid paddingBottom={0} gridTemplateColumns='1fr 1fr'>
-          <VStack spacing={3} alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
+          <VStack spacing={3}  alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
             <Button onClick={() => reset(clearValues)}>Clear All</Button>
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -287,10 +289,11 @@ function App() {
                   </Box>
                 </Collapsible>
 
-                <FormLabel pb={2}>Forms</FormLabel>
+
                 <FieldArray
                   {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
                 />
+
               </form>
             </Box>
             <VStack width='100%' align='flex-start'>
@@ -318,21 +321,21 @@ function App() {
               <Text>Upload the configuration' file to the /form create command on the forms bot.</Text>
             </VStack>
             <Box className="text-sm pt-5">
-              <p className="font-medium">©️ 2022 Forms Discord Bot</p>
-              <p className="text-muted">
-                Not affiliated with Discord, Inc.
-                <br />
-                Discord is a registered trademark of Discord, Inc.
-                <br />
-                This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
-              </p>
-            </Box>
+            <p className="font-medium">©️ 2022 Forms Discord Bot</p>
+            <p className="text-muted">
+              Not affiliated with Discord, Inc.
+              <br />
+              Discord is a registered trademark of Discord, Inc.
+              <br />
+              This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
+            </p>
+          </Box>
           </VStack>
-          <FormPreview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
+          <FormPreview message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
         </Grid>
-      </Grid >
+      </Grid>
 
-    </ChakraProvider >
+    </ChakraProvider>
   );
 }
 

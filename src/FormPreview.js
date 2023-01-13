@@ -2,10 +2,50 @@
 import { Box, Button, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
 import React from 'react';
 
+function isEmpty(value) {
+    return value == null || value == '';
+}
+
 function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
     const { colorMode } = useColorMode();
 
     if (displayForm < 0) displayForm = 0;
+
+    const MessageText = <Text fontFamily='Whitney'>{message.content || ' '}</Text>;
+
+    const MessageEmbed = <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message.embeds[0].color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+        <Box padding='0.5rem 1rem 1rem 0.75rem'>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} className={!isEmpty(message.embeds[0]?.author?.url) ? "cursor-pointer hover:underline" : "cursor-default"}>
+                <Box display='flex' alignItems='center' m='2px 0px 0px'>
+                    {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0]?.author?.name}</Box>
+                </Box>
+            </a>
+            <Box>
+                <Text fontFamily='Whitney Semibold' fontSize='0.975rem' mt='3px'>
+                    {message.embeds[0]?.title}
+                </Text>
+                <Text fontSize='0.875rem' color='#c5c5d3'>
+                    {message.embeds[0]?.description}
+                </Text>
+            </Box>
+            {!isEmpty(message.embeds[0]?.footer?.text) && (
+                <Box display='flex' alignItems='center' mt='8px'>
+                    {!isEmpty(message.embeds[0]?.footer?.icon_url) && <Image src={message.embeds[0].footer.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                    <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0]?.footer?.text}</Text>
+                </Box>
+            )}
+        </Box>
+    </Box>;
+
+    let Rendered = MessageText;
+    if (type == "content") Rendered = MessageText;
+    else if (type == "embed") Rendered = MessageEmbed;
+    else Rendered = (<>
+        {MessageText}
+        {MessageEmbed}
+    </>)
 
     return (
         <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);'>
@@ -28,39 +68,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                         </Box>
                         <Box>
-                            {
-                                type == "content" ? (
-                                    <Text fontFamily='Whitney'>{message.content || ' '}</Text>
-                                ) : (
-                                    <>
-                                        <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${(message.embeds[0].color != '' && message.embeds[0].color != null) ? message.embeds[0].color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
-                                            <Box padding='0.5rem 1rem 1rem 0.75rem'>
-                                                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                                                <a href={message.embeds[0].author.url == '' ? null : message.embeds[0].author.url} className={message.embeds[0].author.url != '' ? "cursor-pointer hover:underline" : "cursor-default"}>
-                                                    <Box display='flex' alignItems='center' m='2px 0px 0px'>
-                                                        {message.embeds[0].author.icon_url && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
-                                                        <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0].author.name}</Box>
-                                                    </Box>
-                                                </a>
-                                                <Box>
-                                                    <Text fontFamily='Whitney Semibold' fontSize='0.975rem' mt='3px'>
-                                                        {message.embeds[0].title}
-                                                    </Text>
-                                                    <Text fontSize='0.875rem' color='#c5c5d3'>
-                                                        {message.embeds[0].description}
-                                                    </Text>
-                                                </Box>
-                                                {message.embeds[0].footer.text != '' && (
-                                                    <Box display='flex' alignItems='center' mt='8px'>
-                                                        {message.embeds[0].footer.icon_url && <Image src={message.embeds[0].footer.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
-                                                        <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0].footer.text}</Text>
-                                                    </Box>
-                                                )}
-                                            </Box>
-                                        </Box>
-                                    </>
-                                )
-                            }
+                            {Rendered}
                             <Box p='4px 0'>
                                 {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button.style == 1 ? 'primary' : (form.button.style == 2 ? 'secondary' : (form.button.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
                             </Box>

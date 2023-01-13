@@ -1,6 +1,6 @@
-import { Box, Button, CloseButton, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { HiChevronRight, HiChevronLeft } from 'react-icons/hi'
+/* eslint eqeqeq: 0 */
+import { Box, Button, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
+import React from 'react';
 
 function isEmpty(value) {
     return value == null || value == '';
@@ -50,11 +50,11 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
     return (
         <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);'>
             <Box>
-                <Box display='flex' >
-                    <Image src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                <Box display='flex'>
+                    <Image className='cursor-pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
                         <Box display='flex' alignItems='center'>
-                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Forms</Text>
+                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }} className='cursor-pointer'>Forms</Text>
                             <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' width='39px'>
                                 <Tooltip hasArrow label={
                                     <Box>
@@ -66,7 +66,6 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
-
                         </Box>
                         <Box>
                             {Rendered}
@@ -99,7 +98,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
                     <Box>
                         {forms[displayForm]?.modal.components.map(actionRow => (
                             <Box key={Math.random()} m='0 1em 1em'>
-                                <Text textTransform='uppercase' fontFamily='Helvetica Neue' fontWeight='black' fontSize='12px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
+                                <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
                                     {actionRow.components[0].label}
                                     {actionRow.components[0].required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
@@ -115,17 +114,16 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
             </Box>
             <Box mt='12px'>
                 <Box display='flex'>
-                    <Image src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                    <Image _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
                         <Box display='flex' alignItems='center'>
-                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }}>Webhook</Text>
-                            <Box display='flex' backgroundColor='#5865F2' color='white'  borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
+                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline', cursor: "pointer" }}>Webhook</Text>
+                            <Box display='flex' backgroundColor='#5865F2' color='white' borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
-
                         </Box>
-                        <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'}  borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
+                        <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
                                     <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />

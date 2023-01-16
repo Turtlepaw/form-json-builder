@@ -153,6 +153,7 @@ function App() {
           console.log(e)
           Object.entries(e).map(([k, v]) => {
             console.log(k, v)
+            if(v === null) return { key: k, value: v };
             // eslint-disable-next-line eqeqeq
             if (v == '') e[k] = null;
             else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);

@@ -210,7 +210,7 @@ function App() {
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
               <Text>
-                This is the configuration file you'll need to give the <a href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot'><UserMention>Forms</UserMention></a> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.
+                This is the configuration file you'll need to give to the <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot'><UserMention>Forms</UserMention></a> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.
               </Text>
               <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
               <VStack alignItems='flex-start'>

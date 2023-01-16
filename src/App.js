@@ -20,7 +20,6 @@ import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
 import MessageBuilder from './messageBuilder';
 import { SlashCommand, UserMention } from './Mention';
-import { AiFillInfoCircle } from 'react-icons/ai';
 
 const Defaults = {
   Embed: {

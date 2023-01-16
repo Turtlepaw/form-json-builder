@@ -8,7 +8,7 @@ import React from "react";
  */
 export function Mention({ children, hover }) {
     return (
-        <Box display="inline" bgColor="#3e4372" padding="2px 4px 2px 4px" borderRadius={4} _hover={{
+        <Box display="inline" bgColor="#3e4372" paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
             bgColor: "#5865f2",
             ...hover
         }} cursor="pointer">

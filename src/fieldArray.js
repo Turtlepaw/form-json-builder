@@ -56,11 +56,15 @@ export default function Fields({ control, register, setValue, getValues, formSta
                 </Box>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${index}].button.style`}>Button Style</FormLabel>
-                  <Select {...register(`forms[${index}].button.style`)} id={`forms[${index}].button.style`} variant='unstyled'>
-                    <option value="1">Blurple | Primary (CTA)</option>
-                    <option value="2">Grey | Secondary</option>
-                    <option value="3">Green | Primary (Success)</option>
-                    <option value="4">Red | Danger/Destructive</option>
+                  <Select
+                    {...register(`forms[${index}].button.style`)}
+                    id={`forms[${index}].button.style`}
+                    variant='unstyled'
+                  >
+                    <option value="1">Blurple</option>
+                    <option value="2">Grey</option>
+                    <option value="3">Green</option>
+                    <option value="4">Red</option>
                   </Select>
                 </Box>
               </HStack>

@@ -146,18 +146,22 @@ function App() {
   const onSubmit = (data) => console.log("data", data);
   const toast = useToast();
   const fixForm = () => {
-    getValues("forms").forEach((form, i) => form.modal.components.forEach((actionRow) => {
-      actionRow.components.forEach((e, index) => {
-        console.log(e)
-        Object.entries(e).map(([k, v]) => {
-          console.log(k, v)
-          // eslint-disable-next-line eqeqeq
-          if (v == '') e[k] = null;
-          return { key: k, value: v };
-        });
-        setValue(`forms.[${i}].modal.components[0].components[${index}]`, e);
+    getValues("forms").forEach((form, i) => {
+      setValue(`forms.[${i}].button.style`, Number(form.button.style));
+      form.modal.components.forEach((actionRow) => {
+        actionRow.components.forEach((e, index) => {
+          console.log(e)
+          Object.entries(e).map(([k, v]) => {
+            console.log(k, v)
+            // eslint-disable-next-line eqeqeq
+            if (v == '') e[k] = null;
+            if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
+            return { key: k, value: v };
+          });
+          setValue(`forms.[${i}].modal.components[0].components[${index}]`, e);
+        })
       })
-    }));
+    });
     return toast({
       title: 'Form Fixed',
       //description: "We've fixed some components in your form.",
@@ -205,7 +209,9 @@ function App() {
             </Box>
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
-              <Text>This is the configuration file you'll need to give the <Link href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot'>forms bot</Link> to create your form in discord.<br />You'll need to add the forms bot to your server.</Text>
+              <Text>
+                This is the configuration file you'll need to give the <a href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot'><UserMention>Forms</UserMention></a> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.
+              </Text>
               <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
               <VStack alignItems='flex-start'>
                 <HStack alignItems='flex-start'>

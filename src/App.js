@@ -155,7 +155,7 @@ function App() {
             console.log(k, v)
             // eslint-disable-next-line eqeqeq
             if (v == '') e[k] = null;
-            if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
+            else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
             return { key: k, value: v };
           });
           setValue(`forms.[${i}].modal.components[0].components[${index}]`, e);

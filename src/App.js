@@ -23,7 +23,7 @@ import { SlashCommand, UserMention } from './Mention';
 
 const Defaults = {
   Embed: {
-    color: '#5865f2',
+    color: '5793266',
     title: "Example Form",
     description: "Fill out the form below!",
     author: {
@@ -41,7 +41,7 @@ const Defaults = {
 
 const defaultValues = {
   message: {
-    content: Defaults.Message,
+    content: '',
     embeds: []
   },
   forms: [

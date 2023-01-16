@@ -55,6 +55,13 @@ const theme = extendTheme({
     })
   },
   components: {
+    Alert: {
+      variants: {
+        primary: {
+          bg: 'blurple'
+        }
+      }
+    },
     Button: {
       baseStyle: {
         color: 'white',

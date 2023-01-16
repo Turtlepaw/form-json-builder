@@ -99,10 +99,10 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
                         {forms[displayForm]?.modal.components.map(actionRow => (
                             <Box key={Math.random()} m='0 1em 1em'>
                                 <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
-                                    {actionRow.components[0].label}
-                                    {actionRow.components[0].required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
+                                    {actionRow.components[0]?.label}
+                                    {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
-                                <Box as={actionRow.components[0].style === '1' ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0].placeholder} defaultValue={actionRow.components[0].value} />
+                                <Box as={actionRow.components[0]?.style === '1' ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0]?.placeholder} defaultValue={actionRow.components[0]?.value} />
                             </Box>
                         ))}
                     </Box>
@@ -133,10 +133,10 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
                                     {forms[displayForm]?.modal.components.map(actionRow => (
                                         <Box key={Math.random()}>
                                             <Text fontFamily='Whitney Black' fontSize='0.875rem' mt='8px'>
-                                                {actionRow.components[0].label}
+                                                {actionRow.components[0]?.label ?? "Field"}
                                             </Text>
-                                            <Text fontSize='0.875rem' color={actionRow.components[0].value ? 'white' : '#a3a6aa'}>
-                                                {actionRow.components[0].value || '(Answer will be displayed here)'}
+                                            <Text fontSize='0.875rem' color={actionRow.components[0]?.value ? 'white' : '#a3a6aa'}>
+                                                {actionRow.components[0]?.value || '(Answer will be displayed here)'}
                                             </Text>
                                         </Box>
                                     ))}

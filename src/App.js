@@ -2,26 +2,25 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import FieldArray from "./fieldArray";
 import {
-  ChakraProvider,
   Box,
   VStack,
   Grid,
-  Radio,
   Text,
   Button,
   Heading,
   FormLabel,
-  RadioGroup,
-  Stack
+  useToast,
+  HStack,
 } from '@chakra-ui/react';
 import './App.css';
-import theme from './theme';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
-import Collapsible from './Collapsible';
+import MessageBuilder from './messageBuilder';
+import { SlashCommand, UserMention } from './Mention';
+import { AiFillInfoCircle } from 'react-icons/ai';
 
 const Defaults = {
   Embed: {
@@ -126,7 +125,6 @@ const clearValues = {
   ]
 };
 
-
 function App() {
   const {
     control,
@@ -147,83 +145,38 @@ function App() {
   });
 
   const onSubmit = (data) => console.log("data", data);
-
+  const toast = useToast();
+  const fixForm = () => {
+    getValues("forms").forEach((form, i) => form.modal.components.forEach((actionRow) => {
+      actionRow.components.forEach((e, index) => {
+        console.log(e)
+        Object.entries(e).map(([k, v]) => {
+          console.log(k, v)
+          // eslint-disable-next-line eqeqeq
+          if (v == '') e[k] = null;
+          return { key: k, value: v };
+        });
+        setValue(`forms.[${i}].modal.components[0].components[${index}]`, e);
+      })
+    }));
+    return toast({
+      title: 'Form Fixed',
+      //description: "We've fixed some components in your form.",
+      status: 'success',
+      containerStyle: {
+        backgroundColor: "#5865f2",
+        borderRadius: "0.3rem"
+      },
+      position: "bottom",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
-  const MessageType = {
-    Content: "content",
-    Embed: "embed",
-    ContentAndEmbed: "both"
-  };
-  const Embed = () => (
-    <>
-      <FormLabel pb={2}>Embed</FormLabel>
-      <Collapsible name="Embed">
-        {/* Embed Title */}
-        <FormLabel htmlFor="message.embeds[0].title">Embed Title</FormLabel>
-        <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].title', { minLength: 1, maxLength: 256 })} id='message.embeds[0].title' />
-        <ErrorMessage fieldName='embed title' fieldType='The' field={errors?.message?.embeds[0]?.title}></ErrorMessage>
-        {/* Embed Description */}
-        <FormLabel htmlFor="message.embeds[0].description">Embed Description</FormLabel>
-        <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].description', { minLength: 1, maxLength: 4096 })} id='message.embeds[0].description' />
-        <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds[0]?.description}></ErrorMessage>
-        {/* Embed Color */}
-        <FormLabel htmlFor="message.embeds[0].color">Embed Color</FormLabel>
-        <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].color', { required: true, minLength: 4, maxLength: 9 })} id='message.embeds[0].color' />
-        <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds[0]?.color}></ErrorMessage>
-        {/* Embed Author */}
-        <Collapsible name="Embed Author" style={{ marginLeft: 20 }}>
-          {/* Embed Author Name */}
-          <FormLabel htmlFor="message.embeds[0].author.name">Author Name</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.name', { minLength: 1, maxLength: 256 })} id='message.embeds[0].author.name' />
-          <ErrorMessage fieldName='embed author name' fieldType='The' field={errors?.message?.embeds[0]?.author?.name}></ErrorMessage>
-          {/* Embed Author Icon URL */}
-          <FormLabel htmlFor="message.embeds[0].author.icon_url">Author Image URL</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.icon_url', { minLength: 1 })} id='message.embeds[0].author.icon_url' />
-          <ErrorMessage fieldName='embed author image' fieldType='The' field={errors?.message?.embeds[0]?.author?.icon_url}></ErrorMessage>
-          {/* Embed Author URL */}
-          <FormLabel htmlFor="message.embeds[0].author.url">Author URL</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.url', { minLength: 1 })} id='message.embeds[0].author.url' />
-          <ErrorMessage fieldName='embed author url' fieldType='The' field={errors?.message?.embeds[0]?.author?.url}></ErrorMessage>
-        </Collapsible>
-        {/* Embed Footer */}
-        <Collapsible name="Embed Footer" style={{ marginLeft: 20 }}>
-          {/* Embed Footer Text */}
-          <FormLabel htmlFor="message.embeds[0].footer.text">Footer Text</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].footer.text', { minLength: 1, maxLength: 2048 })} id='message.embeds[0].color' />
-          <ErrorMessage fieldName='embed footer text' fieldType='The' field={errors?.message?.embeds[0]?.footer?.text}></ErrorMessage>
-          {/* Embed Footer Icon URL */}
-          <FormLabel htmlFor="message.embeds[0].footer.icon_url">Footer Image URL</FormLabel>
-          <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].footer.icon_url', { minLength: 1 })} id='message.embeds[0].footer.icon_url' />
-          <ErrorMessage fieldName='embed footer url' fieldType='The' field={errors?.message?.embeds[0]?.footer?.icon_url}></ErrorMessage>
-        </Collapsible>
-      </Collapsible>
-    </>
-  );
-
-  const MessageContent = () => (
-    <>
-      <FormLabel htmlFor="message.content">Message</FormLabel>
-      <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.content', { required: true })} id='message.content' />
-    </>
-  );
-
-  const HandleInteraction = (value) => {
-    setMessageType(value);
-    if (value === MessageType.Content) {
-      setValue("message.embeds", []);
-      setValue("message.content", Defaults.Message);
-    } else if (value === MessageType.Embed) {
-      setValue("message.content", null);
-      setValue("message.embeds", [Defaults.Embed]);
-    } else if (value === MessageType.ContentAndEmbed) {
-      setValue("message.embeds", [Defaults.Embed]);
-      setValue("message.content", Defaults.Message);
-    }
-  }
 
   return (
-    <ChakraProvider theme={theme}>
+    <>
       <Grid gridTemplateRows='48px 1fr'>
         <header>
           <Box display='flex' alignItems='center'>
@@ -236,56 +189,14 @@ function App() {
           </Box>
           <ColorModeSwitcher height='0px' _focus={{ boxShadow: 'unset' }} />
         </header>
-
         <Grid paddingBottom={0} gridTemplateColumns='1fr 1fr'>
           <VStack spacing={3} alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
             <Button onClick={() => reset(clearValues)}>Clear All</Button>
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <FormLabel pb={2}>Message</FormLabel>
-                <Collapsible variant='large' name="Message">
-                  <Box width='100%' marginBottom="8px">
-                    <FormLabel htmlFor="messageType">Message Type</FormLabel>
-                    <RadioGroup onChange={HandleInteraction} value={messageType} id="messageType">
-                      <Stack direction="row">
-                        <Radio
-                          name={MessageType.Content}
-                          value={MessageType.Content}
-                          colorScheme='blurple'
-                        >
-                          <Text>Message</Text>
-                        </Radio>
-                        <Radio
-                          name={MessageType.Embed}
-                          value={MessageType.Embed}
-                          colorScheme='blurple'
-                        >
-                          <Text>Embed</Text>
-                        </Radio>
-                        <Radio
-                          name={MessageType.ContentAndEmbed}
-                          value={MessageType.ContentAndEmbed}
-                          colorScheme='blurple'
-                        >
-                          <Text>Both</Text>
-                        </Radio>
-                      </Stack>
-                    </RadioGroup>
-
-                    <div className='pt-1'>
-                      {
-                        messageType === "content" ? (
-                          <MessageContent />
-                        ) : (messageType === "embed" ? <Embed /> : (
-                          <>
-                            <MessageContent />
-                            <Embed />
-                          </>
-                        ))
-                      }
-                    </div>
-                  </Box>
-                </Collapsible>
+                <MessageBuilder
+                  {...{ Defaults, errors, messageType, register, setMessageType, setValue }}
+                />
 
                 <FormLabel pb={2}>Forms</FormLabel>
                 <FieldArray
@@ -298,27 +209,32 @@ function App() {
               <Text>This is the configuration file you'll need to give the <Link href='https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot'>forms bot</Link> to create your form in discord.<br />You'll need to add the forms bot to your server.</Text>
               <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
               <VStack alignItems='flex-start'>
-                <Button
-                  variant='success'
-                  disabled={!formState.isValid}
-                  onClick={() => {
-                    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-                      JSON.stringify(watch(), null, 2)
-                    )}`;
-                    const link = document.createElement("a");
-                    link.href = jsonString;
-                    link.download = 'form.json';
-                    link.click();
-                  }}
-                >
-                  Download Configuration File
-                </Button>
+                <HStack alignItems='flex-start'>
+                  <Button
+                    variant='success'
+                    // disabled={!formState.isValid}
+                    onClick={() => {
+                      const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+                        JSON.stringify(watch(), null, 2)
+                      )}`;
+                      const link = document.createElement("a");
+                      link.href = jsonString;
+                      link.download = 'form.json';
+                      link.click();
+                    }}
+                  >
+                    Download Configuration File
+                  </Button>
+                  <Button onClick={fixForm}>Fix Form</Button>
+                </HStack>
                 {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
               </VStack>
-              <Text>Upload the configuration' file to the /form create command on the forms bot.</Text>
+              <Text maxWidth={450}>
+                Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention>Forms</UserMention> bot.
+              </Text>
             </VStack>
             <Box className="text-sm pt-5">
-              <p className="font-medium">©️ 2022 Forms Discord Bot</p>
+              <p className="font-medium">©️ 2023 Forms Discord Bot</p>
               <p className="text-muted">
                 Not affiliated with Discord, Inc.
                 <br />
@@ -330,9 +246,8 @@ function App() {
           </VStack>
           <FormPreview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
         </Grid>
-      </Grid >
-
-    </ChakraProvider >
+      </Grid>
+    </>
   );
 }
 

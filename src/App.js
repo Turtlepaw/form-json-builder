@@ -211,7 +211,7 @@ function App() {
                 <HStack alignItems='flex-start'>
                   <Button
                     variant='success'
-                    // disabled={!formState.isValid}
+                    disabled={!formState.isValid}
                     onClick={() => {
                       const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                         JSON.stringify(watch(), null, 2)

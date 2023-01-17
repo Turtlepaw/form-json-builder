@@ -19,6 +19,9 @@ function Collapsible({ name, deleteButton, children, variant }) {
         as='div'
         margin={0}
         padding={variant === 'large' ? '0px 6px 0px 10px' : '0px'}
+        // paddingInlineStart={variant === 'large' ? '16px' : '0px'}
+        // paddingInlineEnd={variant === 'large' ? '16px' : '0px'}
+        height={variant === 'large' ? '40px' : '32px'}
         justifyContent='space-between'
         width='100%' _focus='unset'
         _hover={{ bg: 'transparent' }}

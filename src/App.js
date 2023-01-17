@@ -153,7 +153,7 @@ function App() {
           console.log(e)
           Object.entries(e).map(([k, v]) => {
             console.log(k, v)
-            if(v === null) return { key: k, value: v };
+            if (v === null) return { key: k, value: v };
             // eslint-disable-next-line eqeqeq
             if (v == '') e[k] = null;
             else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
@@ -211,7 +211,7 @@ function App() {
             <VStack width='100%' align='flex-start'>
               <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
               <Text>
-                This is the configuration file you'll need to give to the <a href='https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot'><UserMention>Forms</UserMention></a> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.
+                This is the configuration file you'll need to give to the <UserMention>Forms</UserMention> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.
               </Text>
               <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
               <VStack alignItems='flex-start'>
@@ -242,9 +242,8 @@ function App() {
             <Box className="text-sm pt-5">
               <p className="font-medium">©️ 2023 Forms Discord Bot</p>
               <p className="text-muted">
-                Not affiliated with Discord, Inc.
-                <br />
-                Discord is a registered trademark of Discord, Inc.
+                Made with <svg style={{ display: "inline-block", marginLeft: "1px", marginRight: "1px" }} width={15} height={15} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868-3.308 0-6.227 1.633-8.018 4.129-1.791-2.496-4.71-4.129-8.017-4.129-5.45 0-9.868 4.417-9.868 9.868 0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447 17.617-19.959.17-.721.268-1.469.268-2.242z" /></svg>
+                {' '}from <UserMention text="#d0d3d8">Anthony</UserMention> and <UserMention text="#d0d3d8">Turtlepaw</UserMention>
                 <br />
                 This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
               </p>

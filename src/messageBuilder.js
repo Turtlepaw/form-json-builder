@@ -16,40 +16,40 @@ export default function useMessageBuilder({ register, errors, setValue, setMessa
                 {/* Embed Title */}
                 <FormLabel htmlFor="message.embeds[0].title">Embed Title</FormLabel>
                 <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].title', { minLength: 1, maxLength: 256 })} id='message.embeds[0].title' />
-                <ErrorMessage fieldName='embed title' fieldType='The' field={errors?.message?.embeds[0]?.title}></ErrorMessage>
+                <ErrorMessage fieldName='embed title' fieldType='The' field={errors?.message?.embeds?.[0]?.title}></ErrorMessage>
                 {/* Embed Description */}
                 <FormLabel htmlFor="message.embeds[0].description">Embed Description</FormLabel>
                 <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].description', { minLength: 1, maxLength: 4096 })} id='message.embeds[0].description' />
-                <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds[0]?.description}></ErrorMessage>
+                <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds?.[0]?.description}></ErrorMessage>
                 {/* Embed Color */}
                 <FormLabel htmlFor="message.embeds[0].color">Embed Color</FormLabel>
                 <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].color', { required: true, minLength: 4, maxLength: 9 })} id='message.embeds[0].color' />
-                <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds[0]?.color}></ErrorMessage>
+                <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds?.[0]?.color}></ErrorMessage>
                 {/* Embed Author */}
                 <Collapsible name="Embed Author" style={{ marginLeft: 20 }}>
                     {/* Embed Author Name */}
                     <FormLabel htmlFor="message.embeds[0].author.name">Author Name</FormLabel>
                     <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.name', { minLength: 1, maxLength: 256 })} id='message.embeds[0].author.name' />
-                    <ErrorMessage fieldName='embed author name' fieldType='The' field={errors?.message?.embeds[0]?.author?.name}></ErrorMessage>
+                    <ErrorMessage fieldName='embed author name' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.name}></ErrorMessage>
                     {/* Embed Author Icon URL */}
                     <FormLabel htmlFor="message.embeds[0].author.icon_url">Author Image URL</FormLabel>
                     <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.icon_url', { minLength: 1 })} id='message.embeds[0].author.icon_url' />
-                    <ErrorMessage fieldName='embed author image' fieldType='The' field={errors?.message?.embeds[0]?.author?.icon_url}></ErrorMessage>
+                    <ErrorMessage fieldName='embed author image' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.icon_url}></ErrorMessage>
                     {/* Embed Author URL */}
                     <FormLabel htmlFor="message.embeds[0].author.url">Author URL</FormLabel>
                     <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].author.url', { minLength: 1 })} id='message.embeds[0].author.url' />
-                    <ErrorMessage fieldName='embed author url' fieldType='The' field={errors?.message?.embeds[0]?.author?.url}></ErrorMessage>
+                    <ErrorMessage fieldName='embed author url' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.url}></ErrorMessage>
                 </Collapsible>
                 {/* Embed Footer */}
                 <Collapsible name="Embed Footer" style={{ marginLeft: 20 }}>
                     {/* Embed Footer Text */}
                     <FormLabel htmlFor="message.embeds[0].footer.text">Footer Text</FormLabel>
                     <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].footer.text', { minLength: 1, maxLength: 2048 })} id='message.embeds[0].color' />
-                    <ErrorMessage fieldName='embed footer text' fieldType='The' field={errors?.message?.embeds[0]?.footer?.text}></ErrorMessage>
+                    <ErrorMessage fieldName='embed footer text' fieldType='The' field={errors?.message?.embeds?.[0]?.footer?.text}></ErrorMessage>
                     {/* Embed Footer Icon URL */}
                     <FormLabel htmlFor="message.embeds[0].footer.icon_url">Footer Image URL</FormLabel>
                     <textarea style={{ minHeight: '40px', height: '40px' }} {...register('message.embeds[0].footer.icon_url', { minLength: 1 })} id='message.embeds[0].footer.icon_url' />
-                    <ErrorMessage fieldName='embed footer url' fieldType='The' field={errors?.message?.embeds[0]?.footer?.icon_url}></ErrorMessage>
+                    <ErrorMessage fieldName='embed footer url' fieldType='The' field={errors?.message?.embeds?.[0]?.footer?.icon_url}></ErrorMessage>
                 </Collapsible>
             </Collapsible>
         </>

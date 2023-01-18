@@ -186,7 +186,7 @@ export default function useNestedFieldArray({ nestIndex, control, register, form
 
 
             </Collapsible>
-            {k + 1 === fields.length || k + 1 === 0 ? null : <hr />}
+            {/* {k + 1 === fields.length || k + 1 === 0 ? null : <hr />} */}
           </Box>
 
         );

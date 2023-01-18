@@ -21,6 +21,8 @@ import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
 import MessageBuilder, { MessageType } from './messageBuilder';
 import { SlashCommand, UserMention } from './Mention';
+import DefaultValues from './DefaultValues.json';
+import ClearedValues from './ClearedValues.json';
 
 const Defaults = {
   Embed: {
@@ -40,90 +42,7 @@ const Defaults = {
   Message: 'Fill out the form below!'
 };
 
-const defaultValues = {
-  message: {
-    content: '',
-    embeds: []
-  },
-  forms: [
-    {
-      webhook_url: '',
-      button: {
-        label: 'Open Form',
-        style: 1
-      },
-      modal: {
-        title: 'Example Form',
-        components: [
-          {
-            type: 1,
-            components: [
-              {
-                type: 4,
-                label: 'Example Text Input',
-                style: 1,
-                placeholder: 'Write text here',
-                value: '',
-                min_length: 0,
-                max_length: 1024,
-                required: true
-              }
-            ]
-          }
-        ]
-      }
-    }
-  ]
-};
-
-const clearValues = {
-  message: {
-    content: '',
-    embeds: [{
-      color: "",
-      title: "",
-      description: "",
-      author: {
-        name: "",
-        url: "",
-        icon_url: ""
-      },
-      footer: {
-        text: "",
-        icon_url: ""
-      }
-    }]
-  },
-  forms: [
-    {
-      webhook_url: '',
-      button: {
-        label: '',
-        style: 1
-      },
-      modal: {
-        title: '',
-        components: [
-          {
-            type: 1,
-            components: [
-              {
-                type: 4,
-                label: '',
-                style: 1,
-                placeholder: '',
-                value: '',
-                min_length: 0,
-                max_length: 1024,
-                required: true
-              }
-            ]
-          }
-        ]
-      }
-    }
-  ]
-};
+const defaultValues = DefaultValues
 
 function App() {
   const {

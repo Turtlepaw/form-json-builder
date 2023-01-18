@@ -2,12 +2,13 @@ import { Box, FormLabel, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 
+export const MessageType = {
+    Content: "content",
+    Embed: "embed",
+    ContentAndEmbed: "both"
+};
+
 export default function useMessageBuilder({ register, errors, setValue, setMessageType, messageType, Defaults }) {
-    const MessageType = {
-        Content: "content",
-        Embed: "embed",
-        ContentAndEmbed: "both"
-    };
     const Embed = () => (
         <>
             <FormLabel pb={2}>Embed</FormLabel>

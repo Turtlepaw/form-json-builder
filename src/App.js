@@ -221,21 +221,22 @@ function App() {
       else if (isMessage) setMessageType(MessageType.Content);
       else if (isEmbed) setMessageType(MessageType.Embed);
       setValue("message", json.message);
+      toast({
+        title: 'Form Uploaded',
+        //description: "We've fixed some components in your form.",
+        status: 'success',
+        containerStyle: {
+          backgroundColor: "#5865f2",
+          borderRadius: "0.3rem"
+        },
+        position: "bottom",
+        duration: 3000,
+        isClosable: true,
+      });
     };
 
     reader.readAsText(file);
-    return toast({
-      title: 'Form Uploaded',
-      //description: "We've fixed some components in your form.",
-      status: 'success',
-      containerStyle: {
-        backgroundColor: "#5865f2",
-        borderRadius: "0.3rem"
-      },
-      position: "bottom",
-      duration: 3000,
-      isClosable: true,
-    });
+    return;
   }
 
   return (

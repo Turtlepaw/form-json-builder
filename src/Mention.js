@@ -26,17 +26,10 @@ export function SlashCommand({ children }) {
     )
 };
 
-// eslint-disable-next-line
 const Invite = "https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot";
-export function UserMention({ children, isFormsBot, avatar, text }) {
-    if (children === "Forms") isFormsBot = true;
-    if (avatar == null && isFormsBot) avatar = "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096";
-    const [hidden, setHidden] = useState(true);
-    const HandleInteraction = () => {
-        if (isFormsBot) setHidden(!hidden);
-    }
+export function FormProfile({ children, avatar, hidden, HandleInteraction }) {
     return (
-        <Tooltip pointerEvents="all" isOpen={!hidden} zIndex={10000} backgroundColor="#292b2f" padding={5} borderRadius={5} ml={2} label={
+        <Tooltip hasArrow pointerEvents="all" isOpen={!hidden} zIndex={10000} backgroundColor="#292b2f" padding={5} borderRadius={5} ml={2} label={
             <Box>
                 <Box paddingTop='4px' paddingRight='4px' cursor='pointer' float="right" onClick={HandleInteraction}>
                     <svg width="24" height="24" viewBox="0 0 24 24">
@@ -74,6 +67,20 @@ export function UserMention({ children, isFormsBot, avatar, text }) {
                 </a>
             </Box>
         } shouldWrapChildren>
+            {children}
+        </Tooltip>
+    );
+}
+
+export function UserMention({ children, isFormsBot, avatar, text }) {
+    if (children === "Forms") isFormsBot = true;
+    if (avatar == null && isFormsBot) avatar = "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096";
+    const [hidden, setHidden] = useState(true);
+    const HandleInteraction = () => {
+        if (isFormsBot) setHidden(!hidden);
+    }
+    return (
+        <FormProfile {...{ avatar, HandleInteraction, hidden }}>
             <Mention isActive={!hidden} hover={{ textDecoration: "underline" }} onClick={HandleInteraction}>
                 {(avatar != null && !isFormsBot) && <Image
                     src={avatar}
@@ -85,6 +92,6 @@ export function UserMention({ children, isFormsBot, avatar, text }) {
                 />}
                 <Text display="inline" textColor={text ?? "currentcolor"}>@{children}</Text>
             </Mention>
-        </Tooltip>
+        </FormProfile>
     );
 }

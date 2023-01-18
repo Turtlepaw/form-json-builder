@@ -1,6 +1,7 @@
 /* eslint eqeqeq: 0 */
 import { Box, Button, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
+import { FormProfile } from './Mention';
 
 function isEmpty(value) {
     return value == null || value == '';
@@ -50,16 +51,24 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
     else Rendered = (<>
         {MessageText}
         {MessageEmbed}
-    </>)
+    </>);
+    const [FormsProfileHidden, setHidden] = useState(true);
+    const HandleInteraction = () => setHidden(!FormsProfileHidden);
 
     return (
         <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);'>
             <Box>
                 <Box display='flex'>
-                    <Image className='cursor-pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                    <FormProfile {...{
+                        avatar: "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096",
+                        hidden: FormsProfileHidden,
+                        HandleInteraction
+                    }}>
+                        <Image onClick={HandleInteraction} className='cursor-pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                    </FormProfile>
                     <Box>
                         <Box display='flex' alignItems='center'>
-                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }} className='cursor-pointer'>Forms</Text>
+                            <Text onClick={HandleInteraction} fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }} className='cursor-pointer'>Forms</Text>
                             <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' width='39px'>
                                 <Tooltip hasArrow label={
                                     <Box>
@@ -159,7 +168,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
             <Text fontSize='0.875rem' color='#a3a6aa' className='text-center'>
                 Forms Demo Image
             </Text>
-        </Box>
+        </Box >
     );
 }
 

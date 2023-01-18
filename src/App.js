@@ -11,6 +11,7 @@ import {
   FormLabel,
   useToast,
   HStack,
+  Input,
 } from '@chakra-ui/react';
 import './App.css';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -18,7 +19,7 @@ import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
 import FormPreview from './FormPreview';
-import MessageBuilder from './messageBuilder';
+import MessageBuilder, { MessageType } from './messageBuilder';
 import { SlashCommand, UserMention } from './Mention';
 
 const Defaults = {
@@ -135,8 +136,6 @@ function App() {
     setValue,
     formState,
     // eslint-disable-next-line no-unused-vars
-    resetField,
-    // eslint-disable-next-line no-unused-vars
     formState: { errors }
   } = useForm({
     mode: 'onChange',
@@ -178,6 +177,66 @@ function App() {
   }
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
+  const [fileInput, setFileInput] = useState(null);
+  const ReadFile = (targetFile) => {
+    const file = targetFile.target.files[0];
+    console.log(file, targetFile.target.files)
+    const fileType = file.type;
+    function makeError() {
+      return toast({
+        title: "Invalid JSON File",
+        status: "error",
+        containerStyle: {
+          backgroundColor: "#ed4245",
+          borderRadius: "0.3rem",
+          position: "bottom",
+          duration: 3000,
+          isClosable: true,
+        },
+      });
+    }
+    if (fileType !== 'application/json') {
+      makeError();
+      targetFile.target.value = null
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const json = JSON.parse(e.target.result);
+      console.log(json)
+      if (
+        json?.forms == null ||
+        !Array.isArray(json?.forms) ||
+        json?.message == null ||
+        typeof json?.message != "object"
+      ) {
+        return makeError();
+      }
+      setValue("forms", json.forms);
+      const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
+      const isMessage = json.message?.content != null
+      if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
+      else if (isMessage) setMessageType(MessageType.Content);
+      else if (isEmbed) setMessageType(MessageType.Embed);
+      setValue("message", json.message);
+    };
+
+    reader.readAsText(file);
+    return toast({
+      title: 'Form Uploaded',
+      //description: "We've fixed some components in your form.",
+      status: 'success',
+      containerStyle: {
+        backgroundColor: "#5865f2",
+        borderRadius: "0.3rem"
+      },
+      position: "bottom",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
 
   return (
     <>
@@ -195,7 +254,20 @@ function App() {
         </header>
         <Grid paddingBottom={0} gridTemplateColumns='1fr 1fr'>
           <VStack spacing={3} alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
-            <Button onClick={() => reset(clearValues)}>Clear All</Button>
+            <HStack>
+              <Input
+                id="json"
+                type="file"
+                accept=".json"
+                style={{ display: 'none' }}
+                onChange={ReadFile}
+                ref={(input) => setFileInput(input)}
+              />
+              <FormLabel htmlFor="json" style={{ cursor: 'pointer' }}>
+                <Button onClick={() => fileInput.click()} variant="primary">Upload JSON</Button>
+              </FormLabel>
+              <Button onClick={() => reset(clearValues)}>Clear All</Button>
+            </HStack>
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <MessageBuilder

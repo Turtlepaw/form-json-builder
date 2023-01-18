@@ -11,33 +11,38 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
 
     if (displayForm < 0) displayForm = 0;
 
-    const MessageText = <Text fontFamily='Whitney'>{message.content || ' '}</Text>;
+    const MessageText = <>
+        {message?.content && <Text fontFamily='Whitney'>{message.content || ' '}</Text>}
+    </>;
 
-    const MessageEmbed = <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message.embeds[0].color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
-        <Box padding='0.5rem 1rem 1rem 0.75rem'>
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} className={!isEmpty(message.embeds[0]?.author?.url) ? "cursor-pointer hover:underline" : "cursor-default"}>
-                <Box display='flex' alignItems='center' m='2px 0px 0px'>
-                    {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
-                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0]?.author?.name}</Box>
+    const MessageEmbed = <>
+        {message?.embeds && <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+            <Box padding='0.5rem 1rem 1rem 0.75rem'>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} className={!isEmpty(message.embeds[0]?.author?.url) ? "cursor-pointer hover:underline" : "cursor-default"}>
+                    <Box display='flex' alignItems='center' m='2px 0px 0px'>
+                        {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                        <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0]?.author?.name}</Box>
+                    </Box>
+                </a>
+                <Box>
+                    <Text fontFamily='Whitney Semibold' fontSize='0.975rem' mt='3px'>
+                        {message.embeds[0]?.title}
+                    </Text>
+                    <Text fontSize='0.875rem' color='#c5c5d3'>
+                        {message.embeds[0]?.description}
+                    </Text>
                 </Box>
-            </a>
-            <Box>
-                <Text fontFamily='Whitney Semibold' fontSize='0.975rem' mt='3px'>
-                    {message.embeds[0]?.title}
-                </Text>
-                <Text fontSize='0.875rem' color='#c5c5d3'>
-                    {message.embeds[0]?.description}
-                </Text>
+                {!isEmpty(message.embeds[0]?.footer?.text) && (
+                    <Box display='flex' alignItems='center' mt='8px'>
+                        {!isEmpty(message.embeds[0]?.footer?.icon_url) && <Image src={message.embeds[0].footer.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                        <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0]?.footer?.text}</Text>
+                    </Box>
+                )}
             </Box>
-            {!isEmpty(message.embeds[0]?.footer?.text) && (
-                <Box display='flex' alignItems='center' mt='8px'>
-                    {!isEmpty(message.embeds[0]?.footer?.icon_url) && <Image src={message.embeds[0].footer.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
-                    <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0]?.footer?.text}</Text>
-                </Box>
-            )}
         </Box>
-    </Box>;
+        }
+    </>;
 
     let Rendered = MessageText;
     if (type == "content") Rendered = MessageText;
@@ -70,7 +75,7 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
                         <Box>
                             {Rendered}
                             <Box p='4px 0'>
-                                {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button.style == 1 ? 'primary' : (form.button.style == 2 ? 'secondary' : (form.button.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
+                                {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
                             </Box>
                         </Box>
                     </Box>

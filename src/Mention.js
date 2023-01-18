@@ -7,12 +7,12 @@ import { ExternalIcon } from "./Link";
  * @param {import("@chakra-ui/react").CSSObject} hover
  * @returns 
  */
-export function Mention({ children, hover, onClick }) {
+export function Mention({ children, hover, onClick, isActive }) {
     return (
-        <Box onClick={onClick} display="inline" bgColor="#3e4372" paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
+        <Box onClick={onClick} display="inline" bgColor={isActive ? "#5865f2" : "#3e4372"} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
             bgColor: "#5865f2",
             ...hover
-        }} cursor="pointer">
+        }} cursor="pointer" style={isActive ? hover : null}>
             {children}
         </Box>
     )
@@ -74,7 +74,7 @@ export function UserMention({ children, isFormsBot, avatar, text }) {
                 </a>
             </Box>
         } shouldWrapChildren>
-            <Mention hover={{ textDecoration: "underline" }} onClick={HandleInteraction}>
+            <Mention isActive={!hidden} hover={{ textDecoration: "underline" }} onClick={HandleInteraction}>
                 {(avatar != null && !isFormsBot) && <Image
                     src={avatar}
                     width={5}

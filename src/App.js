@@ -186,7 +186,7 @@ function App() {
               <FormLabel htmlFor="json" style={{ cursor: 'pointer' }}>
                 <Button onClick={() => fileInput.click()} variant="primary">Upload JSON</Button>
               </FormLabel>
-              <Button onClick={() => reset(clearValues)}>Clear All</Button>
+              <Button onClick={() => reset(ClearedValues)}>Clear All</Button>
             </HStack>
             <Box width='100%'>
               <form onSubmit={handleSubmit(onSubmit)}>

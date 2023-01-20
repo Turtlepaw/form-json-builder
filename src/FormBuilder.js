@@ -4,10 +4,10 @@ import { useFieldArray } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
-import NestedArray from "./nestedFieldArray";
+import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 
-export default function Fields({ control, register, setValue, getValues, formState, formState: { errors }, watch, displayForm, setDisplayForm }) {
+export default function FormBuilder({ control, register, setValue, getValues, formState, formState: { errors }, watch, displayForm, setDisplayForm }) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
@@ -17,6 +17,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
 
   return (
     <>
+      <FormLabel pb={2}>Forms</FormLabel>
       <ul>
         {fields.map((item, index) => {
           return (
@@ -82,7 +83,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
               </Collapsible>
               <hr style={ { margin: '0 16px 0 16px' } } />
               <Collapsible name="Text Inputs">
-                <NestedArray id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState, watch }} />
+                <TextInputBuilder id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState, watch }} />
               </Collapsible>
             </Collapsible>
           );
@@ -99,7 +100,7 @@ export default function Fields({ control, register, setValue, getValues, formSta
               webhook_url: '',
               button: {
                 label: '',
-                style: '1'
+                style: 1
               },
               modal: {
                 title: '',
@@ -110,10 +111,10 @@ export default function Fields({ control, register, setValue, getValues, formSta
                       {
                         type: 4,
                         label: '',
-                        style: '1',
+                        style: 1,
                         placeholder: '',
-                        min_length: '0',
-                        max_length: '1024',
+                        min_length: 0,
+                        max_length: 1024,
                         value: '',
                         required: true
                       }

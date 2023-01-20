@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import FieldArray from "./fieldArray";
+import FormBuilder from "./FormBuilder";
 import {
   Box,
   VStack,
@@ -8,7 +8,6 @@ import {
   Text,
   Button,
   Heading,
-  FormLabel,
   useToast,
   HStack,
   Input,
@@ -18,7 +17,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
-import FormPreview from './FormPreview';
+import Preview from './Preview';
 import MessageBuilder, { MessageType } from './messageBuilder';
 import { SlashCommand, UserMention } from './Mention';
 import DefaultValues from './DefaultValues.json';
@@ -171,8 +170,8 @@ function App() {
         </Box>
         <ColorModeSwitcher height='0px' />
       </header>
-      <Grid paddingBottom={0} gridTemplateColumns='1fr 1fr'>
-        <VStack alignItems='flex-start' overflowY='scroll' p='16px' maxHeight='calc(100vh - 48px);'>
+      <Grid gridTemplateColumns='1fr 1fr'>
+        <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);'>
           <HStack>
             <Button onClick={() => fileInput.click()} variant="primary">Upload JSON</Button>
             <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => setFileInput(input)} />
@@ -183,9 +182,7 @@ function App() {
               <MessageBuilder
                 {...{ Defaults, errors, messageType, register, setMessageType, setValue }}
               />
-
-              <FormLabel pb={2}>Forms</FormLabel>
-              <FieldArray
+              <FormBuilder
                 {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
               />
             </form>
@@ -231,7 +228,7 @@ function App() {
             </p>
           </Box>
         </VStack>
-        <FormPreview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
+        <Preview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
       </Grid>
     </>
   );

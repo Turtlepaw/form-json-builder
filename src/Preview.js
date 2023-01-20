@@ -7,7 +7,7 @@ function isEmpty(value) {
     return value == null || value == '';
 }
 
-function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
+function Preview({ message, forms, displayForm, setDisplayForm, type }) {
     const { colorMode } = useColorMode();
 
     if (displayForm < 0) displayForm = 0;
@@ -172,4 +172,4 @@ function FormPreview({ message, forms, displayForm, setDisplayForm, type }) {
     );
 }
 
-export default FormPreview;
+export default Preview;

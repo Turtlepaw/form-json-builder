@@ -18,7 +18,7 @@ import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 
-export default function useNestedFieldArray({ nestIndex, control, register, formState, formState: { errors }, watch }) {
+export default function TextInputBuilder({ nestIndex, control, register, formState, formState: { errors }, watch }) {
   const { fields, remove, append } = useFieldArray({
     control,
     name: `forms[${nestIndex}].modal.components`

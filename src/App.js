@@ -19,7 +19,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
 import Preview from './Preview';
-import MessageBuilder, { MessageType } from './MessageBuilder';
+import MessageBuilder, { MessageType } from './messageBuilder';
 import { SlashCommand, UserMention } from './Mention';
 import DefaultValues from './DefaultValues.json';
 import ClearedValues from './ClearedValues.json';

@@ -164,10 +164,8 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                     </Box>
                 </Box>
             </Box>
-            <img alt='' className='pt pb-small' src='https://cdn.discordapp.com/attachments/944646735643410482/953299030669152256/forms_demo.png' />
-            <Text fontSize='0.875rem' color='#a3a6aa' className='text-center'>
-                Forms Demo Image
-            </Text>
+            <Image alt='Forms Demo' pt={4} pb={1} src='https://cdn.discordapp.com/attachments/944646735643410482/953299030669152256/forms_demo.png' />
+            <Text fontSize='0.875rem' color='#a3a6aa' textAlign='center'> Forms Demo Image </Text>
         </Box >
     );
 }

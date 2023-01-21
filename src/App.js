@@ -11,14 +11,15 @@ import {
   useToast,
   HStack,
   Input,
+  Link,
+  Image
 } from '@chakra-ui/react';
 import './App.css';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Link } from './Link';
 import JSONViewer from './JSONViewer';
 import ErrorMessage from './ErrorMessage';
 import Preview from './Preview';
-import MessageBuilder, { MessageType } from './messageBuilder';
+import MessageBuilder, { MessageType } from './MessageBuilder';
 import { SlashCommand, UserMention } from './Mention';
 import DefaultValues from './DefaultValues.json';
 import ClearedValues from './ClearedValues.json';
@@ -48,7 +49,6 @@ function App() {
     control,
     register,
     watch,
-    handleSubmit,
     getValues,
     reset,
     setValue,
@@ -60,7 +60,6 @@ function App() {
     defaultValues
   });
 
-  const onSubmit = (data) => console.log("data", data);
   const toast = useToast();
   const fixForm = () => {
     getValues("forms").forEach((form, i) => {
@@ -161,7 +160,7 @@ function App() {
     <>
       <header>
         <Box display='flex' alignItems='center'>
-          <img src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="28px" style={{ clipPath: 'circle(50%)' }} />
+          <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="28px" clipPath='circle(50%)'/>
           <nav>
             <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
             <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>
@@ -177,21 +176,15 @@ function App() {
             <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => setFileInput(input)} />
             <Button onClick={() => reset(ClearedValues)}>Clear All</Button>
           </HStack>
-          <Box width='100%'>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <MessageBuilder
-                {...{ Defaults, errors, messageType, register, setMessageType, setValue }}
-              />
-              <FormBuilder
-                {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
-              />
-            </form>
-          </Box>
+          <MessageBuilder
+            {...{ Defaults, errors, messageType, register, setMessageType, setValue }}
+          />
+          <FormBuilder
+            {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
+          />
           <VStack width='100%' align='flex-start'>
             <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
-            <Text>
-              This is the configuration file you'll need to give to the <UserMention>Forms</UserMention> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.
-            </Text>
+            <Text>This is the configuration file you'll need to give to the <UserMention>Forms</UserMention> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.</Text>
             <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
@@ -214,17 +207,15 @@ function App() {
               </HStack>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>
-            <Text maxWidth={450}>
-              Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention>Forms</UserMention> bot.
-            </Text>
+            <Text>Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention>Forms</UserMention> bot.</Text>
           </VStack>
-          <Box className="text-sm pt-5">
+          <Box pt={5} fontSize='sm'>
             <p className="font-medium">©️ 2023 Forms Discord Bot</p>
             <p className="text-muted">
               Made with <svg style={{ display: "inline-block", marginLeft: "1px", marginRight: "1px" }} width={15} height={15} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868-3.308 0-6.227 1.633-8.018 4.129-1.791-2.496-4.71-4.129-8.017-4.129-5.45 0-9.868 4.417-9.868 9.868 0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447 17.617-19.959.17-.721.268-1.469.268-2.242z" /></svg>
               {' '}from <UserMention text="#d0d3d8">Anthony</UserMention> and <UserMention text="#d0d3d8">Turtlepaw</UserMention>
               <br />
-              This website is <Link href='https://github.com/Antouto/form-builder'>open-source</Link>
+              This website is <Link href='https://github.com/Antouto/form-builder' target="_blank" rel="noopener noreferrer" color='#00b0f4'>open-source</Link>
             </p>
           </Box>
         </VStack>

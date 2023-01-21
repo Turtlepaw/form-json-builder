@@ -16,7 +16,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
   const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false)
 
   return (
-    <>
+    <Box width='100%' pb={2}>
       <FormLabel pb={2}>Forms</FormLabel>
       <ul>
         {fields.map((item, index) => {
@@ -128,6 +128,6 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
           Add Form
         </Button>
       </section>
-    </>
+    </Box>
   );
 }

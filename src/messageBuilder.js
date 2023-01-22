@@ -106,7 +106,7 @@ export default function useMessageBuilder({ register, errors, setValue, setMessa
                     </Stack>
                 </RadioGroup>
 
-                <div className='pt-1'>
+                <Box pt={1}>
                     {messageType === "content" ? (
                         <>
                             {MessageContent()}
@@ -117,7 +117,7 @@ export default function useMessageBuilder({ register, errors, setValue, setMessa
                             {Embed()}
                         </>
                     ))}
-                </div>
+                </Box>
             </Box>
         </Collapsible></>
     );

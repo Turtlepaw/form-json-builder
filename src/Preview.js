@@ -20,7 +20,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
         {message?.embeds && <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} className={!isEmpty(message.embeds[0]?.author?.url) ? "cursor-pointer hover:underline" : "cursor-default"}>
+                <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} cursor={isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer'} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
                     <Box display='flex' alignItems='center' m='2px 0px 0px'>
                         {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
                         <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0]?.author?.name}</Box>
@@ -64,11 +64,11 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                         hidden: FormsProfileHidden,
                         HandleInteraction
                     }}>
-                        <Image onClick={HandleInteraction} className='cursor-pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                        <Image onClick={HandleInteraction} cursor='pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     </FormProfile>
                     <Box>
                         <Box display='flex' alignItems='center'>
-                            <Text onClick={HandleInteraction} fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }} className='cursor-pointer'>Forms</Text>
+                            <Text onClick={HandleInteraction} fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline' }} cursor='pointer'>Forms</Text>
                             <Box display='flex' backgroundColor='#5865F2' borderRadius='.1875rem' ml='4px' height='.9375rem' width='39px'>
                                 <Tooltip hasArrow label={
                                     <Box>

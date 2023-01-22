@@ -1,27 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@700;800;900&display=swap');
-
-
-
-.text-blurple {
-    color: #5865f2;
-}
-
-.textBlock {
-    display: block !important;
-}
-
-.text-muted {
-    --bs-text-opacity: 1;
-    color: #6c757d !important;
-}
-
-.text-light {
-    color: #afafaf !important;
-}
 
 header {
     display: flex;
@@ -105,22 +82,6 @@ label {
 
 select {
     height: 36px !important;
-}
-
-.pt {
-    padding-top: 1rem;
-}
-
-.pb {
-    padding-bottom: 1rem;
-}
-
-.pb-small {
-    padding-bottom: .2rem;
-}
-
-.pointer {
-    cursor: pointer;
 }
 
 ::-webkit-resizer {

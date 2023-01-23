@@ -65,14 +65,15 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
                     <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
                   </Box>
                   <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].button.style`}>Button Style</FormLabel>
+                    <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
                     <Select
                       {...register(`forms[${index}].button.style`)}
                       id={`forms[${index}].button.style`}
-                      bg={buttonStyles[getValues('forms')[index]?.button.style]}
-                      border='none'
-                      opacity='.6'
-                      _focus={{ border: 'none' }}
+                      borderWidth='2px'
+                      borderColor='transparent'
+                      bg='grey.extradark'
+                      _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
+                      _hover={{ borderColor: 'transparent' }}
                     >
                       <option value="1">Blurple</option>
                       <option value="2">Grey</option>

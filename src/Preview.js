@@ -17,17 +17,17 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
     </>;
 
     const MessageEmbed = <>
-        {message?.embeds && <Box mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && <Box  whiteSpace='pre-wrap' borderLeftColor={`#${message.embeds[0]?.color.toString(16)}` || '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} cursor={isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer'} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
                     <Box display='flex' alignItems='center' m='2px 0px 0px'>
                         {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
-                        <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >{message.embeds[0]?.author?.name}</Box>
+                        <Box fontSize='0.875rem' fontWeight='500'>{message.embeds[0]?.author?.name}</Box>
                     </Box>
                 </a>
                 <Box>
-                    <Text fontFamily='Whitney Semibold' fontSize='0.975rem' mt='3px'>
+                    <Text fontFamily='Whitney Bold' fontSize='0.975rem' mt='3px'>
                         {message.embeds[0]?.title}
                     </Text>
                     <Text fontSize='0.875rem' color='#c5c5d3'>
@@ -141,7 +141,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
                                     <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
-                                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap' >User#0000</Box>
+                                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500'>User#0000</Box>
                                 </Box>
                                 <Box>
                                     {forms[displayForm]?.modal.components.map(actionRow => (

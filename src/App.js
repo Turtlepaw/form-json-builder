@@ -26,7 +26,7 @@ import ClearedValues from './ClearedValues.json';
 
 const Defaults = {
   Embed: {
-    color: '5793266',
+    color: 5793266,
     title: "Example Form",
     description: "Fill out the form below!",
     author: {

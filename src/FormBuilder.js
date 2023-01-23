@@ -71,6 +71,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
                       id={`forms[${index}].button.style`}
                       bg={buttonStyles[getValues('forms')[index]?.button.style]}
                       border='none'
+                      opacity='.6'
                       _focus={{ border: 'none' }}
                     >
                       <option value="1">Blurple</option>

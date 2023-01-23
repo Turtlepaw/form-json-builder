@@ -53,7 +53,6 @@ function App() {
     reset,
     setValue,
     formState,
-    // eslint-disable-next-line no-unused-vars
     formState: { errors }
   } = useForm({
     mode: 'onChange',

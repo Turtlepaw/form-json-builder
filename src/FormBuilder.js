@@ -7,6 +7,14 @@ import Collapsible from "./Collapsible";
 import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 
+const buttonStyles = [
+  '',
+  'blurple',
+  'grey',
+  'green',
+  'red'
+]
+
 export default function FormBuilder({ control, register, setValue, getValues, formState, formState: { errors }, watch, displayForm, setDisplayForm }) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -61,7 +69,9 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
                     <Select
                       {...register(`forms[${index}].button.style`)}
                       id={`forms[${index}].button.style`}
-                      variant='unstyled'
+                      bg={buttonStyles[getValues('forms')[index]?.button.style]}
+                      border='none'
+                      _focus={{ border: 'none' }}
                     >
                       <option value="1">Blurple</option>
                       <option value="2">Grey</option>

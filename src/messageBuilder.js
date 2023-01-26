@@ -23,7 +23,7 @@ export default function useMessageBuilder({ register, errors, setValue, setMessa
                 <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds?.[0]?.description}></ErrorMessage>
                 {/* Embed Color */}
                 <FormLabel htmlFor="message.embeds[0].color">Embed Color</FormLabel>
-                <input {...register('message.embeds[0].color', { minLength: 4, maxLength: 9 })}  type="number" id='message.embeds[0].color' />
+                <input {...register('message.embeds[0].color')} onChange={(event) => setValue("message.embeds[0].color", event.target.valueAsNumber || "")} type="number" id='message.embeds[0].color' />
                 <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds?.[0]?.color}></ErrorMessage>
                 {/* Embed Author */}
                 <Collapsible name="Embed Author" style={{ marginLeft: 20 }}>

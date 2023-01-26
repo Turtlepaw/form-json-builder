@@ -7,14 +7,6 @@ import Collapsible from "./Collapsible";
 import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 
-const buttonStyles = [
-  '',
-  'blurple',
-  'grey',
-  'green',
-  'red'
-]
-
 export default function FormBuilder({ control, register, setValue, getValues, formState, formState: { errors }, watch, displayForm, setDisplayForm }) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -95,7 +87,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
               </Collapsible>
               <hr style={ { margin: '0 16px 0 16px' } } />
               <Collapsible name="Text Inputs">
-                <TextInputBuilder id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState, watch }} />
+                <TextInputBuilder id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue }} />
               </Collapsible>
             </Collapsible>
           );

@@ -60,6 +60,28 @@ function App() {
   });
 
   const toast = useToast();
+
+  const ToastStyles = {
+    Success: "success",
+    Danger: "danger",
+    Error: "error"
+  }
+
+  function postToast({ title, description, style }) {
+    return toast({
+      title,
+      description,
+      status: style,
+      containerStyle: {
+        backgroundColor: "#5865f2",
+        borderRadius: "0.3rem"
+      },
+      position: "bottom",
+      duration: 3000,
+      isClosable: true,
+    });
+  }
+
   const fixForm = () => {
     getValues("forms").forEach((form, i) => {
       setValue(`forms.[${i}].button.style`, Number(form.button.style));
@@ -78,19 +100,30 @@ function App() {
         })
       })
     });
-    return toast({
+
+    const Message = getValues("message");
+
+    if (Message?.embeds != null && Message.embeds.length > 0) {
+      Message.embeds.forEach(embed => {
+        Object.entries(embed).forEach(([k, v], i) => {
+          if (v == null || v === "") setValue(`message.embeds[${i}].${k}`, null);
+        })
+      });
+    }
+
+    if (Message?.embeds == null || Message.content === "") {
+      setValue("message", {
+        content: null,
+        embeds: []
+      });
+    }
+
+    return postToast({
       title: 'Form Fixed',
-      //description: "We've fixed some components in your form.",
-      status: 'success',
-      containerStyle: {
-        backgroundColor: "#5865f2",
-        borderRadius: "0.3rem"
-      },
-      position: "bottom",
-      duration: 3000,
-      isClosable: true,
+      style: ToastStyles.Success
     });
   }
+
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
   const [fileInput, setFileInput] = useState(null);
@@ -99,18 +132,12 @@ function App() {
     console.log(file, targetFile.target.files)
     const fileType = file.type;
     function makeError() {
-      return toast({
+      return postToast({
         title: "Invalid JSON File",
-        status: "error",
-        containerStyle: {
-          backgroundColor: "#ed4245",
-          borderRadius: "0.3rem",
-          position: "bottom",
-          duration: 3000,
-          isClosable: true,
-        },
+        status: ToastStyles.Error
       });
     }
+
     if (fileType !== 'application/json') {
       makeError();
       targetFile.target.value = null
@@ -137,17 +164,9 @@ function App() {
       else if (isMessage) setMessageType(MessageType.Content);
       else if (isEmbed) setMessageType(MessageType.Embed);
       setValue("message", json.message);
-      toast({
+      postToast({
         title: 'Form Uploaded',
-        //description: "We've fixed some components in your form.",
-        status: 'success',
-        containerStyle: {
-          backgroundColor: "#5865f2",
-          borderRadius: "0.3rem"
-        },
-        position: "bottom",
-        duration: 3000,
-        isClosable: true,
+        style: ToastStyles.Success
       });
     };
 
@@ -159,7 +178,7 @@ function App() {
     <>
       <header>
         <Box display='flex' alignItems='center'>
-          <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="28px" clipPath='circle(50%)'/>
+          <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="28px" clipPath='circle(50%)' />
           <nav>
             <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
             <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>

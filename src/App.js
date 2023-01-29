@@ -82,7 +82,7 @@ function App() {
     });
   }
 
-  const fixForm = () => {
+  const fixForm = (toast = true) => {
     getValues("forms").forEach((form, i) => {
       setValue(`forms.[${i}].button.style`, Number(form.button.style));
       form.modal.components.forEach((actionRow) => {
@@ -120,7 +120,7 @@ function App() {
       });
     }
 
-    postToast({
+    if (toast) postToast({
       title: 'Form Fixed',
       style: ToastStyles.Success
     });
@@ -177,7 +177,7 @@ function App() {
   }
 
   const downloadForm = () => {
-    fixForm();
+    fixForm(false);
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
       JSON.stringify(watch(), null, 2)
     )}`;

@@ -111,7 +111,9 @@ function App() {
       });
     }
 
-    if (Message?.embeds == null || Message.content === "") {
+    if (
+      Message?.embeds == null && (Message.content === "" || Message.content == null)
+    ) {
       setValue("message", {
         content: null,
         embeds: []

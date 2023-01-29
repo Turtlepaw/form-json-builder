@@ -120,7 +120,7 @@ function App() {
       });
     }
 
-    return postToast({
+    postToast({
       title: 'Form Fixed',
       style: ToastStyles.Success
     });
@@ -176,6 +176,17 @@ function App() {
     return;
   }
 
+  const downloadForm = () => {
+    fixForm();
+    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+      JSON.stringify(watch(), null, 2)
+    )}`;
+    const link = document.createElement("a");
+    link.href = jsonString;
+    link.download = getValues("forms")[0].modal.title.split(" ").map(e => e.toLowerCase()).join("_") + ".json";
+    link.click();
+  }
+
   return (
     <>
       <header>
@@ -205,21 +216,13 @@ function App() {
           <VStack width='100%' align='flex-start'>
             <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
             <Text>This is the configuration file you'll need to give to the <UserMention>Forms</UserMention> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.</Text>
-            <JSONViewer>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+            <JSONViewer {...{ downloadForm }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
                 <Button
                   variant='success'
                   disabled={!formState.isValid}
-                  onClick={() => {
-                    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-                      JSON.stringify(watch(), null, 2)
-                    )}`;
-                    const link = document.createElement("a");
-                    link.href = jsonString;
-                    link.download = 'form.json';
-                    link.click();
-                  }}
+                  onClick={downloadForm}
                 >
                   Download Configuration File
                 </Button>

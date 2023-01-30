@@ -20,7 +20,6 @@ Forms is a Discord bot that allows you to create forms (aka modals) and receive 
 </details>
 <details>
     <summary>🧭 How do I invite Forms?</summary>
-
 <hr />
 
 > You can invite it by going to [Form's invite link][invite]. You can also invite it by clicking <kbd>Add to Server</kbd> on the bot's profile.
@@ -39,6 +38,11 @@ This site is a modal builder built for Forms, it creates modal JSONs for Forms t
 3. Click and fill the text inputs (you'll need to use the same webhook you created in step 1 for the <kbd>Webhook URL</kbd> input)
 4. Click the <kbd>Download JSON</kbd> button
 5. Go back to Discord and run <kbd>/form create</kbd> with the <kbd>json</kbd> argument being the JSON you just downloaded
+
+---
+
+> **Note:**
+> You can help make the Form JSON Builder better by contributing!
 
 [website]: https://form-builder.pages.dev/
 [invite]: https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot

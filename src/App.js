@@ -226,7 +226,7 @@ function App() {
                 >
                   Download Configuration File
                 </Button>
-                <Button onClick={fixForm}>Fix Form</Button>
+                {/* <Button onClick={fixForm}>Fix Form</Button> */}
               </HStack>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>

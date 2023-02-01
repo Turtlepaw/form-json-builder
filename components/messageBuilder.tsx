@@ -1,4 +1,6 @@
 import { Box, FormLabel, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues } from "react-hook-form";
+import { EmbedBuilder, FormAndMessageBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 
@@ -8,50 +10,76 @@ export const MessageType = {
     ContentAndEmbed: "both"
 };
 
-export default function useMessageBuilder({ register, errors, setValue, setMessageType, messageType, Defaults }) {
+export interface Defaults {
+    Message: string;
+    Embed: EmbedBuilder;
+}
+
+export interface MessageBuilderProperties<T extends FieldValues> {
+    register: UseFormRegister<T>;
+    setValue: UseFormSetValue<T>;
+    formState: FormState<T>;
+    setMessageType: React.Dispatch<React.SetStateAction<string>>;
+    messageType: string;
+    Defaults: Defaults;
+}
+
+export default function useMessageBuilder({
+    register,
+    formState: { errors },
+    setValue,
+    setMessageType,
+    messageType,
+    Defaults
+}: MessageBuilderProperties<FormAndMessageBuilder>) {
     const Embed = () => (
         <>
             <FormLabel pb={2}>Embed</FormLabel>
             <Collapsible name="Embed">
                 {/* Embed Title */}
-                <FormLabel htmlFor="message.embeds[0].title">Embed Title</FormLabel>
-                <textarea {...register('message.embeds[0].title', { minLength: 1, maxLength: 256 })} id='message.embeds[0].title' />
+                <FormLabel htmlFor="message.embeds.0.title">Embed Title</FormLabel>
+                <textarea {...register('message.embeds.0.title', { minLength: 1, maxLength: 256 })} id='message.embeds.0.title' />
                 <ErrorMessage fieldName='embed title' fieldType='The' field={errors?.message?.embeds?.[0]?.title}></ErrorMessage>
                 {/* Embed Description */}
-                <FormLabel htmlFor="message.embeds[0].description">Embed Description</FormLabel>
-                <textarea style={{ height: '99px' }} {...register('message.embeds[0].description', { minLength: 1, maxLength: 4096 })} id='message.embeds[0].description' />
+                <FormLabel htmlFor="message.embeds.0.description">Embed Description</FormLabel>
+                <textarea style={{ height: '99px' }} {...register('message.embeds.0.description', { minLength: 1, maxLength: 4096 })} id='message.embeds.0.description' />
                 <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds?.[0]?.description}></ErrorMessage>
                 {/* Embed Color */}
-                <FormLabel htmlFor="message.embeds[0].color">Embed Color</FormLabel>
-                <input {...register('message.embeds[0].color')} onChange={(event) => setValue("message.embeds[0].color", event.target.valueAsNumber || "")} type="number" id='message.embeds[0].color' />
+                <FormLabel htmlFor="message.embeds.0.color">Embed Color</FormLabel>
+                <input
+                    {...register('message.embeds.0.color')}
+                    //@ts-expect-error
+                    onChange={(event) => setValue("message.embeds.0.color", event.target.valueAsNumber || null)}
+                    type="number"
+                    id='message.embeds.0.color' />
                 <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds?.[0]?.color}></ErrorMessage>
                 {/* Embed Author */}
                 <Collapsible name="Embed Author" style={{ marginLeft: 20 }}>
                     {/* Embed Author Name */}
-                    <FormLabel htmlFor="message.embeds[0].author.name">Author Name</FormLabel>
-                    <textarea {...register('message.embeds[0].author.name', { minLength: 1, maxLength: 256 })} id='message.embeds[0].author.name' />
+                    <FormLabel htmlFor="message.embeds.0.author.name">Author Name</FormLabel>
+                    <textarea {...register('message.embeds.0.author.name', { minLength: 1, maxLength: 256 })} id='message.embeds.0.author.name' />
                     <ErrorMessage fieldName='embed author name' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.name}></ErrorMessage>
                     {/* Embed Author Icon URL */}
-                    <FormLabel htmlFor="message.embeds[0].author.icon_url">Author Image URL</FormLabel>
-                    <input {...register('message.embeds[0].author.icon_url', { minLength: 1 })} id='message.embeds[0].author.icon_url' />
+                    <FormLabel htmlFor="message.embeds.0.author.icon_url">Author Image URL</FormLabel>
+                    <input {...register('message.embeds.0.author.icon_url', { minLength: 1 })} id='message.embeds.0.author.icon_url' />
                     <ErrorMessage fieldName='embed author image' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.icon_url}></ErrorMessage>
                     {/* Embed Author URL */}
-                    <FormLabel htmlFor="message.embeds[0].author.url">Author URL</FormLabel>
-                    <input {...register('message.embeds[0].author.url', { minLength: 1 })} id='message.embeds[0].author.url' />
-                    <ErrorMessage fieldName='embed author url' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.url}></ErrorMessage>
-                </Collapsible>
+                    <FormLabel htmlFor="message.embeds.0.author.url">Author URL</FormLabel>
+                    <input {...register('message.embeds.0.author.url', { minLength: 1 })} id='message.embeds.0.author.url' />
+                    <ErrorMessage fieldName='embed author url' fieldType='The' field={errors?.message?.embeds?.[0]?.author?.url}></ErrorMessage >
+                </Collapsible >
                 {/* Embed Footer */}
-                <Collapsible name="Embed Footer" style={{ marginLeft: 20 }}>
+                < Collapsible name="Embed Footer" style={{ marginLeft: 20 }}>
                     {/* Embed Footer Text */}
-                    <FormLabel htmlFor="message.embeds[0].footer.text">Footer Text</FormLabel>
-                    <textarea {...register('message.embeds[0].footer.text', { minLength: 1, maxLength: 2048 })} id='message.embeds[0].color' />
-                    <ErrorMessage fieldName='embed footer text' fieldType='The' field={errors?.message?.embeds?.[0]?.footer?.text}></ErrorMessage>
+                    < FormLabel htmlFor="message.embeds.0.footer.text" > Footer Text</FormLabel >
+                    <textarea {...register('message.embeds.0.footer.text', { minLength: 1, maxLength: 2048 })} id='message.embeds.0.color' />
+                    <ErrorMessage fieldName='embed footer text' fieldType='The' field={errors?.message?.embeds?.[0]?.footer?.text}></ErrorMessage >
                     {/* Embed Footer Icon URL */}
-                    <FormLabel htmlFor="message.embeds[0].footer.icon_url">Footer Image URL</FormLabel>
-                    <input {...register('message.embeds[0].footer.icon_url', { minLength: 1 })} id='message.embeds[0].footer.icon_url' />
-                    <ErrorMessage fieldName='embed footer url' fieldType='The' field={errors?.message?.embeds?.[0]?.footer?.icon_url}></ErrorMessage>
-                </Collapsible>
-            </Collapsible>
+                    < FormLabel htmlFor="message.embeds.0.footer.icon_url" > Footer Image URL</FormLabel >
+                    <input {...register('message.embeds.0.footer.icon_url', { minLength: 1 })} id='message.embeds.0.footer.icon_url' />
+                    <ErrorMessage fieldName='embed footer url' fieldType='The' field={errors?.message?.embeds?.[0]?.footer?.icon_url}></ErrorMessage >
+                </Collapsible >
+            </Collapsible >
         </>
     );
 
@@ -62,7 +90,7 @@ export default function useMessageBuilder({ register, errors, setValue, setMessa
         </>
     );
 
-    const HandleInteraction = (value) => {
+    const HandleInteraction = (value: string) => {
         setMessageType(value);
         if (value === MessageType.Content) {
             setValue("message.embeds", []);

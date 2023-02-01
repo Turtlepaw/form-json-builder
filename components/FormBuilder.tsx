@@ -1,13 +1,44 @@
 import { Box, Button, CloseButton, FormLabel, HStack, Select, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
-import { useFieldArray } from "react-hook-form";
+import {
+  Control,
+  FieldValues,
+  FormState,
+  useFieldArray,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+  UseFormGetValues
+} from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import Collapsible from "./Collapsible";
 import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
+import { FormAndMessageBuilder } from "../util/types";
 
-export default function FormBuilder({ control, register, setValue, getValues, formState, formState: { errors }, watch, displayForm, setDisplayForm }) {
+export interface FormBuilderProperties<T extends FieldValues> {
+  control: Control<T>;
+  register: UseFormRegister<T>;
+  formState: FormState<T>;
+  watch: UseFormWatch<T>;
+  setValue: UseFormSetValue<T>;
+  getValues: UseFormGetValues<T>;
+  displayForm: number;
+  setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function FormBuilder({
+  control,
+  register,
+  setValue,
+  getValues,
+  formState,
+  formState: { errors },
+  watch,
+  displayForm,
+  setDisplayForm
+}: FormBuilderProperties<FormAndMessageBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
@@ -37,7 +68,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
                   </Tooltip>
                 </FormLabel>
                 <input
-                  {...register(`forms[${index}].webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/ })}
+                  {...register(`forms.${index}.webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/ })}
                   id={`forms[${index}].webhook_url`}
                   onFocus={() => webhookUrlSetFocused(true)}
                   onBlur={() => webhookUrlSetFocused(false)}
@@ -50,7 +81,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
                   <Box width='100%'>
                     <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
                     <input
-                      {...register(`forms[${index}].button.label`, { required: true, maxLength: 80 })}
+                      {...register(`forms.${index}.button.label`, { required: true, maxLength: 80 })}
                       id={`forms[${index}].button.label`}
                       placeholder='Open Form'
                     />
@@ -59,7 +90,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
                   <Box width='100%'>
                     <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
                     <Select
-                      {...register(`forms[${index}].button.style`)}
+                      {...register(`forms.${index}.button.style`)}
                       id={`forms[${index}].button.style`}
                       borderWidth='2px'
                       borderColor='transparent'
@@ -77,7 +108,7 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
 
                 <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Title</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].modal.title?.length > 45 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index]?.modal.title?.length}/45</span></FormLabel>
                 <input
-                  {...register(`forms[${index}].modal.title`, { required: true, maxLength: 45 })}
+                  {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45 })}
                   id={`forms[${index}].modal.title`}
                   style={{ marginBottom: '8px' }}
                 />
@@ -85,9 +116,9 @@ export default function FormBuilder({ control, register, setValue, getValues, fo
 
 
               </Collapsible>
-              <hr style={ { margin: '0 16px 0 16px' } } />
+              <hr style={{ margin: '0 16px 0 16px' }} />
               <Collapsible name="Text Inputs">
-                <TextInputBuilder id={`forms[${index}].modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue }} />
+                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue }} />
               </Collapsible>
             </Collapsible>
           );

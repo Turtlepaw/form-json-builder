@@ -1,13 +1,23 @@
 /* eslint eqeqeq: 0 */
-import { Box, Button, Tooltip, Text, useColorMode, Image } from '@chakra-ui/react';
+import { Box, Button, Tooltip, Text, useColorMode, Link, Image } from '@chakra-ui/react';
+//import Image from "next/image";
 import React, { useState } from 'react';
+import { FormBuilder, FormMessageBuilder } from '../util/types';
 import { FormProfile } from './Mention';
 
-function isEmpty(value) {
+function isEmpty(value: any) {
     return value == null || value == '';
 }
 
-function Preview({ message, forms, displayForm, setDisplayForm, type }) {
+export interface PreviewProperties {
+    message: FormMessageBuilder;
+    forms: FormBuilder[];
+    displayForm: number;
+    setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
+    type: string;
+}
+
+function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewProperties) {
     const { colorMode } = useColorMode();
 
     if (displayForm < 0) displayForm = 0;
@@ -17,15 +27,15 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
     </>;
 
     const MessageEmbed = <>
-        {message?.embeds && <Box  whiteSpace='pre-wrap' borderLeftColor={`#${message.embeds[0]?.color.toString(16)}` || '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && <Box whiteSpace='pre-wrap' borderLeftColor={`#${message.embeds[0]?.color.toString(16)}` || '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} cursor={isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer'} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
+                <Link href={isEmpty(message.embeds[0]?.author?.url) ? undefined : message.embeds[0].author.url} style={{ cursor: isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
                     <Box display='flex' alignItems='center' m='2px 0px 0px'>
-                        {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image src={message.embeds[0].author.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                        {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image alt='Author Image' src={message.embeds[0].author.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
                         <Box fontSize='0.875rem' fontWeight='500'>{message.embeds[0]?.author?.name}</Box>
                     </Box>
-                </a>
+                </Link>
                 <Box>
                     <Text fontFamily='Whitney Bold' fontSize='0.975rem' mt='3px'>
                         {message.embeds[0]?.title}
@@ -36,7 +46,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                 </Box>
                 {!isEmpty(message.embeds[0]?.footer?.text) && (
                     <Box display='flex' alignItems='center' mt='8px'>
-                        {!isEmpty(message.embeds[0]?.footer?.icon_url) && <Image src={message.embeds[0].footer.icon_url} width='24px' height='24px' borderRadius='50%' mr='8px' />}
+                        {!isEmpty(message.embeds[0]?.footer?.icon_url) && <Image alt='Footer Icon' src={message.embeds[0].footer.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
                         <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0]?.footer?.text}</Text>
                     </Box>
                 )}
@@ -64,7 +74,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                         hidden: FormsProfileHidden,
                         HandleInteraction
                     }}>
-                        <Image onClick={HandleInteraction} cursor='pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                        <Image alt="Form's Avatar" onClick={HandleInteraction} cursor='pointer' src='https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png' style={{ width: '40px', height: '40px', clipPath: 'circle(50%)', marginTop: '5px', marginRight: '16px' }} width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     </FormProfile>
                     <Box>
                         <Box display='flex' alignItems='center'>
@@ -102,7 +112,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                 <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                     <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                         <Box display='flex' alignItems='center' height='24px'>
-                            <img src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
+                            <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
                             <Text fontSize='24px' color={colorMode === 'dark' ? '#060607' : 'white'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
                         </Box>
                         <Box display='flex' p='4px' cursor='pointer'>
@@ -116,7 +126,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                                     {actionRow.components[0]?.label}
                                     {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
-                                <Box as={actionRow.components[0]?.style === '1' ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0]?.placeholder} defaultValue={actionRow.components[0]?.value} />
+                                <Box as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0]?.placeholder} defaultValue={actionRow.components[0]?.value} />
                             </Box>
                         ))}
                     </Box>
@@ -128,7 +138,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
             </Box>
             <Box mt='12px'>
                 <Box display='flex'>
-                    <Image _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                    <Image alt='Default Avatar' _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
                     <Box>
                         <Box display='flex' alignItems='center'>
                             <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline', cursor: "pointer" }}>Webhook</Text>
@@ -140,7 +150,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                         <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={colorMode === 'dark' ? '4px solid #e3e5e8' : '4px solid rgb(32, 34, 37)'} maxWidth='520px' borderRadius='4px'>
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
-                                    <Image src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
+                                    <Image alt="Test User's Avatar" src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
                                     <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500'>User#0000</Box>
                                 </Box>
                                 <Box>
@@ -156,7 +166,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
                                     ))}
                                 </Box>
                                 <Box display='flex' alignItems='center' mt='8px'>
-                                    <Image src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%' />
+                                    <Image alt='ID' src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%' />
                                     <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#fbfbfb'>643945264868098049</Text>
                                 </Box>
                             </Box>

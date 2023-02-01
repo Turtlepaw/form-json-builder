@@ -1,3 +1,4 @@
+export default function foo() { };
 // class REST {
 //     /**
 //      * @private

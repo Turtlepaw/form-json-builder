@@ -2,14 +2,19 @@ import React from "react"
 import { Box, Collapse, HStack, Text, Tooltip, useColorMode } from '@chakra-ui/react'
 import { MdOutlineFileDownload } from 'react-icons/md'
 
-function JSONViewer({ children, downloadForm }) {
+export interface JSONViewerProperties {
+  downloadForm: () => void;
+  children: string;
+}
+
+function JSONViewer({ children, downloadForm }: JSONViewerProperties) {
   const [show, setShow] = React.useState(false)
   const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
 
   return (
     <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#f2f3f5' : '#2f3136', color: colorMode === 'dark' ? '#4f5660' : '#b9bbbe', width: '100%' }}>
-      <Collapse startingHeight={147} style={{ overflow: 'scroll', bg: '#2f3136', borderRadius: '4px', padding: '8px' }} in={show}>
+      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: '#2f3136', borderRadius: '4px', padding: '8px' }} in={show}>
         <pre>
           <code>{children}</code>
         </pre>

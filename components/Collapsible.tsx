@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Button, Collapse, Box, useDisclosure, useColorMode } from '@chakra-ui/react'
 
-function Collapsible({ name, deleteButton, children, variant }) {
+export interface CollapsibleProperties {
+  name: string;
+  deleteButton?: React.ReactNode;
+  children: React.ReactNode;
+  variant?: string;
+  style?: CSSProperties;
+}
+
+function Collapsible({ name, deleteButton, children, variant, style }: CollapsibleProperties) {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode } = useColorMode();
 
   return (
     <Box
+      style={style}
       width='100%'
       border={variant === 'large' ? `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}` : 'none'}
       borderRadius='4px'
@@ -23,13 +32,14 @@ function Collapsible({ name, deleteButton, children, variant }) {
         // paddingInlineEnd={variant === 'large' ? '16px' : '0px'}
         height={variant === 'large' ? '40px' : '32px'}
         justifyContent='space-between'
+        //@ts-expect-error
         width='100%' _focus='unset'
         _hover={{ bg: 'transparent' }}
         bg='transparent'
         color={variant === 'large' ? (colorMode === 'dark' ? 'black' : 'white') : '#bcbcbc'}
       >
         <Box display='flex'>
-          <svg style={{ marginRight: '8px', cursor: 'pointer',  transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
               d="M12 10L8 6L4 10"
               stroke="#bcbcbc"
@@ -39,7 +49,7 @@ function Collapsible({ name, deleteButton, children, variant }) {
             />
           </svg> {name}
         </Box>{deleteButton} </Button>
-      <Collapse in={isOpen} animateOpacity margin={0}>
+      <Collapse in={isOpen} animateOpacity style={{ margin: 0 }}>
         <Box
           p='0px 10px 10px'
           rounded='md'

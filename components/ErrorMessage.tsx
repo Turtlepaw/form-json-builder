@@ -1,9 +1,17 @@
 /* eslint eqeqeq: 0 */
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { HStack, Text } from '@chakra-ui/react'
 import { AiFillExclamationCircle } from 'react-icons/ai';
 
-function ErrorMessage({ children, field, fieldName = "field", fieldType = "This" }) {
+export interface ErrorMessageProperties extends PropsWithChildren {
+  field?: {
+    type: string;
+  };
+  fieldName?: string;
+  fieldType?: string;
+}
+
+export default function ErrorMessage({ children, field, fieldName = "field", fieldType = "This" }: ErrorMessageProperties) {
   if (field != null) children = (<>
     {field?.type == "required" && `${fieldType} ${fieldName} is required`}
     {field?.type == "maxLength" && `${fieldType} ${fieldName} is too long`}
@@ -17,6 +25,4 @@ function ErrorMessage({ children, field, fieldName = "field", fieldType = "This"
       </Text>
     </HStack>
   )
-}
-
-export default ErrorMessage
+};

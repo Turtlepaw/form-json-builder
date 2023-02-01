@@ -1,3 +1,5 @@
+/* eslint-disable react/no-children-prop */
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
@@ -14,17 +16,21 @@ import {
   Link
 } from '@chakra-ui/react';
 import Image from "next/image";
-import './App.css';
+import '../styles/App.css';
 import { ColorModeSwitcher } from '../components/ColorModeSwitcher';
 import JSONViewer from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
 import Preview from '../components/Preview';
 import MessageBuilder, { MessageType } from '../components/messageBuilder';
 import { SlashCommand, UserMention } from '../components/Mention';
-import DefaultValues from '../DefaultValues.json';
-import ClearedValues from '../ClearedValues.json';
+import _DefaultValues from '../DefaultValues.json';
+import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
 import { VercelFooter } from '../components/Footer';
+import { FormAndMessageBuilder } from "../util/types";
+
+const DefaultValues = _DefaultValues as FormAndMessageBuilder;
+const ClearedValues = _ClearedValues as FormAndMessageBuilder;
 
 const Defaults = {
   Embed: {
@@ -44,11 +50,8 @@ const Defaults = {
   Message: 'Fill out the form below!'
 };
 
-const defaultValues = DefaultValues;
+const defaultValues = DefaultValues as FormAndMessageBuilder;
 
-export interface FormBuilder {
-
-}
 export default function App() {
   const {
     control,
@@ -59,24 +62,30 @@ export default function App() {
     setValue,
     formState,
     formState: { errors }
-  } = useForm({
+  } = useForm<FormAndMessageBuilder>({
     mode: 'onChange',
     defaultValues
   });
 
   const toast = useToast();
 
-  const ToastStyles = {
-    Success: "success",
-    Danger: "danger",
-    Error: "error"
+  enum ToastStyles {
+    Success = "success",
+    Info = "info",
+    Warning = "wraning",
+    Error = "error",
+    Loading = "loading"
   }
 
-  function postToast({ title, description, style }) {
+  function postToast({ title, description, style }: {
+    title: string;
+    description?: string;
+    style: ToastStyles;
+  }) {
     return toast({
       title,
       description,
-      status: style,
+      status: style as unknown as undefined,
       containerStyle: {
         backgroundColor: "#5865f2",
         borderRadius: "0.3rem"
@@ -96,8 +105,10 @@ export default function App() {
           Object.entries(e).map(([k, v]) => {
             console.log(k, v)
             if (v === null) return { key: k, value: v };
+            //@ts-expect-error
             // eslint-disable-next-line eqeqeq
             if (v == '') e[k] = null;
+            //@ts-expect-error
             else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
             return { key: k, value: v };
           });
@@ -111,7 +122,8 @@ export default function App() {
     if (Message?.embeds != null && Message.embeds.length > 0) {
       Message.embeds.forEach(embed => {
         Object.entries(embed).forEach(([k, v], i) => {
-          if (v == null || v === "") setValue(`message.embeds.${i}.`, null);
+          //@ts-expect-error
+          if (v == null || v === "") setValue(`message.embeds.${i}.${k}`, null);
         })
       });
     }
@@ -133,20 +145,31 @@ export default function App() {
 
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
-  const [fileInput, setFileInput] = useState(null);
-  const ReadFile = (targetFile) => {
+  const [fileInput, setFileInput] = useState<HTMLInputElement>();
+
+  const ReadFile = (targetFile: React.ChangeEvent<HTMLInputElement>) => {
+    function CannotRead() {
+      return postToast({
+        style: ToastStyles.Error,
+        title: "Cannot read form"
+      });
+    }
+
+    if (targetFile.target.files == null) return CannotRead();
+
     const file = targetFile.target.files[0];
     console.log(file, targetFile.target.files)
     const fileType = file.type;
     function makeError() {
       return postToast({
         title: "Invalid JSON File",
-        status: ToastStyles.Error
+        style: ToastStyles.Error
       });
     }
 
     if (fileType !== 'application/json') {
       makeError();
+      //@ts-expect-error
       targetFile.target.value = null
       return;
     }
@@ -154,8 +177,12 @@ export default function App() {
     const reader = new FileReader();
 
     reader.onload = (e) => {
+      if (typeof e.target?.result != "string") return CannotRead();
       const json = JSON.parse(e.target.result);
+
+      // Log for debugging purposes
       console.log(json)
+
       if (
         json?.forms == null ||
         !Array.isArray(json?.forms) ||
@@ -164,6 +191,7 @@ export default function App() {
       ) {
         return makeError();
       }
+
       setValue("forms", json.forms);
       const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
       const isMessage = json.message?.content != null
@@ -197,7 +225,13 @@ export default function App() {
       <Meta>Home</Meta>
       <header>
         <Box display='flex' alignItems='center'>
-          <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="28px" clipPath='circle(50%)' />
+          <Image
+            src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png"
+            alt="Forms Logo"
+            //@ts-expect-error
+            width={"28px"}
+            clipPath='circle(50%)'
+          />
           <nav>
             <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
             <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>
@@ -209,19 +243,35 @@ export default function App() {
       <Grid gridTemplateColumns='1fr 1fr'>
         <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);'>
           <HStack>
-            <Button onClick={() => fileInput.click()} variant="primary">Upload JSON</Button>
-            <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => setFileInput(input)} />
+            <Button onClick={() => {
+              if (fileInput == null) {
+                console.log("FILE_INPUT_NULLISH");
+                return postToast({
+                  title: "Something didn't go right.",
+                  style: ToastStyles.Error
+                });
+              } else fileInput.click()
+            }} variant="primary">Upload JSON</Button>
+            <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => {
+              if (input == null) {
+                console.log("SETTING_FILE_INPUT_NULLISH");
+                return postToast({
+                  title: "Something didn't go right.",
+                  style: ToastStyles.Error
+                });
+              } else setFileInput(input);
+            }} />
             <Button onClick={() => reset(ClearedValues)}>Clear All</Button>
           </HStack>
           <MessageBuilder
-            {...{ Defaults, errors, messageType, register, setMessageType, setValue }}
+            {...{ Defaults, formState, messageType, register, setMessageType, setValue }}
           />
           <FormBuilder
             {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
           />
           <VStack width='100%' align='flex-start'>
             <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
-            <Text>This is the configuration file you'll need to give to the <UserMention>Forms</UserMention> bot to create your form. The <UserMention>Forms</UserMention> bot needs to be in your server.</Text>
+            <Text>This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.</Text>
             <JSONViewer {...{ downloadForm }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
@@ -232,17 +282,21 @@ export default function App() {
                 >
                   Download Configuration File
                 </Button>
-                <Button onClick={fixForm}>Fix Form</Button>
+                <Button onClick={() => fixForm()}>Fix Form</Button>
               </HStack>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>
-            <Text>Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention>Forms</UserMention> bot.</Text>
+            <Text>Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.</Text>
           </VStack>
           <Box pt={5} fontSize='sm'>
             <Text>©️ 2023 Forms Discord Bot</Text>
             <Text color='#6c757d'>
               Made with <svg style={{ display: "inline-block", marginLeft: "1px", marginRight: "1px" }} width={15} height={15} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868-3.308 0-6.227 1.633-8.018 4.129-1.791-2.496-4.71-4.129-8.017-4.129-5.45 0-9.868 4.417-9.868 9.868 0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447 17.617-19.959.17-.721.268-1.469.268-2.242z" /></svg>
-              {' '}from <UserMention text="#d0d3d8">Anthony</UserMention> and <UserMention text="#d0d3d8">Turtlepaw</UserMention>
+              {' '}from <UserMention
+                text="#d0d3d8"
+              >Anthony</UserMention> and <UserMention
+                text="#d0d3d8"
+              >Turtlepaw</UserMention>
               <br />
               This website is <Link href='https://github.com/Antouto/form-builder' target="_blank" rel="noopener noreferrer" color='#00b0f4'>open-source</Link>
             </Text>

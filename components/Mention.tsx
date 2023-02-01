@@ -1,23 +1,54 @@
-import { Box, Button, Center, Heading, Image, Text, Tooltip } from "@chakra-ui/react";
-import React, { useState } from "react";
+import {
+    Box,
+    Button,
+    Center,
+    Heading,
+    Text,
+    Tooltip
+} from "@chakra-ui/react";
+import React, { CSSProperties, MouseEventHandler, useState } from "react";
+import Image from "next/image";
+
+export interface MentionProperties {
+    children: React.ReactNode;
+}
+
+interface InternalMentionProperties extends MentionProperties {
+    hover?: CSSProperties;
+    onClick?: MouseEventHandler<HTMLDivElement>;
+    isActive?: boolean;
+}
+
+export interface UserMentionProperties extends MentionProperties {
+    isFormsBot?: boolean;
+    avatar?: string;
+    text?: string;
+}
+
+export interface FormProfileProperties {
+    children: React.ReactNode;
+    avatar: string;
+    hidden: boolean;
+    HandleInteraction: MouseEventHandler<HTMLDivElement>;
+}
 
 /**
  * 
  * @param {import("@chakra-ui/react").CSSObject} hover
  * @returns 
  */
-export function Mention({ children, hover, onClick, isActive }) {
+export function Mention({ children, hover, onClick, isActive }: InternalMentionProperties) {
     return (
         <Box onClick={onClick} display="inline" bgColor={isActive ? "#5865f2" : "#3e4372"} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
             bgColor: "#5865f2",
             ...hover
-        }} cursor="pointer" style={isActive ? hover : null}>
+        }} cursor="pointer" style={isActive ? hover : undefined}>
             {children}
         </Box>
     )
 }
 
-export function SlashCommand({ children }) {
+export function SlashCommand({ children }: MentionProperties) {
     return (
         <Mention>
             /{children}
@@ -26,7 +57,7 @@ export function SlashCommand({ children }) {
 };
 
 const Invite = "https://discord.com/oauth2/authorize?client_id=942858850850205717&permissions=3072&scope=applications.commands%20bot";
-export function FormProfile({ children, avatar, hidden, HandleInteraction }) {
+export function FormProfile({ children, avatar, hidden, HandleInteraction }: FormProfileProperties) {
     return (
         <Tooltip hasArrow pointerEvents="all" isOpen={!hidden} zIndex={10000} backgroundColor="#292b2f" padding={5} borderRadius={5} ml={2} label={
             <Box>
@@ -37,10 +68,13 @@ export function FormProfile({ children, avatar, hidden, HandleInteraction }) {
                 </Box>
                 <Center>
                     <Image
+                        alt="Avatar"
                         src={avatar}
                         width={12}
-                        mb={2}
-                        borderRadius="full"
+                        style={{
+                            marginBottom: 2,
+                            borderRadius: 1000000
+                        }}
                     />
                 </Center>
                 <Box pb={2} textAlign="center">
@@ -62,9 +96,9 @@ export function FormProfile({ children, avatar, hidden, HandleInteraction }) {
                 <a href={Invite} target="_blank" rel="noreferrer noopener">
                     <Center>
                         <Button variant="primary" width="full" rightIcon={<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15">
-            <path fill="white" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path>
-            <polygon fill="white" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon>
-        </svg>}>Add to Server</Button>
+                            <path fill="white" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path>
+                            <polygon fill="white" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon>
+                        </svg>}>Add to Server</Button>
                     </Center>
                 </a>
             </Box>
@@ -74,9 +108,10 @@ export function FormProfile({ children, avatar, hidden, HandleInteraction }) {
     );
 }
 
-export function UserMention({ children, isFormsBot, avatar, text }) {
+export function UserMention({ children, isFormsBot, avatar, text }: UserMentionProperties) {
     if (children === "Forms") isFormsBot = true;
     if (avatar == null && isFormsBot) avatar = "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096";
+    if (avatar == null) avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
     const [hidden, setHidden] = useState(true);
     const HandleInteraction = () => {
         if (isFormsBot) setHidden(!hidden);
@@ -85,12 +120,15 @@ export function UserMention({ children, isFormsBot, avatar, text }) {
         <FormProfile {...{ avatar, HandleInteraction, hidden }}>
             <Mention isActive={!hidden} hover={{ textDecoration: "underline" }} onClick={HandleInteraction}>
                 {(avatar != null && !isFormsBot) && <Image
+                    alt="Form's Avatar"
                     src={avatar}
                     width={5}
-                    display="inline"
-                    borderRadius="full"
-                    mr={1}
-                    mb="0.5"
+                    style={{
+                        display: "inline",
+                        borderRadius: 100000,
+                        marginBottom: "0.5",
+                        marginRight: 1
+                    }}
                 />}
                 <Text display="inline" textColor={text ?? "currentcolor"}>@{children}</Text>
             </Mention>

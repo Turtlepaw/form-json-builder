@@ -16,7 +16,6 @@ import {
   Link
 } from '@chakra-ui/react';
 import Image from "next/image";
-import '../styles/App.css';
 import { ColorModeSwitcher } from '../components/ColorModeSwitcher';
 import JSONViewer from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';

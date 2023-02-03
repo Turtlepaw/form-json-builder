@@ -1,11 +1,18 @@
 import React from "react"
-import { Box, Collapse, HStack, Text, Tooltip, useColorMode } from '@chakra-ui/react'
+import { Box, Collapse, HStack, Text, Tooltip, useColorMode, Spinner } from '@chakra-ui/react'
 import { MdOutlineFileDownload } from 'react-icons/md'
+//import { ImSpinner8 as ImSpinner } from "react-icons/im"
 
-function JSONViewer({ children, downloadForm }) {
+function JSONViewer({ children, downloadForm: downloadFile }) {
   const [show, setShow] = React.useState(false)
   const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
+  const [loading, setLoading] = React.useState(false);
+  const downloadForm = () => {
+    setLoading(true);
+    downloadFile();
+    setTimeout(() => setLoading(false), 1000)
+  }
 
   return (
     <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#f2f3f5' : '#2f3136', color: colorMode === 'dark' ? '#4f5660' : '#b9bbbe', width: '100%' }}>
@@ -40,18 +47,9 @@ function JSONViewer({ children, downloadForm }) {
               Download
             </Box>
           } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6}>
-            <MdOutlineFileDownload cursor='pointer' onClick={
-              downloadForm
-              // () => {
-              //   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-              //     children
-              //   )}`;
-              //   const link = document.createElement("a");
-              //   link.href = jsonString;
-              //   link.download = 'form.json';
-              //   link.click();
-              // }
-            } size={24} color='#46c46e' />
+            {!loading && <MdOutlineFileDownload cursor='pointer' onClick={downloadForm} size={24} color='#46c46e' />}
+            {loading && <Spinner color='#46c46e' size="sm" />}
+            {/* <ImSpinner color='#46c46e' className="spinner" /> */}
           </Tooltip>
         </HStack>
       </Box>

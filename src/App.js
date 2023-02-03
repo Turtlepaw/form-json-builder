@@ -104,9 +104,16 @@ function App() {
     const Message = getValues("message");
 
     if (Message?.embeds != null && Message.embeds.length > 0) {
+      console.log("fixing...")
       Message.embeds.forEach(embed => {
         Object.entries(embed).forEach(([k, v], i) => {
-          if (v == null || v === "") setValue(`message.embeds[${i}].${k}`, null);
+          if (typeof v == "string") {
+            if (v == null || v === "") setValue(`message.embeds[${i}].${k}`, null);
+          } else if (typeof v == "object") {
+            Object.entries(v).forEach(([k2, v2], i2) => {
+              if (v2 == null || v2 === "") setValue(`message.embeds[${i}].${k}.${k2}`, null);
+            })
+          }
         })
       });
     }
@@ -178,13 +185,16 @@ function App() {
 
   const downloadForm = () => {
     fixForm(false);
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(watch(), null, 2)
-    )}`;
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = getValues("forms")[0].modal.title.split(" ").map(e => e.toLowerCase()).join("_") + ".json";
-    link.click();
+    setTimeout(() => {
+      console.log("downloading...")
+      const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+        JSON.stringify(watch(), null, 2)
+      )}`;
+      const link = document.createElement("a");
+      link.href = jsonString;
+      link.download = getValues("forms")[0].modal.title.split(" ").map(e => e.toLowerCase()).join("_") + ".json";
+      link.click();
+    }, 500)
   }
 
   return (

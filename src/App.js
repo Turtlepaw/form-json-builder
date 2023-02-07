@@ -105,8 +105,8 @@ function App() {
 
     if (Message?.embeds != null && Message.embeds.length > 0) {
       console.log("fixing...")
-      Message.embeds.forEach(embed => {
-        Object.entries(embed).forEach(([k, v], i) => {
+      Message.embeds.forEach((embed, i) => {
+        Object.entries(embed).forEach(([k, v]) => {
           if (typeof v == "string") {
             if (v == null || v === "") setValue(`message.embeds[${i}].${k}`, null);
           } else if (typeof v == "object") {

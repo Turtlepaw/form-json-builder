@@ -33,10 +33,10 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta name="title" content={EmbedTitle} />
             <meta name="description" content={Configuration.Description} />
             <meta name="theme-color" content={Configuration.Color} />
-            <meta property="og:image" content={Thumbnail} />
+            {/*<meta property="og:image" content={Thumbnail} />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="250" />
-            <meta property="og:image:height" content="250" />
+            <meta property="og:image:height" content="250" /> */}
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
@@ -49,7 +49,7 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta property="twitter:url" content={WebsiteURL} />
             <meta property="twitter:title" content={EmbedTitle} />
             <meta property="twitter:description" content={Configuration.Description} />
-            <meta property="twitter:image" content={Thumbnail} />
+            {/*<meta property="twitter:image" content={Thumbnail} />*/}
         </Head>
     );
 }

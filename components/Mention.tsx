@@ -3,6 +3,7 @@ import {
     Button,
     Center,
     Heading,
+    Link,
     Text,
     Tooltip
 } from "@chakra-ui/react";
@@ -23,6 +24,7 @@ export interface UserMentionProperties extends MentionProperties {
     isFormsBot?: boolean;
     avatar?: string;
     text?: string;
+    link?: string;
 }
 
 export interface FormProfileProperties {
@@ -39,7 +41,7 @@ export interface FormProfileProperties {
  */
 export function Mention({ children, hover, onClick, isActive }: InternalMentionProperties) {
     return (
-        <Box onClick={onClick} display="inline" bgColor={isActive ? "#5865f2" : "#3e4372"} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
+        <Box onClick={onClick} display="inline-block" bgColor={isActive ? "#5865f2" : "#3e4372"} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
             bgColor: "#5865f2",
             ...hover
         }} cursor="pointer" style={isActive ? hover : undefined}>
@@ -108,30 +110,22 @@ export function FormProfile({ children, avatar, hidden, HandleInteraction }: For
     );
 }
 
-export function UserMention({ children, isFormsBot, avatar, text }: UserMentionProperties) {
+export function UserMention({ children, isFormsBot, avatar, text, link }: UserMentionProperties) {
     if (children === "Forms") isFormsBot = true;
     if (avatar == null && isFormsBot) avatar = "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096";
     if (avatar == null) avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+    if (avatar.startsWith("https://github.com")) link = avatar.replace(".png", "");
     const [hidden, setHidden] = useState(true);
     const HandleInteraction = () => {
         if (isFormsBot) setHidden(!hidden);
     }
     return (
         <FormProfile {...{ avatar, HandleInteraction, hidden }}>
-            <Mention isActive={!hidden} hover={{ textDecoration: "underline" }} onClick={HandleInteraction}>
-                {(avatar != null && !isFormsBot) && <Image
-                    alt="Form's Avatar"
-                    src={avatar}
-                    width={5}
-                    style={{
-                        display: "inline",
-                        borderRadius: 100000,
-                        marginBottom: "0.5",
-                        marginRight: 1
-                    }}
-                />}
-                <Text display="inline" textColor={text ?? "currentcolor"}>@{children}</Text>
-            </Mention>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+                <Mention isActive={!hidden} hover={{ textDecoration: "underline" }} onClick={HandleInteraction}>
+                    <Text display="inline" textColor={text ?? "currentcolor"}>@{children}</Text>
+                </Mention>
+            </a>
         </FormProfile>
     );
 }

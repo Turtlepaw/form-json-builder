@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Router from "next/router";
 
 export const Configuration = {
@@ -18,7 +18,10 @@ export interface MetaProperties {
 }
 
 export function Meta({ children: Title }: MetaProperties) {
-    const WebsiteURL = Router.basePath;
+    const [WebsiteURL, SetWebURL] = useState("https://forms-bot.vercel.app/");
+    useEffect(() => {
+        SetWebURL(Router.basePath)
+    }, []);
     const PageTitle = `${Configuration.Title} - ${Title == null ? "" : ` ${Title}`}`;
     const EmbedTitle = `${Configuration.Title} - ${Configuration.TagLine}`;
     const Thumbnail = `${WebsiteURL}meta.png`

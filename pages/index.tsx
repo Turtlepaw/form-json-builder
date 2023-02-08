@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
 import {
@@ -13,7 +13,17 @@ import {
   useToast,
   HStack,
   Input,
-  Link
+  Link,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Switch,
+  cssVar
 } from '@chakra-ui/react';
 import Image from "next/image";
 import { ColorModeSwitcher } from '../components/ColorModeSwitcher';
@@ -27,9 +37,12 @@ import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
 import { VercelFooter } from '../components/Footer';
 import { FormAndMessageBuilder } from "../util/types";
+import { useSettings } from '../util/settings';
+import { bindToInput } from '../util/bind';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
+const $SwitchBackground = cssVar("switch-bg");
 
 const Defaults = {
   Embed: {
@@ -119,10 +132,18 @@ export default function App() {
     const Message = getValues("message");
 
     if (Message?.embeds != null && Message.embeds.length > 0) {
-      Message.embeds.forEach(embed => {
-        Object.entries(embed).forEach(([k, v], i) => {
-          //@ts-expect-error
-          if (v == null || v === "") setValue(`message.embeds.${i}.${k}`, null);
+      console.log("fixing...")
+      Message.embeds.forEach((embed, i) => {
+        Object.entries(embed).forEach(([k, v]) => {
+          if (typeof v == "string") {
+            //@ts-expect-error
+            if (v == null || v === "") setValue(`message.embeds.${i}.${k}`, null);
+          } else if (typeof v == "object") {
+            Object.entries(v).forEach(([k2, v2], i2) => {
+              //@ts-expect-error
+              if (v2 == null || v2 === "") setValue(`message.embeds.${i}.${k}.${k2}`, null);
+            })
+          }
         })
       });
     }
@@ -145,6 +166,7 @@ export default function App() {
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const ReadFile = (targetFile: React.ChangeEvent<HTMLInputElement>) => {
     function CannotRead() {
@@ -210,14 +232,24 @@ export default function App() {
 
   const downloadForm = () => {
     fixForm(false);
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(watch(), null, 2)
-    )}`;
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = getValues("forms")[0].modal.title.split(" ").map(e => e.toLowerCase()).join("_") + ".json";
-    link.click();
+    setTimeout(() => {
+      console.log("downloading...")
+      const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+        JSON.stringify(watch(), null, 2)
+      )}`;
+      const link = document.createElement("a");
+      link.href = jsonString;
+      link.download = getValues("forms")[0].modal.title.split(" ").map(e => e.toLowerCase()).join("_") + ".json";
+      link.click();
+    }, 500)
   }
+
+  enum Switches {
+    FixFormButton = "fix_form_button"
+  }
+
+  const Settings = useSettings();
+  console.log(Settings)
 
   return (
     <>
@@ -227,9 +259,11 @@ export default function App() {
           <Image
             src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png"
             alt="Forms Logo"
-            //@ts-expect-error
-            width={"28px"}
-            clipPath='circle(50%)'
+            width={28}
+            height={28}
+            style={{
+              clipPath: 'circle(50%)'
+            }}
           />
           <nav>
             <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
@@ -254,14 +288,35 @@ export default function App() {
             <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => {
               if (input == null) {
                 console.log("SETTING_FILE_INPUT_NULLISH");
-                return postToast({
-                  title: "Something didn't go right.",
-                  style: ToastStyles.Error
-                });
+                return;
               } else setFileInput(input);
             }} />
-            <Button onClick={() => reset(ClearedValues)}>Clear All</Button>
+            <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
+            <Button onClick={onOpen}>Options</Button>
           </HStack>
+          {/* <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent backgroundColor="#36393f">
+              <ModalHeader _after={{
+                borderBottom: "none"
+              }} paddingBottom="3.5">Configuration</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody paddingY={6}>
+                <Box paddingBottom={5}>
+                  <Heading size="sm" fontWeight="bold" paddingBottom={2}>Appearance</Heading>
+                  <Switch {...bindToInput(Settings, "ShowFixFormButton")}>Show Fix Form Button</Switch>
+                </Box>
+                <Heading size="sm" fontWeight="bold" paddingBottom={2}>Developer Settings</Heading>
+                <Switch {...bindToInput(Settings, "ShowFixFormButton")}> Show Fix Form Button</Switch>
+              </ModalBody>
+
+              <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
+                <Button variant="primary" mr={-2} onClick={onClose}>
+                  Save
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal> */}
           <MessageBuilder
             {...{ Defaults, formState, messageType, register, setMessageType, setValue }}
           />
@@ -270,7 +325,9 @@ export default function App() {
           />
           <VStack width='100%' align='flex-start'>
             <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
-            <Text>This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.</Text>
+            <Box>
+              This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.
+            </Box>
             <JSONViewer {...{ downloadForm }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
@@ -285,25 +342,28 @@ export default function App() {
               </HStack>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>
-            <Text>Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.</Text>
+            <Box>
+              Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.
+            </Box>
           </VStack>
           <Box pt={5} fontSize='sm'>
             <Text>©️ 2023 Forms Discord Bot</Text>
-            <Text color='#6c757d'>
+            <Box color='#6c757d'>
               Made with <svg style={{ display: "inline-block", marginLeft: "1px", marginRight: "1px" }} width={15} height={15} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#DD2E44" d="M35.885 11.833c0-5.45-4.418-9.868-9.867-9.868-3.308 0-6.227 1.633-8.018 4.129-1.791-2.496-4.71-4.129-8.017-4.129-5.45 0-9.868 4.417-9.868 9.868 0 .772.098 1.52.266 2.241C1.751 22.587 11.216 31.568 18 34.034c6.783-2.466 16.249-11.447 17.617-19.959.17-.721.268-1.469.268-2.242z" /></svg>
               {' '}from <UserMention
                 text="#d0d3d8"
+                avatar='https://github.com/antouto.png'
               >Anthony</UserMention> and <UserMention
                 text="#d0d3d8"
+                avatar='https://github.com/turtlepaw.png'
               >Turtlepaw</UserMention>
               <br />
               This website is <Link href='https://github.com/Antouto/form-builder' target="_blank" rel="noopener noreferrer" color='#00b0f4'>open-source</Link>
-            </Text>
+            </Box>
           </Box>
         </VStack>
         <Preview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
       </Grid>
-      <VercelFooter />
     </>
   );
 }

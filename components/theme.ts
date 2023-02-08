@@ -1,6 +1,7 @@
-import { extendTheme } from "@chakra-ui/react"
+import { cssVar, extendTheme } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 
+const $SwitchBackground = cssVar("switch-bg");
 const colours = {
   'blurple': '#5865F2',
   'blurple.500': '#5865F2',
@@ -9,7 +10,8 @@ const colours = {
   'grey.extralight': '#ebedef',
   'grey.light': '#4f545c',
   'grey.dark': '#36393f',
-  'grey.extradark': '#292b2f'
+  'grey.extradark': '#292b2f',
+  'disabled': '#72767d'
 };
 
 const { blurple } = colours;
@@ -59,6 +61,19 @@ const theme = extendTheme({
       variants: {
         primary: {
           bg: 'blurple'
+        }
+      }
+    },
+    Switch: {
+      baseStyle: {
+        track: {
+          _checked: {
+            [$SwitchBackground.variable]: colours.blurple,
+            _dark: {
+              [$SwitchBackground.variable]: colours.blurple,
+            },
+          },
+          [$SwitchBackground.variable]: colours.disabled,
         }
       }
     },

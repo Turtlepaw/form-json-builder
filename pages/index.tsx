@@ -39,6 +39,7 @@ import { VercelFooter } from '../components/Footer';
 import { FormAndMessageBuilder } from "../util/types";
 import { useSettings } from '../util/settings';
 import { bindToInput } from '../util/bind';
+import { Switches, Toggle } from '../components/Toggle';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -244,13 +245,6 @@ export default function App() {
     }, 500)
   }
 
-  enum Switches {
-    FixFormButton = "fix_form_button"
-  }
-
-  const Settings = useSettings();
-  console.log(Settings)
-
   return (
     <>
       <Meta>Home</Meta>
@@ -294,7 +288,7 @@ export default function App() {
             <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
             <Button onClick={onOpen}>Options</Button>
           </HStack>
-          {/* <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent backgroundColor="#36393f">
               <ModalHeader _after={{
@@ -304,10 +298,11 @@ export default function App() {
               <ModalBody paddingY={6}>
                 <Box paddingBottom={5}>
                   <Heading size="sm" fontWeight="bold" paddingBottom={2}>Appearance</Heading>
-                  <Switch {...bindToInput(Settings, "ShowFixFormButton")}>Show Fix Form Button</Switch>
+                  {/* <Switch defaultChecked={useGetSetting("fix_form")} onChange={() => useSetSetting("fix_form", !useGetSetting("fix_form"))}>Show Fix Form Button</Switch> */}
+                  <Toggle itemName='Show Fix Form Button' switchName={Switches.FixFormButton} />
                 </Box>
                 <Heading size="sm" fontWeight="bold" paddingBottom={2}>Developer Settings</Heading>
-                <Switch {...bindToInput(Settings, "ShowFixFormButton")}> Show Fix Form Button</Switch>
+                {/* <Switch {...bindToInput(Settings, "ShowFixFormButton")}> Show Fix Form Button</Switch> */}
               </ModalBody>
 
               <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
@@ -316,7 +311,7 @@ export default function App() {
                 </Button>
               </ModalFooter>
             </ModalContent>
-          </Modal> */}
+          </Modal>
           <MessageBuilder
             {...{ Defaults, formState, messageType, register, setMessageType, setValue }}
           />

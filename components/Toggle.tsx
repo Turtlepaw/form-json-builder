@@ -1,26 +1,58 @@
 import { Switch } from "@chakra-ui/react";
 import { autorun } from "mobx";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export enum Switches {
     FixFormButton = "fix_form_button"
 }
 
 
-export function Toggle({ switchName, itemName }: { switchName: Switches; itemName: string; }) {
-    const [item, _item] = useState(false);
+export function useToggle() {
+    const [toggle, setToggle] = useState(false);
+    return {
+        toJSON: () => ({
+            setItem: setToggle,
+            getItem: toggle
+        }),
+        currentState: toggle,
+        setState: setToggle
+    }
+}
+
+function resolveBoolean(str: string): boolean {
+    if (str == "true") return true;
+    else if (str == "false") return false;
+    else return false;
+}
+
+export function Toggle({ switchName, itemName, getItem: item, setItem: _item }: {
+    switchName: Switches;
+    itemName: string;
+    setItem: Dispatch<SetStateAction<boolean>>;
+    getItem: boolean;
+}) {
+    let [initialCheck, checkState] = useState(false);
     useEffect(() => {
-        _item(Boolean(localStorage.getItem(switchName) ?? false))
-    }, [switchName]);
+        if (initialCheck) return;
+        const switchValue = localStorage.getItem(switchName);
+        console.log(switchValue)
+        if (switchValue != null) {
+            checkState(true);
+            _item(
+                resolveBoolean(switchValue)
+            );
+        }
+
+        console.log(switchValue, switchName)
+    }, [_item, switchName, item, initialCheck]);
 
     useEffect(() => {
-        localStorage.setItem(switchName, JSON.stringify(!item))
+        if (!initialCheck) return;
+        localStorage.setItem(switchName, JSON.stringify(item))
         console.log("switch", item)
-    }, [switchName, item]);
-
-    //autorun(useSwitch, { delay: 5 })
+    }, [switchName, item, initialCheck]);
 
     return (
-        <Switch defaultChecked={item} onChange={() => _item(!item)}>{itemName} ({JSON.stringify(item)})</Switch>
+        <Switch isChecked={item} onChange={() => _item(item == true ? false : true)}>{itemName} ({JSON.stringify(item)})</Switch>
     )
 }

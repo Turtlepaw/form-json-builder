@@ -9,7 +9,7 @@ export interface ErrorMessageProperties extends TextProps {
   };
   fieldName?: string;
   fieldType?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function ErrorMessage(options: ErrorMessageProperties) {

@@ -37,7 +37,6 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     if (requestBody == null) return;
     await context.env.TEMPLATES.put(requestBody.id, JSON.stringify(requestBody));
     return jsonResponse(
-        //@ts-expect-error
         await context.env.TEMPLATES.get(requestBody.id), {
         status: 200
     });

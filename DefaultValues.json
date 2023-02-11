@@ -1,0 +1,35 @@
+{
+  "message": {
+    "content": "Fill out the form below",
+    "embeds": []
+  },
+  "forms": [
+    {
+      "webhook_url": "",
+      "button": {
+        "label": "Open Form",
+        "style": 1
+      },
+      "modal": {
+        "title": "Example Form",
+        "components": [
+          {
+            "type": 1,
+            "components": [
+              {
+                "type": 4,
+                "label": "Example Text Input",
+                "style": 1,
+                "placeholder": "Write text here",
+                "value": "",
+                "min_length": 0,
+                "max_length": 1024,
+                "required": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

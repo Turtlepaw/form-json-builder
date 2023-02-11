@@ -7,7 +7,8 @@
     "api": "wrangler pages dev functions --kv=TEMPLATES",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cloudbuild": "next build && next export"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230115.0",

@@ -4,14 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "api": "wrangler pages dev functions --kv=TEMPLATES",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230115.0",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10"
+    "@types/react-dom": "18.0.10",
+    "@types/uuid": "^9.0.0"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.0.0",
@@ -21,15 +24,18 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
+    "cross-fetch": "^3.1.5",
     "eslint": "8.33.0",
     "eslint-config-next": "^13.1.6",
     "framer-motion": "6.5.1",
     "mobx": "^6.7.0",
     "next": "^13.1.6",
+    "node-fetch": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.31.2",
     "react-icons": "^4.3.1",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "uuid": "^9.0.0"
   }
 }

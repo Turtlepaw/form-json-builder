@@ -14,7 +14,8 @@ import {
     Spinner,
     Center,
     Badge,
-    Tooltip
+    Tooltip,
+    Code
 } from '@chakra-ui/react';
 import { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
@@ -26,6 +27,8 @@ import { useToggle } from '../components/Toggle';
 import { Navigation } from '../components/Navigation';
 import { MdOutlineFileDownload, MdVisibility } from 'react-icons/md';
 import StaffAppForm from "../defaultForms/StaffApp.json";
+import { Api, FormDataResponse } from '../util/api';
+import { GetServerSideProps } from 'next';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -51,21 +54,12 @@ const Defaults = {
 
 const defaultValues = DefaultValues as FormAndMessageBuilder;
 
-export default function App() {
-    const {
-        control,
-        register,
-        watch,
-        getValues,
-        reset,
-        setValue,
-        formState,
-        formState: { errors }
-    } = useForm<FormAndMessageBuilder>({
-        mode: 'onChange',
-        defaultValues
-    });
+export interface TemplateData {
+    templates: FormDataResponse[] | null;
+    error?: string;
+}
 
+export default function Templates({ templates, error }: TemplateData) {
     const toast = useToast();
 
     enum ToastStyles {
@@ -110,23 +104,31 @@ export default function App() {
 
     const ShowFixFormButton = useToggle();
 
-    const Forms: {
-        data: any;
-        formBuilder?: boolean;
-        name: string;
-        description: string;
-        views: number | string;
-        downloads: number | string;
-        official?: boolean;
-    }[] = [{
+    if (templates == null) return (
+        <>
+            <VStack pt={50}>
+                <Heading>Something didn't go right...</Heading>
+                <Text pt={2} pb={5} fontSize={20}>We had trouble fetching templates.</Text>
+                <Code p={5} backgroundColor="#2f3136" textColor="white" borderColor="#202225" borderWidth={1.3} borderRadius="md">
+                    {error}
+                </Code>
+            </VStack>
+        </>
+    );
+
+    const Forms: FormDataResponse[] = [{
         description: "Start recruiting staff to your server with this handy form!",
         name: "Staff Applications",
         official: true,
         data: StaffAppForm,
-        downloads: "unknown",
-        views: "unknown",
         formBuilder: false
-    }];
+    }, ...templates.map(e => {
+        const data = typeof e == "string" ? JSON.parse(e) : e;
+        return {
+            data: JSON.parse(data.data),
+            ...data
+        }
+    })];
 
     function FixForm(formData: FormAndMessageBuilder) {
         formData.forms.forEach((form, i) => {
@@ -201,13 +203,13 @@ export default function App() {
                     }
 
                     return (
-                        <Box key={form.name} bgColor="#292b2f" borderRadius="lg" px={5} py={5}>
-                            <Heading size="md">Staff Applications</Heading>
+                        <Box mx={2} my={2} key={form.name} bgColor="#292b2f" borderRadius="lg" px={5} py={5}>
+                            <Heading size="md">{form.name}</Heading>
                             <Text pt={1} fontSize={17}>
-                                Start recruiting staff to your server with this handy form!
+                                {form.description}
                             </Text>
                             <Box pt={5}>
-                                <Box display="inline-flex" float="left" pt={3}>
+                                {/* <Box display="inline-flex" float="left" pt={3}>
                                     <Box>
                                         <HStack>
                                             <MdVisibility />
@@ -216,7 +218,7 @@ export default function App() {
                                             <Text>{form.downloads}</Text>
                                         </HStack>
                                     </Box>
-                                </Box>
+                                </Box> */}
                                 <Box display="inline-block" float="right">
                                     <Tooltip label={(
                                         <ErrorMessage>Forms cannot be previewed currently</ErrorMessage>
@@ -243,3 +245,21 @@ export default function App() {
         </>
     );
 }
+
+export const getServerSideProps: GetServerSideProps<TemplateData> = async function (ctx) {
+    const REST = new Api(process.env.APP_URI as string);
+    const data = await REST.getForms();
+
+    if (data.hasError()) return {
+        props: {
+            templates: null,
+            error: data.message
+        }
+    };
+
+    return {
+        props: {
+            templates: data.data
+        }
+    };
+};

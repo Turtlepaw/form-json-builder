@@ -5,24 +5,25 @@ import { MdOutlineFileDownload } from 'react-icons/md'
 export interface JSONViewerProperties {
   downloadForm: () => void;
   children: string;
+  animations: boolean;
 }
 
 export const DOWNLOAD_SPINNER_TIME = 1000;
 
-function JSONViewer({ children, downloadForm: downloadFile }: JSONViewerProperties) {
+function JSONViewer({ children, downloadForm: downloadFile, animations }: JSONViewerProperties) {
   const [show, setShow] = React.useState(false)
   const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
   const [loading, setLoading] = React.useState(false);
   const downloadForm = () => {
-    setLoading(true);
+    if (animations == true) setLoading(true);
     downloadFile();
-    setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
+    if (animations == true) setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
   }
 
   return (
     <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#f2f3f5' : '#2f3136', color: colorMode === 'dark' ? '#4f5660' : '#b9bbbe', width: '100%' }}>
-      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: '#2f3136', borderRadius: '4px', padding: '8px' }} in={show}>
+      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: colorMode == "dark" ? "#f2f3f5" : '#2f3136', borderRadius: '4px', padding: '8px' }} in={show}>
         <pre>
           <code>{children}</code>
         </pre>

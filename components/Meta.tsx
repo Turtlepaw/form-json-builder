@@ -8,8 +8,11 @@ export const Configuration = {
     TagLine: "Create fully customisable in-app forms",
     Description: "Create custom in-app modals and send submissions to a channel using webhooks.",
     Icon: {
-        SVG: "forms.svg",
-        PNG: "forms.png"
+        SVG: "outline.svg",
+        Blurple: {
+            SVG: "forms.svg",
+            PNG: "forms.png",
+        }
     }
 }
 
@@ -18,7 +21,7 @@ export interface MetaProperties {
 }
 
 export function Meta({ children: Title }: MetaProperties) {
-    const [WebsiteURL, SetWebURL] = useState("https://forms-bot.vercel.app/");
+    const [WebsiteURL, SetWebURL] = useState("https://form-builder.pages.dev/");
     useEffect(() => {
         SetWebURL(Router.basePath)
     }, []);
@@ -33,10 +36,10 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta name="title" content={EmbedTitle} />
             <meta name="description" content={Configuration.Description} />
             <meta name="theme-color" content={Configuration.Color} />
-            <meta property="og:image" content={Thumbnail} />
+            {/* <meta property="og:image" content={Thumbnail} />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="250" />
-            <meta property="og:image:height" content="250" />
+            <meta property="og:image:height" content="250" /> */}
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content="website" />
@@ -49,7 +52,7 @@ export function Meta({ children: Title }: MetaProperties) {
             <meta property="twitter:url" content={WebsiteURL} />
             <meta property="twitter:title" content={EmbedTitle} />
             <meta property="twitter:description" content={Configuration.Description} />
-            <meta property="twitter:image" content={Thumbnail} />
+            {/* <meta property="twitter:image" content={Thumbnail} /> */}
         </Head>
     );
 }

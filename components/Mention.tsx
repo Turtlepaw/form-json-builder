@@ -5,7 +5,8 @@ import {
     Heading,
     Link,
     Text,
-    Tooltip
+    Tooltip,
+    useColorMode
 } from "@chakra-ui/react";
 import React, { CSSProperties, MouseEventHandler, useState } from "react";
 import Image from "next/image";
@@ -40,9 +41,11 @@ export interface FormProfileProperties {
  * @returns 
  */
 export function Mention({ children, hover, onClick, isActive }: InternalMentionProperties) {
+    const { colorMode } = useColorMode();
     return (
-        <Box onClick={onClick} display="inline-block" bgColor={isActive ? "#5865f2" : "#3e4372"} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
+        <Box onClick={onClick} display="inline-block" textColor={isActive ? "white" : (colorMode == "dark" ? "#5865f2" : "unset")} bgColor={isActive ? "#5865f2" : (colorMode == "dark" ? "#e6e8fd" : "#3e4372")} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
             bgColor: "#5865f2",
+            color: colorMode == "dark" ? "white" : "unset",
             ...hover
         }} cursor="pointer" style={isActive ? hover : undefined}>
             {children}
@@ -73,6 +76,7 @@ export function FormProfile({ children, avatar, hidden, HandleInteraction }: For
                         alt="Avatar"
                         src={avatar}
                         width={12}
+                        height={12}
                         style={{
                             marginBottom: 2,
                             borderRadius: 1000000

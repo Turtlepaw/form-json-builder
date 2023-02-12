@@ -43,6 +43,7 @@ import { bindToInput } from '../util/bind';
 import { Switches, Toggle, useToggle } from '../components/Toggle';
 import { useAutorun } from '../util/useAutorun';
 import { Navigation } from '../components/Navigation';
+import { useModal } from '../components/SettingsModal';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -170,7 +171,6 @@ export default function App() {
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
   const [fileInput, setFileInput] = useState<HTMLInputElement>();
-  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const ReadFile = (targetFile: React.ChangeEvent<HTMLInputElement>) => {
     function CannotRead() {
@@ -248,12 +248,14 @@ export default function App() {
     }, 500)
   }
 
-  const ShowFixFormButton = useToggle();
   const [loading, setLoading] = useState(false);
   const handleLoad = () => {
+    //if (SettingsModal.settings.LimitAnimations == true) return;
     setLoading(true);
     setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
+
+  const SettingsModal = useModal();
 
   // useAutorun(() => {
   //   const json = JSON.stringify({
@@ -271,7 +273,7 @@ export default function App() {
   return (
     <>
       <Meta>Home</Meta>
-      <Navigation />
+      <Navigation {...SettingsModal} />
       <Grid gridTemplateColumns='1fr 1fr'>
         <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);'>
           <HStack>
@@ -291,32 +293,9 @@ export default function App() {
               } else setFileInput(input);
             }} />
             <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
-            <Button onClick={onOpen}>Options</Button>
+            <SettingsModal.button>Options</SettingsModal.button>
           </HStack>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent backgroundColor="#36393f">
-              <ModalHeader _after={{
-                borderBottom: "none"
-              }} paddingBottom="3.5">Configuration</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody paddingY={6}>
-                <Box paddingBottom={5}>
-                  <Heading size="sm" fontWeight="bold" paddingBottom={2}>Appearance</Heading>
-                  {/* <Switch defaultChecked={useGetSetting("fix_form")} onChange={() => useSetSetting("fix_form", !useGetSetting("fix_form"))}>Show Fix Form Button</Switch> */}
-                  <Toggle itemName='Show Fix Form Button' switchName={Switches.FixFormButton} {...ShowFixFormButton.toJSON()} />
-                </Box>
-                <Heading size="sm" fontWeight="bold" paddingBottom={2}>Developer Settings</Heading>
-                {/* <Switch {...bindToInput(Settings, "ShowFixFormButton")}> Show Fix Form Button</Switch> */}
-              </ModalBody>
-
-              <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
-                <Button variant="primary" mr={-2} onClick={onClose}>
-                  Save
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+          {SettingsModal.modal}
           <MessageBuilder
             {...{ Defaults, formState, messageType, register, setMessageType, setValue }}
           />
@@ -328,7 +307,7 @@ export default function App() {
             <Box>
               This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.
             </Box>
-            <JSONViewer {...{ downloadForm }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+            <JSONViewer {...{ downloadForm, animations: !SettingsModal.settings.LimitAnimations }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
                 <Button
@@ -342,9 +321,10 @@ export default function App() {
                 // bgColor={loading ? "#215b32" : undefined}
                 >
                   {!loading && "Download Configuration File"}
-                  {loading && <Spinner size="sm" />}
+                  {(loading && SettingsModal.settings.LimitAnimations == false) && <Spinner size="sm" />}
+                  {(loading && SettingsModal.settings.LimitAnimations == true) && "Downloading..."}
                 </Button>
-                {ShowFixFormButton.currentState && <Button onClick={() => fixForm()}>Fix Form</Button>}
+                {SettingsModal.settings.ShowFixButton && <Button onClick={() => fixForm()}>Fix Form</Button>}
               </HStack>
               {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
             </VStack>

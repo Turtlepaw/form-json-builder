@@ -1,8 +1,9 @@
 import React from 'react';
-import { useColorMode, useColorModeValue, IconButton, Tooltip } from '@chakra-ui/react';
+import { useColorMode, useColorModeValue, IconButton, Tooltip, IconButtonProps } from '@chakra-ui/react';
 import { FaMoon, FaSun } from 'react-icons/fa';
+import { Omit } from './SettingsModal';
 
-export const ColorModeSwitcher = (props: any) => {
+export const ColorModeSwitcher = (props: Omit<IconButtonProps, "aria-label">) => {
   const { toggleColorMode } = useColorMode();
   const text = useColorModeValue('dark', 'light');
   const colorMode = useColorModeValue('Light', 'Dark');

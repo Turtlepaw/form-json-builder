@@ -17,7 +17,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }) {
     </>;
 
     const MessageEmbed = <>
-        {message?.embeds && <Box  whiteSpace='pre-wrap' borderLeftColor={`#${message.embeds[0]?.color.toString(16)}` || '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && <Box  whiteSpace='pre-wrap' borderLeftColor={message.embeds[0]?.color != null ? `#${message.embeds[0]?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a href={isEmpty(message.embeds[0]?.author?.url) ? null : message.embeds[0].author.url} cursor={isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer'} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >

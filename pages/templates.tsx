@@ -29,12 +29,13 @@ import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
 import { EmbedAuthor, EmbedBuilder, EmbedFooter, FormAndMessageBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
-import StaffAppForm from "../templates/StaffApp.json";
+import * as StaffAppForm from "../templates/StaffApp";
 import { FormDataResponse } from '../util/api';
 import { useModal } from '../components/SettingsModal';
 import Image from 'next/image';
-import { MdCheck, MdStar, MdStarBorder, MdVerified } from 'react-icons/md';
+import { MdCheck, MdError, MdLabelImportant, MdPriorityHigh, MdQuestionAnswer, MdStar, MdStarBorder, MdVerified } from 'react-icons/md';
 import Preview from '../components/Preview';
+import Link from 'next/link';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -121,23 +122,16 @@ export default function Templates({ templates, error }: TemplateData) {
     //     </>
     // );
 
+    //@ts-expect-error
     const Forms: FormDataResponse[] = [{
-        description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
+        description: "Recruit staff to your server. This form includes helper, moderator, and administrator.",
         name: "Staff Application",
         official: true,
-        //@ts-expect-error
-        data: StaffAppForm,
+        data: StaffAppForm.data,
+        replacers: StaffAppForm.replacers,
         formBuilder: false,
         highlighted: false
-    }, {
-        description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
-        name: "Staff Application",
-        official: true,
-        //@ts-expect-error
-        data: StaffAppForm,
-        formBuilder: false,
-        highlighted: true
-    } /*...templates.map(e => {
+    }, /*...templates.map(e => {
         const data = typeof e == "string" ? JSON.parse(e) : e;
         return {
             data: JSON.parse(data.data),
@@ -145,7 +139,7 @@ export default function Templates({ templates, error }: TemplateData) {
         }
     })*/].sort(function (x, y) {
         // true values first
-        return (x === y) ? 0 : x ? -1 : 1;
+        return (x === y) ? 0 : x ? 1 : -1;
         // false values first
         // return (x === y)? 0 : x? 1 : -1;
     });
@@ -289,13 +283,17 @@ export default function Templates({ templates, error }: TemplateData) {
                         (() => {
                             FixForm(form.data);
                             setTimeout(() => {
-                                downloadForm(form.data, form.data.forms[0].modal.title.split(" ").map((e: string) => e.toLowerCase()).join("_"))
+                                downloadForm(form.data, form.name.split(" ").map((e: string) => e.toLowerCase()).join("_"))
                             }, 500);
                         })();
                         setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
                     }
                     // eslint-disable-next-line react-hooks/rules-of-hooks
                     const { isOpen, onOpen, onClose } = useDisclosure();
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    const downloadModal = useDisclosure();
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    const [downloadModalSatisfied, setSatisfied] = useState(false);
 
                     return (
                         <Box mx={2} my={2} key={form.name} bgColor={colorMode == "light" ? "#292b2f" : "#ebedef"} borderRadius="lg" px={5} py={5}>
@@ -351,14 +349,59 @@ export default function Templates({ templates, error }: TemplateData) {
                                     <Button variant="secondary" mr={3} onClick={onOpen}>Preview</Button>
                                     <Button
                                         variant="success"
-                                        onClick={handleLoad}
+                                        onClick={downloadModal.onOpen}
                                         //width="26"
                                         width={24}
                                     >
-                                        {!loading && "Download"}
-                                        {loading && <Spinner size="sm" />}
+                                        Download
                                     </Button>
                                 </Box>
+                                <Modal {...downloadModal}>
+                                    <ModalOverlay />
+                                    <ModalContent backgroundColor="#36393f">
+                                        <HStack pl={5} pt={4}>
+                                            <Image
+                                                src="/forms.svg"
+                                                alt="Forms Logo"
+                                                width={28}
+                                                height={28}
+                                                style={{
+                                                    clipPath: 'circle(50%)'
+                                                }}
+                                            />
+                                            <Heading size="md" pl={2} fontWeight="medium">Download Template</Heading>
+                                        </HStack>
+                                        <ModalCloseButton />
+                                        <ModalBody paddingY={6}>
+                                            {form.replacers().map(replacer => (
+                                                <>
+                                                    <FormLabel pt={2}>{replacer.label} {replacer.helpLink != null && <Text display="inline" color="#00b0f4" _hover={{ textDecoration: "underline" }}>
+                                                        <Link href={replacer.helpLink}>(help)</Link>
+                                                    </Text>}</FormLabel>
+                                                    <Input required onChange={(e) => {
+                                                        if (form.replacers().map(e => e.satisfied(form.data.forms)).every(e => e == true)) setSatisfied(true);
+                                                        else setSatisfied(false);
+                                                        return replacer.set(form.data.forms, e.target.value)
+                                                    }} _focusVisible={{ borderColor: replacer.satisfied(form.data.forms) ? "#5865f2" : "#ED4245" }} _hover={{ borderColor: "" }} backgroundColor="#2f3136" textColor="white" borderColor={replacer.satisfied(form.data.forms) ? "#202225" : "#ED4245"} borderWidth={1.3} borderRadius="md" mt={2} />
+                                                </>
+                                            ))}
+                                            {!downloadModalSatisfied && <Box pt={3}><ErrorMessage>Fill out all the fields before sending your template</ErrorMessage></Box>}
+                                        </ModalBody>
+
+                                        <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
+                                            <Button
+                                                variant="success"
+                                                onClick={handleLoad}
+                                                //width="26"
+                                                width={24}
+                                                isDisabled={!downloadModalSatisfied}
+                                            >
+                                                {!loading && "Download"}
+                                                {loading && <Spinner size="sm" />}
+                                            </Button>
+                                        </ModalFooter>
+                                    </ModalContent>
+                                </Modal>
                                 <Modal isOpen={isOpen} onClose={onClose}>
                                     <ModalOverlay />
                                     <ModalContent bgColor={colorMode === 'dark' ? '#ffffff' : '#36393f'} boxShadow="none" width="unset">
@@ -375,7 +418,7 @@ export default function Templates({ templates, error }: TemplateData) {
                                                 </Box>
                                                 <Box>
                                                     {form.data.forms[0]?.modal.components.map(actionRow => (
-                                                        <Box key={Math.random()} m='0 1em 1em'>
+                                                        <Box key={Math.random()} m='0 1em 0.4em'>
                                                             <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
                                                                 {actionRow.components[0]?.label}
                                                                 {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
@@ -384,7 +427,7 @@ export default function Templates({ templates, error }: TemplateData) {
                                                         </Box>
                                                     ))}
                                                 </Box>
-                                                <Box bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
+                                                <Box mt={5} bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
                                                     <Button onClick={onClose} variant='link' color={colorMode === 'dark' ? '#747f8d' : 'white'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
                                                     <Button onClick={onClose} variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
                                                 </Box>

@@ -94,7 +94,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
                         <Box>
                             {Rendered}
                             <Box p='4px 0'>
-                                {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button.label}</Button>))}
+                                {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>))}
                             </Box>
                         </Box>
                     </Box>

@@ -126,7 +126,7 @@ export default function Templates({ templates, error }: TemplateData) {
         description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
         name: "Staff Application",
         official: true,
-        //@ts-expect-error
+        //@ts-expect -error
         data: StaffAppForm,
         formBuilder: false,
         highlighted: false
@@ -134,7 +134,7 @@ export default function Templates({ templates, error }: TemplateData) {
         description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
         name: "Staff Application",
         official: true,
-        //@ts-expect-error
+        //@ts-expect -error
         data: StaffAppForm,
         formBuilder: false,
         highlighted: true

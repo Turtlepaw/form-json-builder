@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ChakraProvider theme={theme}>
-      <style >
+      <style>
         {`::-webkit-scrollbar {
           height: 16px;
           width: 16px;

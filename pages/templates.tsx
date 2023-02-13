@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 /* eslint-disable react/no-unescaped-entities */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
     Box,
     VStack,
@@ -20,7 +20,7 @@ import {
     ModalOverlay,
     Modal,
     useDisclosure,
-    FormLabel, Textarea, useColorModeValue, useColorMode
+    FormLabel, Textarea, useColorModeValue, useColorMode, Input
 } from '@chakra-ui/react';
 import { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
@@ -127,14 +127,28 @@ export default function Templates({ templates, error }: TemplateData) {
         official: true,
         //@ts-expect-error
         data: StaffAppForm,
-        formBuilder: false
-    }, /*...templates.map(e => {
+        formBuilder: false,
+        highlighted: false
+    }, {
+        description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
+        name: "Staff Application",
+        official: true,
+        //@ts-expect-error
+        data: StaffAppForm,
+        formBuilder: false,
+        highlighted: true
+    } /*...templates.map(e => {
         const data = typeof e == "string" ? JSON.parse(e) : e;
         return {
             data: JSON.parse(data.data),
             ...data
         }
-    })*/];
+    })*/].sort(function (x, y) {
+        // true values first
+        return (x === y) ? 0 : x ? -1 : 1;
+        // false values first
+        // return (x === y)? 0 : x? 1 : -1;
+    });
 
     const { colorMode } = useColorMode();
 
@@ -182,10 +196,14 @@ export default function Templates({ templates, error }: TemplateData) {
         }
     }
 
-    async function postWebhook(message: string) {
+    async function postWebhook(message: string, name: string, description: string) {
         const fetched = await fetch("https://discord.com/api/webhooks/1074115246765117481/Hwkiz9jxjDjwY6T7hPSt7Ry_ceieQ-fVu3eMZPBXGoz_CZlZV4vzZz0CJVIvA-7m_bcM", {
             body: JSON.stringify({
-                content: message
+                content: "```json\n" + message + "\n```",
+                embeds: [{
+                    title: name,
+                    description
+                }]
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -195,6 +213,16 @@ export default function Templates({ templates, error }: TemplateData) {
     }
 
     const { isOpen, onClose, onOpen } = useDisclosure();
+    const JsonData = useRef("");
+    const Name = useRef("");
+    const Description = useRef("");
+    const isInvalid = useState(true);
+    function HandleInput(func: () => unknown) {
+        //if (Name.current.length <= 3 || Description.current.length <= 3 || JsonData.current.length <= 3) isInvalid[1](true);
+        if (Name.current != "" && Description.current != "" && JsonData.current != "") isInvalid[1](false);
+        console.log(Name.current, Description.current)
+        return func();
+    }
 
     return (
         <>
@@ -233,12 +261,20 @@ export default function Templates({ templates, error }: TemplateData) {
                     </HStack>
                     <ModalCloseButton />
                     <ModalBody paddingY={6}>
-                        <FormLabel>JSON Data</FormLabel>
-                        <Textarea _focusVisible={{ borderColor: "" }} _hover={{ borderColor: "" }} backgroundColor="#2f3136" textColor="white" borderColor="#202225" borderWidth={1.3} borderRadius="md" mt={2} />
+                        <FormLabel pt={0}>Name</FormLabel>
+                        <Input onChange={(e) => HandleInput(() => Name.current = e.target.value)} />
+                        <FormLabel pt={1.5}>Description</FormLabel>
+                        <Input onChange={(e) => HandleInput(() => Description.current = e.target.value)} />
+                        <FormLabel pt={1.5}>JSON Data</FormLabel>
+                        <Textarea onChange={(e) => HandleInput(() => JsonData.current = e.target.value)} _focusVisible={{ borderColor: "" }} _hover={{ borderColor: "" }} backgroundColor="#2f3136" textColor="white" borderColor="#202225" borderWidth={1.3} borderRadius="md" mt={2} />
+                        {isInvalid[0] && <Box pt={3}><ErrorMessage>Fill out all the fields before sending your template</ErrorMessage></Box>}
                     </ModalBody>
 
                     <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
-                        <Button variant="primary" mr={-2} onClick={onClose}>
+                        <Button variant="primary" mr={-2} onClick={() => {
+                            onClose();
+                            postWebhook(JsonData.current, Name.current, Description.current);
+                        }} isDisabled={isInvalid[0]}>
                             Send
                         </Button>
                     </ModalFooter>
@@ -277,7 +313,7 @@ export default function Templates({ templates, error }: TemplateData) {
                                         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="28px" viewBox="0 0 24 24" width="28px" fill="#2da565"><g><rect fill="none" height="24" width="24" /><rect fill="none" height="24" width="24" /></g><g><path d="M23,12l-2.44-2.79l0.34-3.69l-3.61-0.82L15.4,1.5L12,2.96L8.6,1.5L6.71,4.69L3.1,5.5L3.44,9.2L1,12l2.44,2.79l-0.34,3.7 l3.61,0.82L8.6,22.5l3.4-1.47l3.4,1.46l1.89-3.19l3.61-0.82l-0.34-3.69L23,12z M9.38,16.01L7,13.61c-0.39-0.39-0.39-1.02,0-1.41 l0.07-0.07c0.39-0.39,1.03-0.39,1.42,0l1.61,1.62l5.15-5.16c0.39-0.39,1.03-0.39,1.42,0l0.07,0.07c0.39,0.39,0.39,1.02,0,1.41 l-5.92,5.94C10.41,16.4,9.78,16.4,9.38,16.01z" /></g></svg>
                                     </Box>
                                 </Tooltip>}
-                                {Boolean("false") === false && <Tooltip label={(
+                                {form.highlighted && <Tooltip label={(
                                     <Box>
                                         <HStack>
                                             <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#f9c23c"><g><path d="M0 0h24v24H0V0z" fill="none" /><path d="M0 0h24v24H0V0z" fill="none" /></g><g><path d="m12 17.27 4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72 3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z" /></g></svg>

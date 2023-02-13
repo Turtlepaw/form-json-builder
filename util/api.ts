@@ -21,6 +21,7 @@ export interface CreateFormData {
     official: boolean;
     options: CustomFormData[];
     downloadOnly: boolean;
+    highlighted?: boolean;
 }
 
 export interface FormDataResponse extends CreateFormData {

@@ -293,7 +293,6 @@ export default function App() {
               } else setFileInput(input);
             }} />
             <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
-            <SettingsModal.button>Options</SettingsModal.button>
           </HStack>
           {SettingsModal.modal}
           <MessageBuilder

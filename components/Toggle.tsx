@@ -36,7 +36,7 @@ export function useToggle(switchName: Switches, itemName: string) {
     }
 }
 
-function resolveBoolean(str: string): boolean {
+export function resolveBoolean(str: string): boolean {
     if (str == "true") return true;
     else if (str == "false") return false;
     else return false;

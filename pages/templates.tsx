@@ -190,19 +190,28 @@ export default function Templates({ templates, error }: TemplateData) {
         }
     }
 
-    async function postWebhook(message: string, name: string, description: string) {
+    async function postWebhook(message: string, name: string, description: string, username: string) {
         const fetched = await fetch("https://discord.com/api/webhooks/1074115246765117481/Hwkiz9jxjDjwY6T7hPSt7Ry_ceieQ-fVu3eMZPBXGoz_CZlZV4vzZz0CJVIvA-7m_bcM", {
             body: JSON.stringify({
                 content: "```json\n" + message + "\n```",
                 embeds: [{
                     title: name,
-                    description
-                }]
+                    description,
+                    author: {
+                        name: username
+                    },
+                    color: 5793266
+                }],
             }),
             headers: {
                 'Content-Type': 'application/json'
             },
             method: "POST"
+        });
+
+        postToast({
+            style: ToastStyles.Success,
+            title: "Sent Template Request"
         });
     }
 
@@ -210,10 +219,11 @@ export default function Templates({ templates, error }: TemplateData) {
     const JsonData = useRef("");
     const Name = useRef("");
     const Description = useRef("");
+    const Username = useRef("");
     const isInvalid = useState(true);
     function HandleInput(func: () => unknown) {
         //if (Name.current.length <= 3 || Description.current.length <= 3 || JsonData.current.length <= 3) isInvalid[1](true);
-        if (Name.current != "" && Description.current != "" && JsonData.current != "") isInvalid[1](false);
+        if (Name.current != "" && Username.current != "" && Description.current != "" && JsonData.current != "") isInvalid[1](false);
         console.log(Name.current, Description.current)
         return func();
     }
@@ -255,11 +265,13 @@ export default function Templates({ templates, error }: TemplateData) {
                     </HStack>
                     <ModalCloseButton />
                     <ModalBody paddingY={6}>
-                        <FormLabel pt={0}>Name</FormLabel>
-                        <Input onChange={(e) => HandleInput(() => Name.current = e.target.value)} />
-                        <FormLabel pt={1.5}>Description</FormLabel>
-                        <Input onChange={(e) => HandleInput(() => Description.current = e.target.value)} />
-                        <FormLabel pt={1.5}>JSON Data</FormLabel>
+                        <FormLabel pb={1} pt={0}>Discord Tag</FormLabel>
+                        <Input placeholder='Discord User#0001' onChange={(e) => HandleInput(() => Username.current = e.target.value)} />
+                        <FormLabel pb={1} pt={1.5}>Name</FormLabel>
+                        <Input placeholder='My Awesome Template' onChange={(e) => HandleInput(() => Name.current = e.target.value)} />
+                        <FormLabel pb={1} pt={1.5}>Description</FormLabel>
+                        <Input placeholder='' onChange={(e) => HandleInput(() => Description.current = e.target.value)} />
+                        <FormLabel pb={1} pt={1.5}>JSON Data</FormLabel>
                         <Textarea onChange={(e) => HandleInput(() => JsonData.current = e.target.value)} _focusVisible={{ borderColor: "" }} _hover={{ borderColor: "" }} backgroundColor="#2f3136" textColor="white" borderColor="#202225" borderWidth={1.3} borderRadius="md" mt={2} />
                         {isInvalid[0] && <Box pt={3}><ErrorMessage>Fill out all the fields before sending your template</ErrorMessage></Box>}
                     </ModalBody>
@@ -267,7 +279,7 @@ export default function Templates({ templates, error }: TemplateData) {
                     <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
                         <Button variant="primary" mr={-2} onClick={() => {
                             onClose();
-                            postWebhook(JsonData.current, Name.current, Description.current);
+                            postWebhook(JsonData.current, Name.current, Description.current, Username.current);
                         }} isDisabled={isInvalid[0]}>
                             Send
                         </Button>

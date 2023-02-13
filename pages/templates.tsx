@@ -146,7 +146,7 @@ export default function Templates({ templates, error }: TemplateData) {
         }
     })*/].sort(function (x, y) {
         // true values first
-        return (x === y) ? 0 : x ? -1 : 1;
+        return (x === y) ? 0 : x ? 1 : -1;
         // false values first
         // return (x === y)? 0 : x? 1 : -1;
     });

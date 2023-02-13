@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { Replacer } from "./template";
 import { FormAndMessageBuilder } from "./types";
 
 export interface CustomFormData {
@@ -22,6 +23,7 @@ export interface CreateFormData {
     options: CustomFormData[];
     downloadOnly: boolean;
     highlighted?: boolean;
+    replacers: () => Replacer[];
 }
 
 export interface FormDataResponse extends CreateFormData {

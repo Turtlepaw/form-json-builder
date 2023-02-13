@@ -70,6 +70,6 @@ export function Toggle({ switchName, itemName, getItem: item, setItem: _item }: 
     }, [switchName, item, initialCheck]);
 
     return (
-        <Switch isChecked={item} onChange={() => _item(item == true ? false : true)}>{itemName}</Switch>
+        <Switch key={switchName} isChecked={item} onChange={() => _item(item == true ? false : true)}>{itemName}</Switch>
     )
 }

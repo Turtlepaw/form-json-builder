@@ -123,22 +123,14 @@ export default function Templates({ templates, error }: TemplateData) {
 
     //@ts-expect-error
     const Forms: FormDataResponse[] = [{
-        description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
+        description: "Recruit staff to your server. This form includes helper, moderator, and administrator.",
         name: "Staff Application",
         official: true,
         //@ts-expect -error
         data: StaffAppForm,
         formBuilder: false,
         highlighted: false
-    }, {
-        description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
-        name: "Staff Application",
-        official: true,
-        //@ts-expect -error
-        data: StaffAppForm,
-        formBuilder: false,
-        highlighted: true
-    } /*...templates.map(e => {
+    }, /*...templates.map(e => {
         const data = typeof e == "string" ? JSON.parse(e) : e;
         return {
             data: JSON.parse(data.data),

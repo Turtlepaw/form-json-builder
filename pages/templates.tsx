@@ -121,6 +121,7 @@ export default function Templates({ templates, error }: TemplateData) {
     //     </>
     // );
 
+    //@ts-expect-error
     const Forms: FormDataResponse[] = [{
         description: "Start recruiting staff to your server. This form includes helper, moderator, and administrator.",
         name: "Staff Application",

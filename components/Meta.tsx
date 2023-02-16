@@ -31,7 +31,7 @@ export function Meta({ children: Title }: MetaProperties) {
     return (
         <Head>
             <title>{PageTitle}</title>
-            <link rel="icon" href={Configuration.Icon.SVG} />
+            <link rel="icon" href={Configuration.Icon.Blurple.PNG} />
             {/* Primary Meta Tags */}
             <meta name="title" content={EmbedTitle} />
             <meta name="description" content={Configuration.Description} />

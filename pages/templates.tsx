@@ -191,7 +191,7 @@ export default function Templates({ templates, error }: TemplateData) {
     }
 
     async function postWebhook(message: string, name: string, description: string, username: string) {
-        const fetched = await fetch("https://discord.com/api/webhooks/1074115246765117481/Hwkiz9jxjDjwY6T7hPSt7Ry_ceieQ-fVu3eMZPBXGoz_CZlZV4vzZz0CJVIvA-7m_bcM", {
+        const fetched = await fetch(`https://discord.com/api/webhooks/1075842596192129084/${TEMPLATE_REQUESTS_WEBHOOK_TOKEN}}`, {
             body: JSON.stringify({
                 content: "```json\n" + message + "\n```",
                 embeds: [{
@@ -202,6 +202,7 @@ export default function Templates({ templates, error }: TemplateData) {
                     },
                     color: 5793266
                 }],
+                allowed_mentions: { parse: [] }
             }),
             headers: {
                 'Content-Type': 'application/json'

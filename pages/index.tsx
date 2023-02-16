@@ -311,7 +311,7 @@ export default function App() {
               <HStack alignItems='flex-start'>
                 <Button
                   variant='success'
-                  disabled={!formState.isValid}
+                  isDisabled={!formState.isValid}
                   onClick={() => {
                     handleLoad();
                     downloadForm();

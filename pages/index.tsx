@@ -319,7 +319,7 @@ export default function App() {
                   width={225}
                 // bgColor={loading ? "#215b32" : undefined}
                 >
-                  {!loading && "Download Configuration File"}
+                  {!loading && "Download Configuration File" + formState.isValid}
                   {(loading && SettingsModal.settings.LimitAnimations == false) && <Spinner size="sm" />}
                   {(loading && SettingsModal.settings.LimitAnimations == true) && "Downloading..."}
                 </Button>

@@ -12,6 +12,7 @@ export const Configuration = {
         Blurple: {
             SVG: "forms.svg",
             PNG: "forms.png",
+            PNG_Circle: "forms_circle.png"
         }
     }
 }
@@ -31,7 +32,7 @@ export function Meta({ children: Title }: MetaProperties) {
     return (
         <Head>
             <title>{PageTitle}</title>
-            <link rel="icon" href={Configuration.Icon.Blurple.PNG} />
+            <link rel="icon" href={Configuration.Icon.Blurple.PNG_Circle} />
             {/* Primary Meta Tags */}
             <meta name="title" content={EmbedTitle} />
             <meta name="description" content={Configuration.Description} />

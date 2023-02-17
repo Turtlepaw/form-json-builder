@@ -463,7 +463,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
 export async function getStaticProps() {
     return {
         props: {
-            REQUEST_WEBHOOK: `https://discord.com/api/webhooks/${process.env.REQUEST_WEBHOOK_ID}/${process.env.REQUEST_WEBHOOK_TOKEN}`
+            REQUEST_WEBHOOK: process.env.REQUEST_WEBHOOK
         }
     }
 }

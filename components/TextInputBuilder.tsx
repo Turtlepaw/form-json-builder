@@ -93,7 +93,7 @@ export default function TextInputBuilder({
                       <Radio
                         //name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
                         {...register(`forms.${nestIndex}.modal.components.${k}.components.0.style`)}
-                        value="1"
+                        value={1}
                         colorScheme='blurple'
                       >
                         <Text>Singleline</Text>
@@ -101,7 +101,7 @@ export default function TextInputBuilder({
                       <Radio
                         //name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
                         {...register(`forms.${nestIndex}.modal.components.${k}.components.0.style`)}
-                        value="2"
+                        value={2}
                         colorScheme='blurple'
                       >
                         <Text>Multiline</Text>

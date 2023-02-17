@@ -237,10 +237,12 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
             <Center pt={10}>
                 <VStack bgImage="/stars.svg" bgSize="contain" paddingX={150} bgRepeat="no-repeat">
                     {/* <Image src="/stars.svg" alt='Stars' width={5} height={5} /> */}
-                    <Badge bgColor="#5865f2" fontWeight="bold" fontSize={20} width="20" borderRadius="full" textAlign="center" textColor="white">NEW</Badge>
+                    {/* <Badge bgColor="#5865f2" fontWeight="extrabold" fontSize={20} width="20" borderRadius="full" textAlign="center" textColor="white">BETA</Badge> */}
                     <Heading>Form Templates</Heading>
                     <Text></Text>
-                    <ErrorMessage>Templates can only be added by website admins currently.</ErrorMessage>
+                    <Box pb={2}>
+                        <ErrorMessage>Templates can only be added by website admins currently.</ErrorMessage>
+                    </Box>
                     <Button onClick={onOpen}>Submit a Form</Button>
                 </VStack>
             </Center>
@@ -310,7 +312,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                     const [downloadModalSatisfied, setSatisfied] = useState(false);
 
                     return (
-                        <Box mx={2} my={2} key={form.name} bgColor={colorMode == "light" ? "#292b2f" : "#ebedef"} borderRadius="lg" px={5} py={5}>
+                        <Box id={form.name.toLowerCase().split(" ").join("-")} mx={2} my={2} key={form.name} bgColor={colorMode == "light" ? "#292b2f" : "#ebedef"} borderRadius="lg" px={5} py={5}>
                             <HStack>
                                 <Heading size="md" display="inline-block">{form.name}</Heading>
                                 {form.official && <Tooltip label={(

@@ -44,6 +44,7 @@ import { Switches, Toggle, useToggle } from '../components/Toggle';
 import { useAutorun } from '../util/useAutorun';
 import { Navigation } from '../components/Navigation';
 import { useModal } from '../components/SettingsModal';
+import { createName } from '../util/form';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -243,7 +244,7 @@ export default function App() {
       )}`;
       const link = document.createElement("a");
       link.href = jsonString;
-      link.download = getValues("forms")[0].modal.title.split(" ").map(e => e.toLowerCase()).join("_") + ".json";
+      link.download = createName({ getValues }) + ".json";
       link.click();
     }, 500)
   }
@@ -306,7 +307,7 @@ export default function App() {
             <Box>
               This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.
             </Box>
-            <JSONViewer {...{ downloadForm, animations: !SettingsModal.settings.LimitAnimations }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+            <JSONViewer {...{ downloadForm, animations: !SettingsModal.settings.LimitAnimations, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
             <VStack alignItems='flex-start'>
               <HStack alignItems='flex-start'>
                 <Button

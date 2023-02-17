@@ -1,5 +1,6 @@
 import { cssVar, extendTheme } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
+import { Button } from "./Button";
 
 const $SwitchBackground = cssVar("switch-bg");
 const colours = {
@@ -57,6 +58,7 @@ const theme = extendTheme({
     })
   },
   components: {
+    Button,
     Alert: {
       variants: {
         primary: {
@@ -77,47 +79,9 @@ const theme = extendTheme({
         }
       }
     },
-    Button: {
-      baseStyle: {
-        color: 'white',
-        fontFamily: 'Whitney Bold',
-        fontWeight: '500',
-        padding: '16px 2px',
-        borderRadius: '3px',
-        _focus: { boxShadow: 'none' }
-      },
-      variants: {
-        primary: {
-          bg: 'blurple',
-          _hover: { bg: '#4752c4' }
-        },
-        secondary: {
-          bg: 'grey.light',
-          _hover: { bg: '#686d73' }
-        },
-        success: {
-          bg: 'green',
-          _hover: { bg: '#215b32' }
-        },
-        danger: {
-          bg: 'red',
-          _hover: { bg: '#a12d2f' }
-        },
-        link: {
-          bg: 'transparent',
-          color: 'white',
-          _hover: {
-            textDecoration: 'underline'
-          }
-        }
-      },
-      defaultProps: {
-        variant: 'secondary',
-      }
-    },
     Input: { defaultProps: { variant: 'normal' } },
     FormLabel: { baseStyle: { marginBottom: '0px' } }
   }
 });
 
-export default theme
+export default theme;

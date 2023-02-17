@@ -1,4 +1,5 @@
 import '../styles/App.css';
+import "../styles/Json.css";
 import '../util/framer-motion.d';
 import { Box, Button, ChakraProvider, ColorModeScript, Divider, FormLabel, Heading, HStack, Input, Link, ListItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, OrderedList, Spinner, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
 import theme from "../components/theme";

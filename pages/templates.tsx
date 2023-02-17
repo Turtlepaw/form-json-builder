@@ -322,7 +322,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                             <Text display="inline">This is an official template built by admins</Text>
                                         </HStack>
                                     </Box>
-                                )} placement='top' shouldWrapChildren bg="#18191c" borderRadius={6} px={3} py={2}>
+                                )} placement='top' bg="#181414">
                                     <Box display="inline-block" pt={1}>
                                         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="28px" viewBox="0 0 24 24" width="28px" fill="#2da565"><g><rect fill="none" height="24" width="24" /><rect fill="none" height="24" width="24" /></g><g><path d="M23,12l-2.44-2.79l0.34-3.69l-3.61-0.82L15.4,1.5L12,2.96L8.6,1.5L6.71,4.69L3.1,5.5L3.44,9.2L1,12l2.44,2.79l-0.34,3.7 l3.61,0.82L8.6,22.5l3.4-1.47l3.4,1.46l1.89-3.19l3.61-0.82l-0.34-3.69L23,12z M9.38,16.01L7,13.61c-0.39-0.39-0.39-1.02,0-1.41 l0.07-0.07c0.39-0.39,1.03-0.39,1.42,0l1.61,1.62l5.15-5.16c0.39-0.39,1.03-0.39,1.42,0l0.07,0.07c0.39,0.39,0.39,1.02,0,1.41 l-5.92,5.94C10.41,16.4,9.78,16.4,9.38,16.01z" /></g></svg>
                                     </Box>
@@ -334,7 +334,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                             <Text display="inline">This template is highlighted</Text>
                                         </HStack>
                                     </Box>
-                                )} placement='top' shouldWrapChildren bg="#18191c" borderRadius={6} px={3} py={2}>
+                                )} placement='top' bg="#181414">
                                     <Box display="inline-block" pt={1}>
                                         <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="28px" viewBox="0 0 24 24" width="28px" fill="#f9c23c"><g><path d="M0 0h24v24H0V0z" fill="none" /><path d="M0 0h24v24H0V0z" fill="none" /></g><g><path d="m12 17.27 4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72 3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z" /></g></svg>
                                     </Box>
@@ -357,7 +357,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                 <Box display="inline-block" float="right">
                                     {/* <Tooltip label={(
                                         <ErrorMessage>Forms cannot be previewed currently</ErrorMessage>
-                                    )} placement='top' shouldWrapChildren bg="#18191c" borderRadius={6} px={3} py={2}>
+                                    )} placement='top' bg="#181414">
                                         <Button _hover={{
                                             bgColor: ""
                                         }} variant="secondary" mr={3} isDisabled>Preview</Button>

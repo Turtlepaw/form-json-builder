@@ -3,6 +3,7 @@ import { Box, Collapse, HStack, Spinner, Text, Tooltip, useColorMode } from '@ch
 import { UseFormGetValues } from "react-hook-form";
 import { FormAndMessageBuilder } from "../util/types";
 import { createName } from "../util/form";
+//@ts-expect-error
 import Highlight from "react-highlight"
 
 export interface JSONViewerProperties {

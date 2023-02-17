@@ -156,10 +156,8 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                     Object.entries(e).map(([k, v]) => {
                         console.log(k, v)
                         if (v === null) return { key: k, value: v };
-                        //@ts-expect-error
                         // eslint-disable-next-line eqeqeq
                         if (v == '') e[k] = null;
-                        //@ts-expect-error
                         else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
                         return { key: k, value: v };
                     });
@@ -182,7 +180,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                     } else if (typeof v == "object") {
                         Object.entries(v).forEach(([_k, v2], i2) => {
                             const k2 = _k as keyof EmbedAuthor | keyof EmbedFooter;
-                            //@ts-expect-error
                             if (v2 == null || v2 === "") formData.message.embeds[i][k][k2] = null;
                         })
                     }

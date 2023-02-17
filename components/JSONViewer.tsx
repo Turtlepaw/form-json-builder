@@ -1,16 +1,20 @@
 import React from "react"
 import { Box, Collapse, HStack, Spinner, Text, Tooltip, useColorMode } from '@chakra-ui/react'
 import { MdOutlineFileDownload } from 'react-icons/md'
+import { UseFormGetValues } from "react-hook-form";
+import { FormAndMessageBuilder } from "../util/types";
+import { createName } from "../util/form";
 
 export interface JSONViewerProperties {
   downloadForm: () => void;
   children: string;
   animations: boolean;
+  getValues: UseFormGetValues<FormAndMessageBuilder>;
 }
 
 export const DOWNLOAD_SPINNER_TIME = 1000;
 
-function JSONViewer({ children, downloadForm: downloadFile, animations }: JSONViewerProperties) {
+function JSONViewer({ children, downloadForm: downloadFile, animations, getValues }: JSONViewerProperties) {
   const [show, setShow] = React.useState(false)
   const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
@@ -48,7 +52,7 @@ function JSONViewer({ children, downloadForm: downloadFile, animations }: JSONVi
           {show ? 'Collapse' : 'Expand'}
         </Box>
         <HStack>
-          <Text>form.json</Text>
+          <Text>{createName({ getValues })}.json</Text>
           <Tooltip hasArrow label={
             <Box>
               Download

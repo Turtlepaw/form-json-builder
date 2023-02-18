@@ -49,7 +49,7 @@ const defaultValues = DefaultValues as FormAndMessageBuilder;
 
 
 // @ts-expect-error
-export function Editor({ messageType, setMessageType, displayForm, setDisplayForm, watch, getValues, setValue, formState, control, register, reset }) {
+export function Editor({ messageType, setMessageType, displayForm, setDisplayForm, watch, getValues, setValue, formState, control, register, reset, displaySection }) {
   const toast = useToast();
 
   enum ToastStyles {
@@ -223,7 +223,7 @@ export function Editor({ messageType, setMessageType, displayForm, setDisplayFor
   const SettingsModal = useModal();
 
   return (
-    <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);'>
+    <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
       <HStack>
         <Button onClick={() => {
           if (fileInput == null) {

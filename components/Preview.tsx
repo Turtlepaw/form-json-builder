@@ -16,9 +16,10 @@ export interface PreviewProperties {
     displayForm: number;
     setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
     type: string;
+    displaySection: boolean;
 }
 
-function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewProperties) {
+function Preview({ message, forms, displayForm, setDisplayForm, type, displaySection }: PreviewProperties) {
     const { colorMode } = useColorMode();
     const defaultValues = {
         ...forms[displayForm].modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
@@ -74,7 +75,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
     const HandleInteraction = () => setHidden(!FormsProfileHidden);
 
     return (
-        <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);'>
+        <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
             <Box>
                 <Box display='flex'>
                     <FormProfile {...{

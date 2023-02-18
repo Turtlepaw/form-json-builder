@@ -27,7 +27,6 @@ function JSONViewer({ children, downloadForm: downloadFile, animations, getValue
     if (animations == true) setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
   }
   const fileName = `${createName({ getValues })}.json`
-  const isNotSmallScreen = useScreenWidth(500);
 
   return (
     <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#f2f3f5' : '#2f3136', color: colorMode === 'dark' ? '#4f5660' : '#e0e1e5', width: '100%' }}>
@@ -46,7 +45,8 @@ function JSONViewer({ children, downloadForm: downloadFile, animations, getValue
           </Tooltip>
         </Box>
         <HStack>
-          {isNotSmallScreen && <Tooltip hasArrow label='Form Configuration File' placement='top' bg="#181414"><Text _hover={{ color: '#e0e1e5' }}>{fileName}</Text></Tooltip>}
+          {<Tooltip hasArrow label='Form Configuration File' placement='top' bg="#181414"><Text _hover={{ color: '#e0e1e5' }}>{fileName}</Text></Tooltip>}
+
           <Tooltip hasArrow label={
             loading ? <Text>Downloading {fileName}</Text> : <Text>Download {fileName}</Text>
           } placement='top' bg="#181414">

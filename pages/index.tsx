@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Grid, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
+import { Grid, Tabs, TabList, Tab, TabPanels, TabPanel, Text } from '@chakra-ui/react';
 import Preview from '../components/Preview';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
@@ -34,41 +34,22 @@ export default function App() {
   const [messageType, setMessageType] = useState("content");
 
   const SettingsModal = useModal();
-  const isSmallScreen = !useScreenWidth(500);
+  const isNotSmallScreen = useScreenWidth(500);
+
+  const [displaySection, setDisplaySection] = useState(1);
 
 
-  if(isSmallScreen) {
-    return (
-      <>
-        <Meta>Home</Meta>
-        <Navigation {...SettingsModal} />
-        <Tabs>
-          <TabList>
-            <Tab>Editor</Tab>
-            <Tab>Preview</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-            <Editor messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} />
-            </TabPanel>
-            <TabPanel>
-            <Preview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Meta>Home</Meta>
-        <Navigation {...SettingsModal} />
-        <Grid gridTemplateColumns='1fr 1fr'>
-          <Editor messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} />
-          <Preview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} />
-        </Grid>
-      </>
-    );
-  }
+
+  return (
+    <>
+      <Meta>Home</Meta>
+      <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} {...SettingsModal}  />
+      <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
+        <Editor messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} />
+        <Preview type={messageType} message={watch('message')} forms={watch('forms')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1}/>
+      </Grid>
+    </>
+  );
+  
 
 }

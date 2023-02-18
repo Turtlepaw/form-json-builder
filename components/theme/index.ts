@@ -80,7 +80,8 @@ const theme = extendTheme({
       }
     },
     Input: { defaultProps: { variant: 'normal' } },
-    FormLabel: { baseStyle: { marginBottom: '0px' } }
+    FormLabel: { baseStyle: { marginBottom: '0px' } },
+    Tooltip: { baseStyle: { bg: "#181414", padding: '6px 12px', borderRadius: 6 } }
   }
 });
 

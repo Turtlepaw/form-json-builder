@@ -3470,9 +3470,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.1":
-  version: 3.3.2
-  resolution: "hoist-non-react-statics@npm:3.3.2"
+hoist-non-react-statics@^3.3.1:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is: ^16.7.0
   checksum: b1538270429b13901ee586aa44f4cc3ecd8831c061d06cb8322e50ea17b3f5ce4d0e2e66394761e6c8e152cd8c34fb3b4b690116c6ce2bd45b18c746516cb9e8
@@ -4520,14 +4521,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.31.2":
-  version: 7.43.1
-  resolution: "react-hook-form@npm:7.43.1"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: a15b672885cf9bb43c6691bf544b3ead59860bb8c6298c7607b8b82952707ec8dd9fd9d1346310abb8696e99319b1f78f6023941d129154815811ee64d750461
-  languageName: node
-  linkType: hard
+react-hook-form@^7.31.2:
+  version "7.43.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.43.1.tgz#0d0d7822f3f7fc05ffc41d5f012b49b90fcfa0f0"
+  integrity sha512-+s3+s8LLytRMriwwuSqeLStVjRXFGxgjjx2jED7Z+wz1J/88vpxieRQGvJVvzrzVxshZ0BRuocFERb779m2kNg==
 
 "react-icons@npm:^4.3.1":
   version: 4.7.1

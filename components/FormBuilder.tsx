@@ -60,10 +60,8 @@ export default function FormBuilder({
                 <FormLabel htmlFor={`forms[${index}].webhook_url`} display='flex' alignItems='center'>
                   <Text marginRight='5px' _after={{ content: '" *"', color: '#ff7a6b' }}>Webhook URL</Text>
                   <Tooltip hasArrow label={
-                    <Box>
-                      The webhook url to post submissions to. Keep this secret! You can create the webhook in channel settings, integrations tab for the channel you want to post the submission to.
-                    </Box>
-                  } placement='right' shouldWrapChildren bg="#18191c" borderRadius={6} padding='4px 2px 4px 12px'>
+                    'The webhook url to post submissions to. Keep this secret! You can create the webhook in channel settings, integrations tab for the channel you want to post the submission to.'
+                  } placement='right' shouldWrapChildren bg="#181414">
                     <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
                   </Tooltip>
                 </FormLabel>

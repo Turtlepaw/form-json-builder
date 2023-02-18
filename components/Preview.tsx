@@ -84,7 +84,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
                                     <Box>
                                         Verified Bot
                                     </Box>
-                                } placement='top' shouldWrapChildren bg="#18191c" borderRadius={6} padding='6px 12px'>
+                                } placement='top' bg="#181414">
                                     <svg width="16" height="16" viewBox="0 0 16 15.2"><path d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z" fill="currentColor"></path></svg>
                                 </Tooltip>
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>

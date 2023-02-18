@@ -1,0 +1,11 @@
+.hljs-attr, .hljs-number {
+  color: #79c0ff;
+}
+
+.hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-literal {
+  color: #ff7b72
+}

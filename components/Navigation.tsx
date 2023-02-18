@@ -7,7 +7,7 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 export interface NavigationProps {
     modalHandler: () => void;
     displaySection: number;
-    setDisplaySection: React.Dispatch<React.SetStateAction<number>>;
+    setDisplaySection: any;
 }
 
 export function Navigation({ modalHandler, displaySection, setDisplaySection }: NavigationProps) {
@@ -28,7 +28,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                         }}
                     />
                 </NextLink>
-                {isSmallScreen && <Box bg='#302c34' p='3px' ml={5} borderRadius={7.5}>
+                {(isSmallScreen && setDisplaySection !== 0) && <Box bg='#302c34' p='3px' ml={5} borderRadius={7.5}>
                     <Button onClick={() => setDisplaySection(1)} height='2px' borderRadius={5} bg={displaySection === 1 ? '#4f545c' : 'transparent'}>Editor</Button>
                     <Button onClick={() => setDisplaySection(2)} height='2px' borderRadius={5} bg={displaySection === 2 ? '#4f545c' : 'transparent'}>Preview</Button>
                 </Box>}

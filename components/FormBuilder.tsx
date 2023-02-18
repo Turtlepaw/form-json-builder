@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Select, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Button, CloseButton, FormLabel, HStack, Select, Stack, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import {
   Control,
@@ -16,6 +16,7 @@ import Collapsible from "./Collapsible";
 import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 import { FormAndMessageBuilder } from "../util/types";
+import { useScreenWidth } from "../util/width";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -45,6 +46,7 @@ export default function FormBuilder({
   });
 
   const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false)
+  const isSmallScreen = !useScreenWidth(500);
 
   return (
     <Box width='100%' pb={2}>
@@ -75,7 +77,7 @@ export default function FormBuilder({
                   style={{ marginBottom: '8px' }}
                 />
                 <ErrorMessage>{(errors.forms?.[index]?.webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index]?.webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
-                <HStack marginBottom='8px' alignItems='flex-start'>
+                <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                   <Box width='100%'>
                     <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
                     <input
@@ -102,7 +104,7 @@ export default function FormBuilder({
                       <option value="4">Red</option>
                     </Select>
                   </Box>
-                </HStack>
+                </Stack>
 
                 <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Title</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].modal.title?.length > 45 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index]?.modal.title?.length}/45</span></FormLabel>
                 <input

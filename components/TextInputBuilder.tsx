@@ -10,7 +10,8 @@ import {
   Tooltip,
   Switch,
   HStack,
-  Image
+  Image,
+  VStack
 } from "@chakra-ui/react";
 import React from "react";
 import {
@@ -26,6 +27,7 @@ import {
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
 import { FormAndMessageBuilder, ModalComponentBuilder } from "../util/types";
+import { useScreenWidth } from "../util/width";
 import Collapsible from "./Collapsible";
 
 export interface TextInputBuilderProperties<T extends FieldValues> {
@@ -52,6 +54,7 @@ export default function TextInputBuilder({
     name: `forms.${nestIndex}.modal.components`
   });
   const [textInputStyle, setTextInputStyle] = React.useState(['1', '1', '1', '1', '1'])
+  const isSmallScreen = !useScreenWidth(500);
 
   return (
     <div id={id}>
@@ -72,7 +75,7 @@ export default function TextInputBuilder({
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
-              <HStack marginBottom='8px' alignItems='flex-start'>
+              <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`} display='flex' alignItems='center'>
                     <Text>Style</Text>
@@ -89,7 +92,7 @@ export default function TextInputBuilder({
                     newTextInputStyle[k] = value
                     setTextInputStyle(newTextInputStyle)
                   }} value={textInputStyle[k]} id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
-                    <Stack direction="row">
+                    <Stack direction={isSmallScreen ? "column" : "row"}>
                       <Radio
                         //name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
                         {...register(`forms.${nestIndex}.modal.components.${k}.components.0.style`)}
@@ -123,7 +126,7 @@ export default function TextInputBuilder({
                     )}
                   />
                 </Box>
-              </HStack>
+              </Stack>
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.placeholder?.length > 100) ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{textInput?.placeholder?.length || 0}/100</span></FormLabel>
               <input

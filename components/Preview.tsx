@@ -2,6 +2,7 @@
 import { Box, Button, Tooltip, Text, useColorMode, Link, Image } from '@chakra-ui/react';
 //import Image from "next/image";
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FormBuilder, FormMessageBuilder } from '../util/types';
 import { FormProfile } from './Mention';
 
@@ -19,6 +20,13 @@ export interface PreviewProperties {
 
 function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewProperties) {
     const { colorMode } = useColorMode();
+    const defaultValues = {
+        ...forms[displayForm].modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
+    };
+    console.log(defaultValues)
+    const textInputs = useForm({
+        defaultValues
+    });
 
     if (displayForm < 0) displayForm = 0;
 
@@ -27,7 +35,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
     </>;
 
     const MessageEmbed = <>
-        {message?.embeds && <Box  whiteSpace='pre-wrap' borderLeftColor={message.embeds[0]?.color != null ? `#${message.embeds[0]?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && <Box whiteSpace='pre-wrap' borderLeftColor={message.embeds[0]?.color != null ? `#${message.embeds[0]?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#e3e5e8" : "rgb(32, 34, 37)")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <Link href={isEmpty(message.embeds[0]?.author?.url) ? undefined : message.embeds[0].author.url} style={{ cursor: isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
@@ -99,8 +107,6 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
                         </Box>
                     </Box>
                 </Box>
-
-
             </Box>
             {/* <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
                 <Button disabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
@@ -120,13 +126,25 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
                         </Box>
                     </Box>
                     <Box>
-                        {forms[displayForm]?.modal.components.map(actionRow => (
+                        {forms[displayForm]?.modal.components.map((actionRow, i) => (
                             <Box key={Math.random()} m='0 1em 1em'>
                                 <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
                                     {actionRow.components[0]?.label}
                                     {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
-                                <Box as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0]?.placeholder} defaultValue={actionRow.components[0]?.value} />
+                                <Box
+                                    as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'}
+                                    bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'}
+                                    height={actionRow.components[0]?.style == 2 ? '16' : '2.2rem'}
+                                    fontSize='16px'
+                                    resize='none'
+                                    border='0px'
+                                    _focus={{ border: '0px' }}
+                                    placeholder={actionRow.components[0]?.placeholder}
+                                    //@ts-ignore
+                                    //{...textInputs.register(`${actionRow.components[0].label}`)}
+                                    defaultValue={actionRow.components[0].value}
+                                />
                             </Box>
                         ))}
                     </Box>
@@ -160,7 +178,8 @@ function Preview({ message, forms, displayForm, setDisplayForm, type }: PreviewP
                                                 {actionRow.components[0]?.label ?? "Field"}
                                             </Text>
                                             <Text fontSize='0.875rem' color={actionRow.components[0]?.value ? 'white' : '#a3a6aa'}>
-                                                {actionRow.components[0]?.value || '(Answer will be displayed here)'}
+                                                {/* @ts-expect-error */}
+                                                {(textInputs.watch(actionRow.components[0].label) == "" ? actionRow.components[0]?.value : textInputs.watch(actionRow.components[0].label)) || '(Answer will be displayed here)'}
                                             </Text>
                                         </Box>
                                     ))}

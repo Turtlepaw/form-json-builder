@@ -45,6 +45,7 @@ import { useAutorun } from '../util/useAutorun';
 import { Navigation } from '../components/Navigation';
 import { useModal } from '../components/SettingsModal';
 import { createName } from '../util/form';
+import { useScreenWidth } from '../util/width';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -117,11 +118,11 @@ export default function App() {
   const fixForm = (toast = true) => {
     getValues("forms").forEach((form, i) => {
       setValue(`forms.${i}.button.style`, Number(form.button.style));
-      form.modal.components.forEach((actionRow) => {
+      form.modal.components.forEach((actionRow, rowIndex) => {
         actionRow.components.forEach((e, index) => {
           console.log(e)
           Object.entries(e).map(([k, v]) => {
-            console.log(k, v)
+            console.log(k, v, index)
             if (v === null) return { key: k, value: v };
             //@ts-expect-error
             // eslint-disable-next-line eqeqeq
@@ -130,7 +131,7 @@ export default function App() {
             else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
             return { key: k, value: v };
           });
-          setValue(`forms.${i}.modal.components.${index}.components.${index}`, e);
+          setValue(`forms.${i}.modal.components.${rowIndex}.components.${index}`, e);
         })
       })
     });

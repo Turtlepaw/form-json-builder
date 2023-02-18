@@ -33,9 +33,9 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                     <Button onClick={() => setDisplaySection(2)} height='2px' borderRadius={5} bg={displaySection === 2 ? '#4f545c' : 'transparent'}>Preview</Button>
                 </Box>}
                 <nav>
-                    <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
-                    <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>
-                    <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Documentation</a>
+                    <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support {!isSmallScreen && 'Server'}</a>
+                    {!isSmallScreen && <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>}
+                    <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Doc{isSmallScreen ? 's' : 'umentation'}</a>
                     <NextLink href="/templates">Templates</NextLink>
                     {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
                 </nav>

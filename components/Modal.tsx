@@ -13,7 +13,7 @@ export function Modal({ isOpen, onClose, children }: { isOpen: boolean; onClose:
 export function ModalContent({ children }: PropsWithChildren) {
     const { colorMode } = useColorMode();
     return (
-        <ChakraModalContent backgroundColor={colorMode == "dark" ? "white" : "#36393f"}>
+        <ChakraModalContent backgroundColor={colorMode == "dark" ? "#36393f" : "white"}>
             {children}
         </ChakraModalContent>
     )

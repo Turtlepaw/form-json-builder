@@ -67,7 +67,7 @@ export interface TemplateData {
 
 function getProps({ colorMode }: ColorModeContextType): InputProps & TextareaProps {
     return {
-        backgroundColor: colorMode == "dark" ? "#e9eaed" : "#2f3136",
+        backgroundColor: colorMode == "dark" ? "#2f3136" : "#e9eaed",
         borderColor: "transparent"
     }
 }
@@ -330,7 +330,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                     const [downloadModalSatisfied, setSatisfied] = useState(false);
 
                     return (
-                        <Box id={form.name.toLowerCase().split(" ").join("-")} mx={2} my={2} key={form.name} bgColor={colorMode == "light" ? "#292b2f" : "#ebedef"} borderRadius="lg" px={5} py={5}>
+                        <Box id={form.name.toLowerCase().split(" ").join("-")} mx={2} my={2} key={form.name} bgColor={colorMode === "dark" ? "#292b2f" : "#ebedef"} borderRadius="lg" px={5} py={5}>
                             <HStack>
                                 <Heading size="md" display="inline-block">{form.name}</Heading>
                                 {form.official && <Tooltip label={(
@@ -438,11 +438,11 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                 <Modal isOpen={isOpen} onClose={onClose}>
                                     <ModalContent>
                                         <Box display='flex'>
-                                            <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
+                                            <Box border={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                                                 <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                                                     <Box display='flex' alignItems='center' height='24px'>
                                                         <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width={24} height={24} style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
-                                                        <Text fontSize='24px' color={colorMode === 'dark' ? '#060607' : 'white'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{form.data.forms[0]?.modal.title}</Text>
+                                                        <Text fontSize='24px' color={colorMode === 'dark' ? 'white' : '#060607'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{form.data.forms[0]?.modal.title}</Text>
                                                     </Box>
                                                     <Box display='flex' p='4px' cursor='pointer' onClick={onClose}>
                                                         <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
@@ -451,16 +451,16 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                                 <Box>
                                                     {form.data.forms[0]?.modal.components.map(actionRow => (
                                                         <Box key={Math.random()} m='0 1em 0.4em'>
-                                                            <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#4f5660' : '#b9bbbe'}>
+                                                            <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#b9bbbe' : '#4f5660'}>
                                                                 {actionRow.components[0]?.label}
                                                                 {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                                             </Text>
-                                                            <Box as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#e3e5e8' : '#202225'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0]?.placeholder} defaultValue={actionRow.components[0]?.value} />
+                                                            <Box as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'} bg={colorMode === 'dark' ? '#202225' : '#e3e5e8'} fontSize='16px' resize='none' border='0px' _focus={{ border: '0px' }} placeholder={actionRow.components[0]?.placeholder} defaultValue={actionRow.components[0]?.value} />
                                                         </Box>
                                                     ))}
                                                 </Box>
-                                                <Box mt={5} bg={colorMode === 'dark' ? '#f2f3f5' : '#2f3136'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
-                                                    <Button onClick={onClose} variant='link' color={colorMode === 'dark' ? '#747f8d' : 'white'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
+                                                <Box mt={5} bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
+                                                    <Button onClick={onClose} variant='link' color={colorMode === 'dark' ? 'white' : '#747f8d'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
                                                     <Button onClick={onClose} variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
                                                 </Box>
                                             </Box>

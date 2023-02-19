@@ -1,44 +1,20 @@
 import '../styles/App.css';
 import "../styles/Json.css";
 import '../util/framer-motion.d';
-import { Box, Button, ChakraProvider, ColorModeScript, Divider, FormLabel, Heading, HStack, Input, Link, ListItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, OrderedList, Spinner, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, ChakraProvider, ColorModeScript, Heading, Link, ListItem, ModalBody, ModalCloseButton, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
 import theme from "../components/theme";
-import { SettingsManagerProvider, SettingsManagerBuilder, SettingsManager } from '../util/settings';
+import { SettingsManagerBuilder } from '../util/settings';
 import { AppProps } from 'next/app';
-import { resolveBoolean, Switches, useToggle } from '../components/Toggle';
-import ErrorMessage from '../components/ErrorMessage';
-import Image from 'next/image';
+import { resolveBoolean } from '../components/Toggle';
 import { LinkStyle } from '../util/styles';
 import { useEffect, useState } from 'react';
+import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
-export default function App({ Component, pageProps }: AppProps) {
-  const SettingsManager = new SettingsManagerBuilder();
+export function Scrollbar() {
   const { colorMode } = useColorMode();
-  const [hasSeenRelease, setReleaseSeen] = useState(false);
-  const [initialLoad, loaded] = useState(false);
-  const ValueName = "HAS_SEEN_213_RELEASE";
-  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false, onClose: () => setReleaseSeen(true) });
-  useEffect(() => {
-    const val = localStorage.getItem(ValueName);
-    const resolvedVal = val == null ? false : resolveBoolean(val);
-    if (val != null) setReleaseSeen(
-      resolveBoolean(val)
-    );
-    if (resolvedVal == false) onOpen();
-    loaded(true);
-  }, [onOpen]);
-
-  useEffect(() => {
-    if (!initialLoad) return;
-    localStorage.setItem(ValueName, JSON.stringify(hasSeenRelease));
-  }, [hasSeenRelease, initialLoad]);
-
-  console.log("a", hasSeenRelease)
-
   return (
-    <ChakraProvider theme={theme}>
-      <style>
-        {`::-webkit-scrollbar {
+    <style>
+      {`::-webkit-scrollbar {
           height: 16px;
           width: 16px;
         }
@@ -63,13 +39,42 @@ export default function App({ Component, pageProps }: AppProps) {
           background-clip: padding-box;
         }
   `}
-      </style>
+    </style>
+  )
+}
+
+export default function App({ Component, pageProps }: AppProps) {
+  const SettingsManager = new SettingsManagerBuilder();
+  const [hasSeenRelease, setReleaseSeen] = useState(false);
+  const { colorMode } = useColorMode();
+  const [initialLoad, loaded] = useState(false);
+  const ValueName = "HAS_SEEN_218_RELEASE";
+  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false, onClose: () => setReleaseSeen(true) });
+  useEffect(() => {
+    const val = localStorage.getItem(ValueName);
+    const resolvedVal = val == null ? false : resolveBoolean(val);
+    if (val != null) setReleaseSeen(
+      resolveBoolean(val)
+    );
+    if (resolvedVal == false) onOpen();
+    loaded(true);
+  }, [onOpen]);
+
+  useEffect(() => {
+    if (!initialLoad) return;
+    localStorage.setItem(ValueName, JSON.stringify(hasSeenRelease));
+  }, [hasSeenRelease, initialLoad]);
+
+  console.log("a", hasSeenRelease)
+
+  return (
+    <ChakraProvider theme={theme}>
+      <Scrollbar />
       {/* <SettingsManagerProvider value={SettingsManager}> */}
       <ColorModeScript initialColorMode='dark' />
       <Component {...pageProps} />
       <Modal {...{ isOpen, onClose }}>
-        <ModalOverlay />
-        <ModalContent backgroundColor="#36393f">
+        <ModalContent>
           {/* <HStack pl={5} pt={4}>
             <Image
               src="/forms.svg"
@@ -86,20 +91,18 @@ export default function App({ Component, pageProps }: AppProps) {
           <ModalBody paddingY={6}>
             <VStack textAlign="center">
               <Heading size="md" fontWeight="medium">What&apos;s New</Heading>
-              <Text color="#b9bbbe">February 13 2023</Text>
+              <Text color={colorMode == "light" ? "#b9bbbe" : "#898c95"}>February 18 2023</Text>
             </VStack>
             <VStack pt={5}>
               <UnorderedList>
-                <ListItem py={1}>We&apos;ve switched to <Link style={LinkStyle} href="https://nextjs.org/">Next.js</Link> and <Link style={LinkStyle} href="https://typescriptlang.org/">TypeScript</Link>, this will make the website more stable and faster</ListItem>
-                <ListItem py={1}>Quick start your server with <Link style={LinkStyle} href="/templates">Form Templates</Link></ListItem>
-                <ListItem py={1}>Added spinners on download buttons</ListItem>
-                {/* <ListItem py={1}>Configure the form builder to your liking with the Options button</ListItem> */}
-                <ListItem py={1}>Fixed up the light mode, use at your own risk!</ListItem>
+                <ListItem py={1}>Support for smaller screens (e.g. phones) has been optimized</ListItem>
+                <ListItem py={1}>We fixed an annoying bug that would copy questions from the last question to the 1st</ListItem>
+                <ListItem py={1}>Light mode has been fixed, including a fixed scrollbar and fixed modals!</ListItem>
               </UnorderedList>
             </VStack>
           </ModalBody>
 
-          <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
+          <ModalFooter>
             <Button
               variant="success"
               onClick={() => {
@@ -114,6 +117,6 @@ export default function App({ Component, pageProps }: AppProps) {
         </ModalContent>
       </Modal>
       {/* </SettingsManagerProvider> */}
-    </ChakraProvider>
+    </ChakraProvider >
   );
 }

@@ -1,9 +1,7 @@
 export interface ComponentTheme<T> {
-    baseStyle: T;
-    variants: {
-        [key: string]: T;
+    baseStyle?: Partial<T>;
+    variants?: {
+        [key: string]: Partial<T>;
     };
-    defaultProps: {
-        variant: string;
-    }
+    defaultProps?: Partial<T>;
 }

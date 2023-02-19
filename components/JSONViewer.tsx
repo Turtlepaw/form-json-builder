@@ -1,11 +1,12 @@
 import React from "react"
-import { Box, Collapse, HStack, Spinner, Text, Tooltip, useColorMode } from '@chakra-ui/react'
+import { Box, Button, Collapse, HStack, Spinner, Text, Tooltip, useColorMode } from '@chakra-ui/react'
 import { UseFormGetValues } from "react-hook-form";
 import { FormAndMessageBuilder } from "../util/types";
 import { createName } from "../util/form";
 //@ts-expect-error
 import Highlight from "react-highlight"
 import { useScreenWidth } from "../util/width";
+import { MdDownload } from "react-icons/md";
 
 export interface JSONViewerProperties {
   downloadForm: () => void;
@@ -48,8 +49,10 @@ function JSONViewer({ children, downloadForm: downloadFile, animations, getValue
           {<Tooltip hasArrow label='Form Configuration File' placement='top' bg="#181414"><Text _hover={{ color: '#e0e1e5' }}>{fileName}</Text></Tooltip>}
 
           <Tooltip hasArrow label={
-            loading ? <Text>Downloading {fileName}</Text> : <Text>Download {fileName}</Text>
-          } placement='top' bg="#181414">
+            <Box>
+              {loading ? <Text>Downloading {fileName}</Text> : <Text>Download {fileName}</Text>}
+            </Box>
+          } placement="top">
             <Box _hover={{ color: '#e0e1e5' }}>
               {!loading && <svg cursor='pointer' onClick={downloadForm} width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"></path></svg>}
               {loading && <Box height='19px'><Spinner size="sm" /></Box>}

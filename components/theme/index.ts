@@ -1,6 +1,7 @@
 import { cssVar, extendTheme } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 import { Button } from "./Button";
+import { Tooltip } from "./Tooltip";
 
 const $SwitchBackground = cssVar("switch-bg");
 const colours = {
@@ -59,6 +60,7 @@ const theme = extendTheme({
   },
   components: {
     Button,
+    Tooltip,
     Alert: {
       variants: {
         primary: {
@@ -81,7 +83,7 @@ const theme = extendTheme({
     },
     Input: { defaultProps: { variant: 'normal' } },
     FormLabel: { baseStyle: { marginBottom: '0px' } },
-    Tooltip: { baseStyle: { bg: "#181414", padding: '6px 12px', borderRadius: 6 } }
+    // Tooltip: { baseStyle: { bg: "#181414", padding: '6px 12px', borderRadius: 6 } }
   }
 });
 

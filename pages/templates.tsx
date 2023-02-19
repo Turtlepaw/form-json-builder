@@ -13,14 +13,11 @@ import {
     Spinner,
     Center,
     Badge,
-    Tooltip, ModalFooter,
+    Tooltip,
     ModalBody,
     ModalCloseButton,
-    ModalContent,
-    ModalOverlay,
-    Modal,
     useDisclosure,
-    FormLabel, Textarea, useColorModeValue, useColorMode, Input
+    FormLabel, Textarea as ChakraTextarea, useColorModeValue, useColorMode, Input as ChakraInput, TextareaProps, InputProps, ColorMode, ColorModeContextType
 } from '@chakra-ui/react';
 import { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
@@ -36,6 +33,7 @@ import Image from 'next/image';
 import { MdCheck, MdError, MdLabelImportant, MdPriorityHigh, MdQuestionAnswer, MdStar, MdStarBorder, MdVerified } from 'react-icons/md';
 import Preview from '../components/Preview';
 import Link from 'next/link';
+import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -65,6 +63,27 @@ export interface TemplateData {
     // templates: FormDataResponse[] | null;
     // error?: string;
     REQUEST_WEBHOOK: string;
+}
+
+function getProps({ colorMode }: ColorModeContextType): InputProps & TextareaProps {
+    return {
+        backgroundColor: colorMode == "dark" ? "#e9eaed" : "#2f3136",
+        borderColor: "transparent"
+    }
+}
+
+export function Textarea(props: TextareaProps) {
+    const color = useColorMode();
+    return (
+        <ChakraTextarea {...props} {...getProps(color)} />
+    )
+}
+
+export function Input(props: InputProps) {
+    const color = useColorMode();
+    return (
+        <ChakraInput {...props} {...getProps(color)} />
+    )
 }
 
 export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
@@ -248,8 +267,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
             </Center>
             {SettingsModal.modal}
             <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent backgroundColor="#36393f">
+                <ModalContent>
                     {/* <ModalHeader _after={{
                     borderBottom: "none"
                 }} paddingBottom="3.5">
@@ -280,7 +298,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                         {isInvalid[0] && <Box pt={3}><ErrorMessage>Fill out all the fields before sending your template</ErrorMessage></Box>}
                     </ModalBody>
 
-                    <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
+                    <ModalFooter>
                         <Button variant="primary" mr={-2} onClick={() => {
                             onClose();
                             postWebhook(JsonData.current, Name.current, Description.current, Username.current);
@@ -373,8 +391,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                     </Button>
                                 </Box>
                                 <Modal {...downloadModal}>
-                                    <ModalOverlay />
-                                    <ModalContent backgroundColor="#36393f">
+                                    <ModalContent>
                                         <HStack pl={5} pt={4}>
                                             <Image
                                                 src="/forms.svg"
@@ -394,7 +411,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                                     <FormLabel pt={2}>{replacer.label} {replacer.helpLink != null && <Text display="inline" color="#00b0f4" _hover={{ textDecoration: "underline" }}>
                                                         <Link href={replacer.helpLink}>(help)</Link>
                                                     </Text>}</FormLabel>
-                                                    <Input required onChange={(e) => {
+                                                    <Input isRequired onChange={(e) => {
                                                         if (form.replacers().map(e => e.satisfied(form.data.forms)).every(e => e == true)) setSatisfied(true);
                                                         else setSatisfied(false);
                                                         return replacer.set(form.data.forms, e.target.value)
@@ -404,7 +421,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                             {!downloadModalSatisfied && <Box pt={3}><ErrorMessage>Fill out all the fields before sending your template</ErrorMessage></Box>}
                                         </ModalBody>
 
-                                        <ModalFooter backgroundColor="#2f3136" borderBottomRadius={5}>
+                                        <ModalFooter>
                                             <Button
                                                 variant="success"
                                                 onClick={handleLoad}
@@ -419,8 +436,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                                     </ModalContent>
                                 </Modal>
                                 <Modal isOpen={isOpen} onClose={onClose}>
-                                    <ModalOverlay />
-                                    <ModalContent bgColor={colorMode === 'dark' ? '#ffffff' : '#36393f'} boxShadow="none" width="unset">
+                                    <ModalContent>
                                         <Box display='flex'>
                                             <Box border={`1px solid ${colorMode === 'dark' ? '#e3e5e8' : '#292b2f'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                                                 <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>

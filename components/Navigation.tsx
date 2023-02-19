@@ -1,7 +1,8 @@
-import { Box, Button, Link, useColorMode } from "@chakra-ui/react";
+import { Box, Button, HStack, Link, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Tooltip, useColorMode, VStack } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
-import { useScreenWidth }  from "../util/width";
+import { MdExpandLess, MdExpandMore, MdMoreHoriz } from "react-icons/md";
+import { useScreenWidth } from "../util/width";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 export interface NavigationProps {
@@ -35,12 +36,12 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                 <nav>
                     <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">{isSmallScreen ? 'Help' : 'Support Server'}</a>
                     {!isSmallScreen && <a href="https://discord.com/login?redirect_to=%2Foauth2%2Fauthorize%3Fclient_id%3D942858850850205717%26permissions%3D3072%26scope%3Dapplications.commands%2520bot" target="_blank" rel="noopener noreferrer">Invite Bot</a>}
-                    {!isSmallScreen && <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Documentation</a> }
+                    {!isSmallScreen && <a href="https://gist.github.com/Antouto/8ab83d83482af7c516f0b2b42eaee940" target="_blank" rel="noopener noreferrer">Documentation</a>}
                     <NextLink href="/templates">Templates</NextLink>
                     {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
                 </nav>
             </Box>
             <ColorModeSwitcher height='0px' color={colorMode == "dark" ? "black" : "#b9bbbe"} />
-        </header>
+        </header >
     )
 }

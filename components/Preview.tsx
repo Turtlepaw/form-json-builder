@@ -94,9 +94,9 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                                         Verified Bot
                                     </Box>
                                 } placement='top' bg="#181414">
-                                    <svg width="16" height="16" viewBox="0 0 16 15.2"><path d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z" fill="currentColor"></path></svg>
+                                    <svg color='white' width="16" height="16" viewBox="0 0 16 15.2"><path d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z" fill="currentColor"></path></svg>
                                 </Tooltip>
-                                <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
+                                <Text fontFamily='Whitney Bold' fontSize='.625rem' textColor="white">BOT</Text>
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                         </Box>

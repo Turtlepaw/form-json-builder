@@ -3,7 +3,6 @@ import {
     Button,
     Center,
     Heading,
-    Link,
     Text,
     Tooltip,
     useColorMode
@@ -35,19 +34,12 @@ export interface FormProfileProperties {
     HandleInteraction: MouseEventHandler<HTMLDivElement>;
 }
 
-/**
- * 
- * @param {import("@chakra-ui/react").CSSObject} hover
- * @returns 
- */
-export function Mention({ children, hover, onClick, isActive }: InternalMentionProperties) {
+export function Mention({ children, onClick, isActive }: InternalMentionProperties) {
     const { colorMode } = useColorMode();
     return (
-        <Box onClick={onClick} display="inline-block" textColor={isActive ? "white" : (colorMode == "dark" ? "#5865f2" : "unset")} bgColor={isActive ? "#5865f2" : (colorMode == "dark" ? "#e6e8fd" : "#3e4372")} paddingTop="0.5" paddingBottom="1" marginX={0.2} paddingX={1} borderRadius={4} _hover={{
+        <Box onClick={onClick} display="inline-block" textColor={isActive ? "white" : (colorMode == "dark" ? "unset" : "#5865f2")} bgColor={isActive ? "#5865f2" : (colorMode == "dark" ? "#3e4372" : "#e6e8fd")}  marginX={0.2} paddingX='2px' borderRadius={4} _hover={{
             bgColor: "#5865f2",
-            color: colorMode == "dark" ? "white" : "unset",
-            ...hover
-        }} cursor="pointer" style={isActive ? hover : undefined}>
+        }} cursor="pointer" >
             {children}
         </Box>
     )

@@ -2,7 +2,7 @@ import { UseFormGetValues } from "react-hook-form";
 import { FormAndMessageBuilder } from "./types";
 
 const MAX_WIDTH = 20;
-const UNTITLED_NAME = "unknown";
+const UNTITLED_NAME = "form";
 
 export function createName({ getValues }: { getValues: UseFormGetValues<FormAndMessageBuilder>; }) {
     const Name = getValues("forms")[0].modal.title;

@@ -21,17 +21,17 @@ const { blurple } = colours;
 const theme = extendTheme({
   colors: colours,
   config: {
-    initialColorMode: 'light',
+    initialColorMode: 'dark',
     useSystemColorMode: false,
   },
   styles: {
     global: (props: any) => ({
       body: {
-        bg: mode('grey.dark', 'white')(props),
-        color: mode('white', 'black')(props),
+        bg: mode('white', 'grey.dark')(props),
+        color: mode('black', 'white')(props),
       },
       input: {
-        bg: mode('grey.extradark', 'grey.extralight')(props),
+        bg: mode('grey.extralight', 'grey.extradark')(props),
         height: '36px',
         width: '100%',
         padding: '0px 9px',
@@ -42,7 +42,7 @@ const theme = extendTheme({
         _focus: { border: `2px solid ${blurple}` }
       },
       textarea: {
-        bg: mode('grey.extradark', 'grey.extralight')(props),
+        bg: mode('grey.extralight', 'grey.extradark')(props),
         height: '36px',
         width: '100%',
         padding: '3px 9px',

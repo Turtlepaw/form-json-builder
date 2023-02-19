@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Grid, Tabs, TabList, Tab, TabPanels, TabPanel, Text } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';

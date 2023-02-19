@@ -41,7 +41,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                     {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
                 </nav>
             </Box>
-            <ColorModeSwitcher height='0px' color={colorMode == "dark" ? "black" : "#b9bbbe"} />
+            <ColorModeSwitcher height='0px'/>
         </header >
     )
 }

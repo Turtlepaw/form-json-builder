@@ -96,6 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <VStack pt={5}>
               <UnorderedList>
                 <ListItem py={1}>Support for smaller screens (e.g. phones) has been optimized</ListItem>
+                <ListItem py={1}>Added syntax highlighting to the JSON Preview</ListItem>
                 <ListItem py={1}>We fixed an annoying bug that would copy questions from the last question to the 1st</ListItem>
                 <ListItem py={1}>Light mode has been fixed, including a fixed scrollbar and fixed modals!</ListItem>
               </UnorderedList>

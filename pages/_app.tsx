@@ -1,7 +1,7 @@
 import '../styles/App.css';
 import "../styles/Json.css";
 import '../util/framer-motion.d';
-import { Button, ChakraProvider, Heading, Link, ListItem, ModalBody, ModalCloseButton, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, ChakraProvider, Heading, Link, ListItem, ModalBody, ModalCloseButton, Text, UnorderedList, useColorModeValue, useDisclosure, VStack } from '@chakra-ui/react';
 import theme from "../components/theme";
 import { SettingsManagerBuilder } from '../util/settings';
 import { AppProps } from 'next/app';
@@ -10,8 +10,7 @@ import { LinkStyle } from '../util/styles';
 import { useEffect, useState } from 'react';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
-export function Scrollbar() {
-  const { colorMode } = useColorMode();
+export function ColorModeCSS() {
   return (
     <style>
       {`::-webkit-scrollbar {
@@ -24,7 +23,7 @@ export function Scrollbar() {
         }
 
         ::-webkit-scrollbar-thumb {
-          background-color: ${colorMode === "dark" ? "rgb(32, 34, 37)" : "#c1c3c7"};
+          background-color: ${useColorModeValue("#c1c3c7", "rgb(32, 34, 37)")};
           border: 4px solid transparent;
           border-radius: 8px;
           min-height: 40px;
@@ -32,11 +31,23 @@ export function Scrollbar() {
         }
 
         ::-webkit-scrollbar-track {
-          background-color: ${colorMode === "dark" ? "rgb(46, 51, 56)" : "#f2f2f2"};
+          background-color: ${useColorModeValue( "#f2f2f2", "rgb(46, 51, 56)")};
           border: 4px solid transparent;
           border-radius: 8px;
           margin-bottom: 8px;
           background-clip: padding-box;
+        }
+
+        .hljs-attr, .hljs-number {
+          color: ${useColorModeValue("#005cc5", "#79c0ff")};
+        }
+        
+        .hljs-string {
+          color: ${useColorModeValue("#032f62", "#a5d6ff")};
+        }
+        
+        .hljs-literal {
+          color: ${useColorModeValue("#d73a49",  "#ff7b72")};
         }
   `}
     </style>
@@ -46,7 +57,6 @@ export function Scrollbar() {
 export default function App({ Component, pageProps }: AppProps) {
   const SettingsManager = new SettingsManagerBuilder();
   const [hasSeenRelease, setReleaseSeen] = useState(false);
-  const { colorMode } = useColorMode();
   const [initialLoad, loaded] = useState(false);
   const ValueName = "HAS_SEEN_218_RELEASE";
   const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false, onClose: () => setReleaseSeen(true) });
@@ -69,7 +79,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ChakraProvider theme={theme}>
-      <Scrollbar />
+      <ColorModeCSS />
       {/* <SettingsManagerProvider value={SettingsManager}> */}
       <Component {...pageProps} />
       <Modal {...{ isOpen, onClose }}>
@@ -90,7 +100,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <ModalBody paddingY={6}>
             <VStack textAlign="center">
               <Heading size="md" fontWeight="medium">What&apos;s New</Heading>
-              <Text color={colorMode == "light" ? "#898c95" : "#b9bbbe"}>February 18 2023</Text>
+              <Text color={useColorModeValue("#898c95", "#b9bbbe")}>February 18 2023</Text>
             </VStack>
             <VStack pt={5}>
               <UnorderedList>

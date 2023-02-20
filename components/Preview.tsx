@@ -1,5 +1,5 @@
 /* eslint eqeqeq: 0 */
-import { Box, Button, Tooltip, Text, useColorMode, Link, Image } from '@chakra-ui/react';
+import { Box, Button, Tooltip, Text, useColorModeValue, Link, Image } from '@chakra-ui/react';
 //import Image from "next/image";
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,7 +20,6 @@ export interface PreviewProperties {
 }
 
 function Preview({ message, forms, displayForm, setDisplayForm, type, displaySection }: PreviewProperties) {
-    const { colorMode } = useColorMode();
     const defaultValues = {
         ...forms[displayForm].modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
     };
@@ -36,7 +35,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
     </>;
 
     const MessageEmbed = <>
-        {message?.embeds && <Box whiteSpace='pre-wrap' borderLeftColor={message.embeds[0]?.color != null ? `#${message.embeds[0]?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && <Box whiteSpace='pre-wrap' borderLeftColor={message.embeds[0]?.color != null ? `#${message.embeds[0]?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={useColorModeValue('#f2f3f5', '#2f3136')} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : useColorModeValue("#e3e5e8",  "#202225")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <Link href={isEmpty(message.embeds[0]?.author?.url) ? undefined : message.embeds[0].author.url} style={{ cursor: isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
@@ -116,11 +115,11 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
 
             </Box> */}
             <Box display='flex' mt='30px'>
-                <Box border={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
+                <Box border={`1px solid ${useColorModeValue('#e3e5e8', '#292b2f')}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                     <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                         <Box display='flex' alignItems='center' height='24px'>
                             <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
-                            <Text fontSize='24px' color={colorMode === 'dark' ? 'white' : '#060607'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
+                            <Text fontSize='24px' color={useColorModeValue('#060607', 'white')} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
                         </Box>
                         <Box display='flex' p='4px' cursor='pointer'>
                             <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
@@ -129,13 +128,13 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                     <Box>
                         {forms[displayForm]?.modal.components.map((actionRow, i) => (
                             <Box key={Math.random()} m='0 1em 1em'>
-                                <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#b9bbbe' : '#4f5660'}>
+                                <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={useColorModeValue('#4f5660', '#b9bbbe')}>
                                     {actionRow.components[0]?.label}
                                     {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
                                 </Text>
                                 <Box
                                     as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'}
-                                    bg={colorMode === 'dark' ? '#202225' : '#e3e5e8'}
+                                    bg={useColorModeValue('#e3e5e8', '#202225')}
                                     height={actionRow.components[0]?.style == 2 ? '16' : '2.2rem'}
                                     fontSize='16px'
                                     resize='none'
@@ -149,8 +148,8 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                             </Box>
                         ))}
                     </Box>
-                    <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
-                        <Button variant='link' color={colorMode === 'dark' ? 'white' : '#747f8d'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
+                    <Box bg={useColorModeValue('#f2f3f5', '#2f3136')} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
+                        <Button variant='link' color={useColorModeValue('#747f8d', 'white')} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
                         <Button variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
                     </Box>
                 </Box>
@@ -166,7 +165,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                             </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                         </Box>
-                        <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={colorMode === 'dark' ? '4px solid #202225' : '4px solid #e3e5e8'} maxWidth='520px' borderRadius='4px'>
+                        <Box bg={useColorModeValue('#f2f3f5', '#2f3136')} borderLeft={`4px solid ${useColorModeValue('#e3e5e8', '#202225')}`} maxWidth='520px' borderRadius='4px'>
                             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                                 <Box display='flex' alignItems='center' m='8px 0px 0px'>
                                     <Image alt="Test User's Avatar" src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
@@ -186,7 +185,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                                 </Box>
                                 <Box display='flex' alignItems='center' mt='8px'>
                                     <Image alt='ID' src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%' />
-                                    <Text fontFamily='Whitney Bold' fontSize='0.75rem' color={colorMode === 'dark' ? '#fbfbfb' : '#313338'}>643945264868098049</Text>
+                                    <Text fontFamily='Whitney Bold' fontSize='0.75rem' color={useColorModeValue('#313338', '#fbfbfb')}>643945264868098049</Text>
                                 </Box>
                             </Box>
                         </Box>

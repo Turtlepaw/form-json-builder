@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Box, Button, Collapse, HStack, Spinner, Text, Tooltip, useColorMode } from '@chakra-ui/react'
+import { Box, Button, Collapse, HStack, Spinner, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { UseFormGetValues } from "react-hook-form";
 import { FormAndMessageBuilder } from "../util/types";
 import { createName } from "../util/form";
@@ -16,7 +16,6 @@ export const DOWNLOAD_SPINNER_TIME = 1000;
 
 function JSONViewer({ children, downloadForm: downloadFile, animationsEnabled, getValues }: JSONViewerProperties) {
   const [show, setShow] = useState(false)
-  const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
   const [loading, setLoading] = useState(false);
   const downloadForm = () => {
@@ -27,11 +26,11 @@ function JSONViewer({ children, downloadForm: downloadFile, animationsEnabled, g
   const fileName = `${createName({ getValues })}.json`
 
   return (
-    <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#2f3136' : '#f2f3f5', color: colorMode === 'dark' ? '#e0e1e5' : '#4f5660', width: '100%' }}>
-      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: colorMode == "dark" ? "#2f3136" : '#f2f3f5', borderRadius: '4px', padding: '8px' }} in={show}>
+    <Box style={{ border: `1px solid ${useColorModeValue('#e3e5e8',  '#292b2f')}`, borderRadius: '4px', background: useColorModeValue('#f2f3f5', '#2f3136'), color: useColorModeValue('#4f5660', '#e0e1e5'), width: '100%' }}>
+      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: useColorModeValue('#f2f3f5', '#2f3136'), borderRadius: '4px', padding: '8px' }} in={show}>
         <Highlight className='json'>{children}</Highlight>
       </Collapse>
-      <Box display='flex' alignItems='center' justifyContent='space-between' padding='4px 12px 4px 4px' borderTop={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} color='#b8b9bf'>
+      <Box display='flex' alignItems='center' justifyContent='space-between' padding='4px 12px 4px 4px' borderTop={`1px solid ${useColorModeValue('#e3e5e8', '#292b2f')}`} color='#b8b9bf'>
         <Box display='flex' alignItems='center' onClick={handleToggle} _hover={{ color: '#e0e1e5' }}>
           <Tooltip hasArrow label={<Box>{show ? 'Collapse' : 'Expand'} ({children.split(/\r\n|\r|\n/).length} Lines)</Box>} placement='top' bg="#181414">
             <Box display='flex' alignItems='center' cursor='pointer'>

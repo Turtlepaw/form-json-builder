@@ -1,7 +1,6 @@
-import { Box, Button, HStack, Link, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Tooltip, useColorMode, VStack } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
-import { MdExpandLess, MdExpandMore, MdMoreHoriz } from "react-icons/md";
 import { useScreenWidth } from "../util/width";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
@@ -14,7 +13,6 @@ export interface NavigationProps {
 export function Navigation({ modalHandler, displaySection, setDisplaySection }: NavigationProps) {
     const isSmallScreen = !useScreenWidth(500);
 
-    const { colorMode } = useColorMode();
     return (
         <header>
             <Box display='flex' alignItems='center'>

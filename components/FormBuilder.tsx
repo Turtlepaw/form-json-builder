@@ -1,4 +1,4 @@
-import { Box, Button, CloseButton, FormLabel, HStack, Select, Stack, Text, Tooltip, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, CloseButton, FormLabel, HStack, Select, Stack, Text, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import {
   Control,
@@ -17,6 +17,7 @@ import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 import { FormAndMessageBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
+import { useColorMode } from "@chakra-ui/react";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -47,6 +48,7 @@ export default function FormBuilder({
 
   const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false)
   const isSmallScreen = !useScreenWidth(500);
+  const colorMode = useColorMode().colorMode
 
   return (
     <Box width='100%' pb={2}>
@@ -95,7 +97,7 @@ export default function FormBuilder({
                       borderWidth='2px'
                       borderColor='transparent'
                       borderRadius='4px'
-                      bg={useColorModeValue('grey.extralight', 'grey.extradark')}
+                      bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
                       _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
                       _hover={{ borderColor: 'transparent' }}
                     >

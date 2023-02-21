@@ -131,7 +131,7 @@ export default function FormBuilder({
       <section>
         <Button
           variant='primary'
-          disabled={getValues('forms').length >= 5 ? true : false}
+          isDisabled={getValues('forms').length >= 5}
           onClick={() => {
             setDisplayForm(fields.length)
             append({

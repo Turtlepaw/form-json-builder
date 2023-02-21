@@ -228,7 +228,7 @@ export default function TextInputBuilder({
 
         );
       })}
-      <Button variant="primary" disabled={fields.length >= 5 ? true : false} onClick={() => append({
+      <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => append({
         type: 1,
         components: [
           {

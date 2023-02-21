@@ -1,6 +1,8 @@
 import { Box, FormLabel, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
 import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues } from "react-hook-form";
-import { EmbedBuilder, FormAndMessageBuilder } from "../util/types";
+import { ComponentType } from "../pages";
+import { EmbedBuilder, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 
@@ -18,19 +20,23 @@ export interface Defaults {
 export interface MessageBuilderProperties<T extends FieldValues> {
     register: UseFormRegister<T>;
     setValue: UseFormSetValue<T>;
+    getValues: UseFormGetValues<T>;
     formState: FormState<T>;
     setMessageType: React.Dispatch<React.SetStateAction<string>>;
     messageType: string;
     Defaults: Defaults;
+    componentType: [string, Dispatch<SetStateAction<ComponentType>>];
 }
 
 export default function useMessageBuilder({
     register,
     formState: { errors },
     setValue,
+    getValues,
     setMessageType,
     messageType,
-    Defaults
+    Defaults,
+    componentType: [componentType, setComponentType]
 }: MessageBuilderProperties<FormAndMessageBuilder>) {
     const Embed = () => (
         <>
@@ -104,49 +110,93 @@ export default function useMessageBuilder({
         }
     }
 
+    const HandleComponentInteraction = (value: string) => {
+        setComponentType(value as ComponentType);
+        if (value == ComponentType.Button) {
+            getValues("forms").forEach((form, i) => {
+                setValue(`forms.${i}.select_menu_option`, null as any);
+                setValue(`forms.${i}.button`, {
+                    label: "",
+                    style: 1
+                });
+            });
+        } else if (value == ComponentType.SelectMenu) {
+            getValues("forms").forEach((form, i) => {
+                setValue(`forms.${i}.button`, null as any);
+                setValue(`forms.${i}.select_menu_option`, {
+                    label: "",
+                    description: ""
+                });
+            });
+        }
+    }
+
     return (
-        <><FormLabel pb={2}>Message</FormLabel><Collapsible variant='large' name="Message">
-            <Box width='100%' marginBottom="8px">
-                <FormLabel htmlFor="messageType">Message Type</FormLabel>
-                <RadioGroup onChange={HandleInteraction} value={messageType} id="messageType">
+        <>
+            <FormLabel pb={2}>Message and Options</FormLabel>
+            <Collapsible variant='large' name="Form Options">
+                <FormLabel htmlFor="componentType">Component Type</FormLabel>
+                <RadioGroup onChange={HandleComponentInteraction} value={componentType} id="componentType">
                     <Stack direction="row">
                         <Radio
-                            name={MessageType.Content}
-                            value={MessageType.Content}
+                            name={ComponentType.Button}
+                            value={ComponentType.Button}
                             colorScheme='blurple'
                         >
-                            <Text>Message</Text>
+                            <Text>Button</Text>
                         </Radio>
                         <Radio
-                            name={MessageType.Embed}
-                            value={MessageType.Embed}
+                            name={ComponentType.SelectMenu}
+                            value={ComponentType.SelectMenu}
                             colorScheme='blurple'
                         >
-                            <Text>Embed</Text>
-                        </Radio>
-                        <Radio
-                            name={MessageType.ContentAndEmbed}
-                            value={MessageType.ContentAndEmbed}
-                            colorScheme='blurple'
-                        >
-                            <Text>Both</Text>
+                            <Text>Select Menu</Text>
                         </Radio>
                     </Stack>
                 </RadioGroup>
+            </Collapsible>
+            <Collapsible variant='large' name="Message">
+                <Box width='100%' marginBottom="8px">
+                    <FormLabel htmlFor="messageType">Message Type</FormLabel>
+                    <RadioGroup onChange={HandleInteraction} value={messageType} id="messageType">
+                        <Stack direction="row">
+                            <Radio
+                                name={MessageType.Content}
+                                value={MessageType.Content}
+                                colorScheme='blurple'
+                            >
+                                <Text>Message</Text>
+                            </Radio>
+                            <Radio
+                                name={MessageType.Embed}
+                                value={MessageType.Embed}
+                                colorScheme='blurple'
+                            >
+                                <Text>Embed</Text>
+                            </Radio>
+                            <Radio
+                                name={MessageType.ContentAndEmbed}
+                                value={MessageType.ContentAndEmbed}
+                                colorScheme='blurple'
+                            >
+                                <Text>Both</Text>
+                            </Radio>
+                        </Stack>
+                    </RadioGroup>
 
-                <Box pt={1}>
-                    {messageType === "content" ? (
-                        <>
-                            {MessageContent()}
-                        </>
-                    ) : (messageType === "embed" ? <>{Embed()}</> : (
-                        <>
-                            {MessageContent()}
-                            {Embed()}
-                        </>
-                    ))}
+                    <Box pt={1}>
+                        {messageType === "content" ? (
+                            <>
+                                {MessageContent()}
+                            </>
+                        ) : (messageType === "embed" ? <>{Embed()}</> : (
+                            <>
+                                {MessageContent()}
+                                {Embed()}
+                            </>
+                        ))}
+                    </Box>
                 </Box>
-            </Box>
-        </Collapsible></>
+            </Collapsible></>
     );
 }

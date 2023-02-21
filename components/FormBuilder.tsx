@@ -1,5 +1,5 @@
 import { Box, Button, CloseButton, FormLabel, HStack, Select, Stack, Text, Tooltip } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   Control,
   FieldValues,
@@ -17,6 +17,7 @@ import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 import { FormAndMessageBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
+import { ComponentType } from "../pages";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -27,6 +28,7 @@ export interface FormBuilderProperties<T extends FieldValues> {
   getValues: UseFormGetValues<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
+  componentType: ComponentType;
 }
 
 export default function FormBuilder({
@@ -38,14 +40,15 @@ export default function FormBuilder({
   formState: { errors },
   watch,
   displayForm,
-  setDisplayForm
+  setDisplayForm,
+  componentType
 }: FormBuilderProperties<FormAndMessageBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "forms"
   });
 
-  const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false)
+  const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false);
   const isSmallScreen = !useScreenWidth(500);
 
   return (
@@ -78,32 +81,67 @@ export default function FormBuilder({
                 />
                 <ErrorMessage>{(errors.forms?.[index]?.webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index]?.webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
                 <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
-                  <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
-                    <input
-                      {...register(`forms.${index}.button.label`, { required: true, maxLength: 80 })}
-                      id={`forms[${index}].button.label`}
-                      placeholder='Open Form'
-                    />
-                    <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
-                  </Box>
-                  <Box width='100%'>
-                    <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
-                    <Select
-                      {...register(`forms.${index}.button.style`)}
-                      id={`forms[${index}].button.style`}
-                      borderWidth='2px'
-                      borderColor='transparent'
-                      bg='grey.extradark'
-                      _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
-                      _hover={{ borderColor: 'transparent' }}
-                    >
-                      <option value="1">Blurple</option>
-                      <option value="2">Grey</option>
-                      <option value="3">Green</option>
-                      <option value="4">Red</option>
-                    </Select>
-                  </Box>
+                  {componentType == ComponentType.SelectMenu && <>
+                    <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
+                        <Text _after={{ content: '" *"', color: '#ff7a6b' }}>Option Label</Text>
+                        <span style={{
+                          display: 'inline', marginLeft: '7px', fontSize: '13px',
+                          //@ts-expect-error
+                          color: getValues('forms')[index].select_menu_option?.label?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
+                        }}>{getValues('forms')[index].select_menu_option?.label?.length}/100</span></FormLabel>
+                      <input
+                        {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 80 })}
+                        id={`forms[${index}].select_menu_option.label`}
+                        placeholder='Form'
+                      />
+                      <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                    </Box>
+                    <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
+                        <Text>Option Description</Text>
+                        <span style={{
+                          display: 'inline', marginLeft: '7px', fontSize: '13px',
+                          //@ts-expect-error
+                          color: getValues('forms')[index].select_menu_option?.description?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
+                        }}>{getValues('forms')[index].select_menu_option?.description?.length}/100</span>
+                      </FormLabel>
+                      <input
+                        {...register(`forms.${index}.select_menu_option.description`, { maxLength: 80 })}
+                        id={`forms[${index}].select_menu_option.description`}
+                      />
+                    </Box>
+                  </>}
+                  {componentType == ComponentType.Button && <>
+                    <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'>
+                        <Text _after={{ content: '" *"', color: '#ff7a6b' }}>Button Label</Text>
+                        <span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
+                      <input
+                        {...register(`forms.${index}.button.label`, { required: true, maxLength: 80 })}
+                        id={`forms[${index}].button.label`}
+                        placeholder='Open Form'
+                      />
+                      <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                    </Box>
+                    <Box width='100%'>
+                      <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
+                      <Select
+                        {...register(`forms.${index}.button.style`)}
+                        id={`forms[${index}].button.style`}
+                        borderWidth='2px'
+                        borderColor='transparent'
+                        bg='grey.extradark'
+                        _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
+                        _hover={{ borderColor: 'transparent' }}
+                      >
+                        <option value="1">Blurple</option>
+                        <option value="2">Grey</option>
+                        <option value="3">Green</option>
+                        <option value="4">Red</option>
+                      </Select>
+                    </Box>
+                  </>}
                 </Stack>
 
                 <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: '#ff7a6b' }}>Title</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].modal.title?.length > 45 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index]?.modal.title?.length}/45</span></FormLabel>
@@ -113,8 +151,6 @@ export default function FormBuilder({
                   style={{ marginBottom: '8px' }}
                 />
                 <ErrorMessage>{(errors.forms?.[index]?.modal?.title?.type === 'required' && 'The Title is required') || (errors.forms?.[index]?.modal?.title?.type === 'maxLength' && 'The Title is too long')}</ErrorMessage>
-
-
               </Collapsible>
               <hr style={{ margin: '0 16px 0 16px' }} />
               <Collapsible name="Text Inputs">
@@ -163,6 +199,6 @@ export default function FormBuilder({
           Add Form
         </Button>
       </section>
-    </Box>
+    </Box >
   );
 }

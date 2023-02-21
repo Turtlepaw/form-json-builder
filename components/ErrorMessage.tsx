@@ -1,6 +1,6 @@
 /* eslint eqeqeq: 0 */
 import React, { PropsWithChildren } from 'react'
-import { HStack, Text, TextProps } from '@chakra-ui/react'
+import { HStack, Text, TextProps, useColorMode } from '@chakra-ui/react'
 import { AiFillExclamationCircle } from 'react-icons/ai';
 
 export interface ErrorMessageProperties extends TextProps {
@@ -19,10 +19,11 @@ export default function ErrorMessage(options: ErrorMessageProperties) {
     {field?.type == "maxLength" && `${fieldType} ${fieldName} is too long`}
     {field?.type == "minLength" && `${fieldType} ${fieldName} is not long enough`}
   </>);
+  const colorMode = useColorMode().colorMode;
   return (
     <HStack>
-      {children ? <AiFillExclamationCircle color='#ff7a6b' /> : null}
-      <Text color='#ff7a6b' {...options}>
+      {children ? <AiFillExclamationCircle color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} /> : null}
+      <Text color={colorMode === 'dark' ? '#ff7a6b' : '#d92f2f'} {...options}>
         {children}
       </Text>
     </HStack>

@@ -36,7 +36,7 @@ function Collapsible({ name, deleteButton, children, variant, style }: Collapsib
         width='100%' _focus='unset'
         _hover={{ bg: 'transparent' }}
         bg='transparent'
-        color={variant === 'large' ? (colorMode === 'dark' ? 'white' : 'black') : '#bcbcbc'}
+        color={variant === 'large' ? (colorMode === 'dark' ? 'white' : 'black') : (colorMode === 'dark' ? '#bcbcbc' : '#4f5660')}
       >
         <Box display='flex'>
           <svg style={{ marginRight: '8px', cursor: 'pointer', transition: 'transform 0.2s', transform: `rotate(${90 + (isOpen ? 90 : 0)}deg)` }} width="16" height="16" viewBox="0 0 16 16" fill="none">

@@ -1,4 +1,4 @@
-import { cssVar, extendTheme } from "@chakra-ui/react"
+import { cssVar, extendTheme, ThemeConfig } from "@chakra-ui/react"
 import { mode } from '@chakra-ui/theme-tools';
 import { Button } from "./Button";
 import { Tooltip } from "./Tooltip";
@@ -18,12 +18,14 @@ const colours = {
 
 const { blurple } = colours;
 
+const config: ThemeConfig = {
+  initialColorMode: 'light',
+  useSystemColorMode: false,
+}
+
 const theme = extendTheme({
   colors: colours,
-  config: {
-    //initialColorMode: 'dark',
-    useSystemColorMode: true
-  },
+  config,
   styles: {
     global: (props: any) => ({
       body: {

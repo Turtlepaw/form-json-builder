@@ -9,6 +9,7 @@ import { resolveBoolean } from '../components/Toggle';
 import { LinkStyle } from '../util/styles';
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
+import Image from 'next/image';
 
 export function ColorModeCSS() {
   const { colorMode } = useColorMode();
@@ -60,7 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [hasSeenRelease, setReleaseSeen] = useState(false);
   const { colorMode } = useColorMode();
   const [initialLoad, loaded] = useState(false);
-  const ValueName = "HAS_SEEN_218_RELEASE";
+  const ValueName = "HAS_SEEN_221_RELEASE";
   const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false, onClose: () => setReleaseSeen(true) });
   useEffect(() => {
     const val = localStorage.getItem(ValueName);
@@ -101,15 +102,27 @@ export default function App({ Component, pageProps }: AppProps) {
           <ModalCloseButton />
           <ModalBody paddingY={6}>
             <VStack textAlign="center">
+              <Box pb={3}>
+                <Image
+                  src="https://cdn.discordapp.com/attachments/1062143703831031818/1063529406334763079/Screen_Shot_2023-01-13_at_10.46.05_AM.png"
+                  alt="Nelly Catching Bugs"
+                  width={1000}
+                  height={50}
+                  style={{
+                    borderRadius: "5px",
+                    objectFit: "cover",
+                    height: "10rem",
+                  }}
+                />
+              </Box>
               <Heading size="md" fontWeight="medium">What&apos;s New</Heading>
-              <Text color={colorMode == "light" ? "#898c95" : "#b9bbbe"}>February 18 2023</Text>
+              <Text color={colorMode == "light" ? "#898c95" : "#b9bbbe"}>February 21 2023</Text>
             </VStack>
             <VStack pt={5}>
               <UnorderedList>
-                <ListItem py={1}>Support for smaller screens (e.g. phones) has been optimized</ListItem>
+                <ListItem py={1}>Added support for select menus</ListItem>
                 <ListItem py={1}>Added syntax highlighting to the JSON Preview</ListItem>
-                <ListItem py={1}>We fixed an annoying bug that would copy questions from the last question to the 1st</ListItem>
-                <ListItem py={1}>Light mode has been fixed, including a fixed scrollbar and fixed modals!</ListItem>
+                <ListItem py={1}>Support for smaller screens (e.g. phones) has been optimized</ListItem>
               </UnorderedList>
             </VStack>
           </ModalBody>

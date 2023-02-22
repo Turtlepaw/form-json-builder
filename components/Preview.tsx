@@ -110,9 +110,9 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                 </Box>
             </Box>
             {/* <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
-                <Button disabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
+                <Button isDisabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
                 Form {displayForm + 1} Preview
-                <Button disabled={displayForm > forms.length - 2} onClick={() => setDisplayForm(displayForm + 1)}><HiChevronRight /></Button>
+                <Button isDisabled={displayForm > forms.length - 2} onClick={() => setDisplayForm(displayForm + 1)}><HiChevronRight /></Button>
 
             </Box> */}
             <Box display='flex' mt='30px'>

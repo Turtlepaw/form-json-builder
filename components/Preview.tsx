@@ -1,8 +1,12 @@
 /* eslint eqeqeq: 0 */
-import { Box, Button, Tooltip, Text, useColorMode, Link, Image } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Link, Text, Tooltip, useColorMode, useDisclosure } from '@chakra-ui/react';
 //import Image from "next/image";
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { IoInformationCircle } from 'react-icons/io5';
+import { IconContext } from 'react-icons/lib';
+import { MdExpandLess, MdExpandMore } from 'react-icons/md';
+import { ComponentType } from '../pages';
 import { FormBuilder, FormMessageBuilder } from '../util/types';
 import { FormProfile } from './Mention';
 
@@ -17,9 +21,18 @@ export interface PreviewProperties {
     setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
     type: string;
     displaySection: boolean;
+    componentType: ComponentType;
 }
 
-function Preview({ message, forms, displayForm, setDisplayForm, type, displaySection }: PreviewProperties) {
+function Preview({
+    message,
+    forms,
+    displayForm,
+    setDisplayForm,
+    type,
+    displaySection,
+    componentType
+}: PreviewProperties) {
     const { colorMode } = useColorMode();
     const defaultValues = {
         ...forms[displayForm].modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
@@ -73,6 +86,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
     </>);
     const [FormsProfileHidden, setHidden] = useState(true);
     const HandleInteraction = () => setHidden(!FormsProfileHidden);
+    const { isOpen, onToggle } = useDisclosure();
 
     return (
         <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
@@ -98,12 +112,48 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                                 </Tooltip>
                                 <Text fontFamily='Whitney Bold' fontSize='.625rem' textColor="white">BOT</Text>
                             </Box>
+                            <Box pl={2} display="inline-block">
+                                <Tooltip hasArrow label={
+                                    'You can use the components below to switch forms'
+                                } placement='right' shouldWrapChildren bg="#181414">
+                                    <IconContext.Provider value={{
+                                        color: '#b9bbbe', size: '20px', style: {
+                                            display: 'inline-block'
+                                        }
+                                    }}><Box><IoInformationCircle /></Box></IconContext.Provider>
+                                </Tooltip>
+                            </Box>
                             <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                         </Box>
                         <Box>
                             {Rendered}
                             <Box p='4px 0'>
-                                {forms.map((form, index) => (<Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>))}
+                                {componentType == ComponentType.Button && forms.map((form, index) => (
+                                    <Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>
+                                ))}
+                                {componentType == ComponentType.SelectMenu &&
+                                    <Box>
+                                        <Box width={
+                                            //@ts-expect-error
+                                            forms.find(e => e?.select_menu_option?.description?.length > 40) != null ? 450 : "auto"
+                                        } onClick={onToggle} cursor="pointer" backgroundColor={colorMode == "light" ? "#e9eaed" : "#1e1f22"} borderRadius={3.5} borderBottomRadius={isOpen ? 0 : 3.5} pl={3.5} pr={2} py={2}>
+                                            <Text color={colorMode == "light" ? "#5c5e66" : "#949a96"} display="inline-block">Pick a form to preview</Text>
+                                            <Box float="right" display="inline-block" pr={1}>
+                                                <IconContext.Provider value={{
+                                                    color: colorMode == "light" ? "#313338" : '#e0e1e5', size: '25px'
+                                                }}>{isOpen ? <MdExpandLess /> : <MdExpandMore />}</IconContext.Provider>
+                                            </Box>
+                                        </Box>
+                                        <Box hidden={!isOpen} backgroundColor={colorMode == "light" ? "#eeeff1" : "#2b2d31"} borderColor={colorMode == "light" ? "#e0e1e5" : "#1e1f22"} borderWidth="1.22px" borderBottomRadius={3.5}>
+                                            {forms.map((form, index) => (
+                                                <Box key={index} cursor="pointer" _hover={{ backgroundColor: colorMode == "light" ? "#dddee1" : "#36373d" }} px={4} py={2} onClick={() => setDisplayForm(index)}>
+                                                    <Text color={colorMode == "light" ? "#424244" : "#eeeff0"}>{form?.select_menu_option?.label}</Text>
+                                                    <Text color={colorMode == "light" ? "#64666d" : "#9fa0a6"} maxWidth={400}>{form?.select_menu_option?.description}</Text>
+                                                </Box>
+                                            ))}
+                                        </Box>
+                                    </Box>
+                                }
                             </Box>
                         </Box>
                     </Box>
@@ -179,7 +229,7 @@ function Preview({ message, forms, displayForm, setDisplayForm, type, displaySec
                                                 {actionRow.components[0]?.label}
                                             </Text>
                                             <Text fontSize='0.875rem' color={actionRow.components[0]?.value ? 'white' : '#a3a6aa'}>
-                                                { actionRow.components[0]?.value  || '(Answer will be displayed here)'}
+                                                {actionRow.components[0]?.value || '(Answer will be displayed here)'}
                                             </Text>
                                         </Box>
                                     ))}

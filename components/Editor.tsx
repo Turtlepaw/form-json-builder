@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
+import { Control, FieldValues, FormState, useForm, UseFormGetValues, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
 import {
   Box,
@@ -20,9 +20,10 @@ import { SlashCommand, UserMention } from '../components/Mention';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
-import { FormAndMessageBuilder } from "../util/types";
+import { ButtonBuilder, FormAndMessageBuilder } from "../util/types";
 import { useModal } from '../components/SettingsModal';
 import { createName } from '../util/form';
+import { ComponentType } from '../pages';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -47,9 +48,37 @@ const Defaults = {
 
 const defaultValues = DefaultValues as FormAndMessageBuilder;
 
+export interface EditorProps<T extends FieldValues> {
+  control: Control<T>;
+  register: UseFormRegister<T>;
+  formState: FormState<T>;
+  watch: UseFormWatch<T>;
+  setValue: UseFormSetValue<T>;
+  getValues: UseFormGetValues<T>;
+  displayForm: number;
+  setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
+  messageType: string;
+  setMessageType: React.Dispatch<React.SetStateAction<string>>;
+  componentType: [ComponentType, React.Dispatch<React.SetStateAction<ComponentType>>];
+  reset: UseFormReset<T>;
+  displaySection: boolean;
+}
 
-// @ts-expect-error
-export function Editor({ messageType, setMessageType, displayForm, setDisplayForm, watch, getValues, setValue, formState, control, register, reset, displaySection }) {
+export function Editor({
+  messageType,
+  setMessageType,
+  displayForm,
+  setDisplayForm,
+  watch,
+  getValues,
+  setValue,
+  formState,
+  control,
+  register,
+  reset,
+  displaySection,
+  componentType
+}: EditorProps<FormAndMessageBuilder>) {
   const toast = useToast();
 
   enum ToastStyles {
@@ -80,18 +109,22 @@ export function Editor({ messageType, setMessageType, displayForm, setDisplayFor
   }
 
   const fixForm = (toast = true) => {
-    //@ts-expect-error
     getValues("forms").forEach((form, i) => {
-      setValue(`forms.${i}.button.style`, Number(form.button.style));
+      if (componentType[0] == ComponentType.Button) setValue(`forms.${i}.button.style`, Number(form.button.style));
       //@ts-expect-error
-      form.modal.components.forEach((actionRow, rowIndex) => {
+      else if (componentType[0] == ComponentType.SelectMenu) Object.entries(getValues(`forms.${i}.select_menu_option`)).forEach(([k, v]) => {
         //@ts-expect-error
+        if (v == "") setValue(`forms.${i}.select_menu_option.${k}`, null);
+      })
+      form.modal.components.forEach((actionRow, rowIndex) => {
         actionRow.components.forEach((e, index) => {
           console.log(e)
           Object.entries(e).map(([k, v]) => {
             console.log(k, v, index)
             if (v === null) return { key: k, value: v };
+            //@ts-expect-error
             if (v == '') e[k] = null;
+            //@ts-expect-error
             else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
             return { key: k, value: v };
           });
@@ -104,14 +137,14 @@ export function Editor({ messageType, setMessageType, displayForm, setDisplayFor
 
     if (Message?.embeds != null && Message.embeds.length > 0) {
       console.log("fixing...")
-      //@ts-expect-error
       Message.embeds.forEach((embed, i) => {
         Object.entries(embed).forEach(([k, v]) => {
           if (typeof v == "string") {
+            //@ts-expect-error
             if (v == null || v === "") setValue(`message.embeds.${i}.${k}`, null);
           } else if (typeof v == "object") {
-            //@ts-expect-error
             Object.entries(v).forEach(([k2, v2], i2) => {
+              //@ts-expect-error
               if (v2 == null || v2 === "") setValue(`message.embeds.${i}.${k}.${k2}`, null);
             })
           }
@@ -168,7 +201,7 @@ export function Editor({ messageType, setMessageType, displayForm, setDisplayFor
 
     reader.onload = (e) => {
       if (typeof e.target?.result != "string") return CannotRead();
-      const json = JSON.parse(e.target.result);
+      const json = JSON.parse(e.target.result) as FormAndMessageBuilder;
 
       // Log for debugging purposes
       console.log(json)
@@ -182,13 +215,56 @@ export function Editor({ messageType, setMessageType, displayForm, setDisplayFor
         return makeError();
       }
 
+      // Validator for the number of forms
+      // 🔗 https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-modal
+      if (json.forms.length > 5) {
+        json.forms.length = 5;
+      }
+
+      // Add the json.forms array to the form hook
       setValue("forms", json.forms);
       const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
       const isMessage = json.message?.content != null
+      // Set the type of the message
       if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
       else if (isMessage) setMessageType(MessageType.Content);
       else if (isEmbed) setMessageType(MessageType.Embed);
+      // Check the number of button components and menu components
+      // incase of a button modal and a select menu modal
+      let buttons = 0;
+      let menus = 0;
+      json.forms.forEach(form => {
+        if (form.select_menu_option != null) menus++;
+        if (form.button) buttons++;
+      });
+
+      if (buttons < menus) {
+        json.forms.forEach((form, i) => {
+          if (form.select_menu_option == null) {
+            setValue(`forms.${i}.select_menu_option`, {
+              label: "Select Menu Option",
+              description: ""
+            });
+          }
+
+          if (form.button != null) setValue(`forms.${i}.button`, null as any);
+        });
+      } else {
+        json.forms.forEach((form, i) => {
+          if (form.button == null) setValue(`forms.${i}.button`, {
+            style: 1,
+            label: "Open Form"
+          });
+
+          if (form.select_menu_option != null) setValue(`forms.${i}.select_menu_option`, null as any);
+        });
+      }
+
+      // Add the json.message object to the form hook
       setValue("message", json.message);
+
+      // Send a toast the the user notifying that the form has
+      // been uploaded
       postToast({
         title: 'Form Uploaded',
         style: ToastStyles.Success
@@ -244,10 +320,10 @@ export function Editor({ messageType, setMessageType, displayForm, setDisplayFor
       </HStack>
       {SettingsModal.modal}
       <MessageBuilder
-        {...{ Defaults, formState, messageType, register, setMessageType, setValue }}
+        {...{ Defaults, getValues, componentType, formState, messageType, register, setMessageType, setValue }}
       />
       <FormBuilder
-        {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
+        {...{ componentType: componentType[0], control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
       />
       <VStack width='100%' align='flex-start'>
         <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>

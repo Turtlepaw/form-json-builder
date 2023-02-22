@@ -29,6 +29,11 @@ export interface ButtonBuilder {
     style: number;
 }
 
+export interface SelectMenuBuilder {
+    description: string;
+    label: string;
+}
+
 export interface ModalComponentBuilder {
     type: number;
     label: string;
@@ -53,6 +58,7 @@ export interface ModalBuilder {
 export interface FormBuilder {
     webhook_url: string;
     button: ButtonBuilder;
+    select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;
 }
 

@@ -215,12 +215,22 @@ export function Editor({
         return makeError();
       }
 
+      // Validator for the number of forms
+      // 🔗 https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-modal
+      if (json.forms.length > 5) {
+        json.forms.length = 5;
+      }
+
+      // Add the json.forms array to the form hook
       setValue("forms", json.forms);
       const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
       const isMessage = json.message?.content != null
+      // Set the type of the message
       if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
       else if (isMessage) setMessageType(MessageType.Content);
       else if (isEmbed) setMessageType(MessageType.Embed);
+      // Check the number of button components and menu components
+      // incase of a button modal and a select menu modal
       let buttons = 0;
       let menus = 0;
       json.forms.forEach(form => {
@@ -250,7 +260,11 @@ export function Editor({
         });
       }
 
+      // Add the json.message object to the form hook
       setValue("message", json.message);
+
+      // Send a toast the the user notifying that the form has
+      // been uploaded
       postToast({
         title: 'Form Uploaded',
         style: ToastStyles.Success

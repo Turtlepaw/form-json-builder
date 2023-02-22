@@ -91,10 +91,10 @@ export default function FormBuilder({
                           <span style={{
                             display: 'inline', marginLeft: '7px', fontSize: '13px',
                             //@ts-expect-error
-                            color: getValues('forms')[index].select_menu_option?.label?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
+                            color: getValues('forms')[index].select_menu_option?.label?.length > 100 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
                           }}>{getValues('forms')[index].select_menu_option?.label?.length}/100</span></FormLabel>
                         <input
-                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 80 })}
+                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100 })}
                           id={`forms[${index}].select_menu_option.label`}
                           placeholder='Form'
                         />
@@ -106,11 +106,11 @@ export default function FormBuilder({
                           <span style={{
                             display: 'inline', marginLeft: '7px', fontSize: '13px',
                             //@ts-expect-error
-                            color: getValues('forms')[index].select_menu_option?.description?.length > 80 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
+                            color: getValues('forms')[index].select_menu_option?.description?.length > 100 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
                           }}>{getValues('forms')[index].select_menu_option?.description?.length}/100</span>
                         </FormLabel>
                         <input
-                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 80 })}
+                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100 })}
                           id={`forms[${index}].select_menu_option.description`}
                         />
                       </Box>

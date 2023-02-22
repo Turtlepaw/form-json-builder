@@ -1,13 +1,13 @@
 import '../styles/App.css';
 import "../styles/Json.css";
 import '../util/framer-motion.d';
-import { Button, ChakraProvider, Heading, Link, ListItem, ModalBody, ModalCloseButton, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
+import { Box, Button, ChakraProvider, Heading, Link, ListItem, ModalBody, ModalCloseButton, ModalOverlay, Spinner, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
 import theme from "../components/theme";
 import { SettingsManagerBuilder } from '../util/settings';
 import { AppProps } from 'next/app';
 import { resolveBoolean } from '../components/Toggle';
 import { LinkStyle } from '../util/styles';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
 export function ColorModeCSS() {

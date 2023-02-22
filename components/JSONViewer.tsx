@@ -12,7 +12,7 @@ export interface JSONViewerProperties {
   getValues: UseFormGetValues<FormAndMessageBuilder>;
 }
 
-export const DOWNLOAD_SPINNER_TIME = 1000;
+export const DOWNLOAD_SPINNER_TIME = 600;
 
 function JSONViewer({ children, downloadForm: downloadFile, animationsEnabled, getValues }: JSONViewerProperties) {
   const [show, setShow] = useState(false)

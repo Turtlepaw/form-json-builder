@@ -22,7 +22,7 @@ const theme = extendTheme({
   colors: colours,
   config: {
     initialColorMode: 'dark',
-    useSystemColorMode: false,
+    useSystemColorMode: true
   },
   styles: {
     global: (props: any) => ({

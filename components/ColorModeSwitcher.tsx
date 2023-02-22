@@ -16,7 +16,7 @@ export const ColorModeSwitcher = (props: Omit<IconButtonProps, "aria-label">) =>
         color="#bcbcbc"
         marginLeft="2"
         onClick={toggleColorMode}
-        icon={<SwitchIcon />}
+        icon={<SwitchIcon color='#bcbcbc' />}
         {...props}
       />
   );

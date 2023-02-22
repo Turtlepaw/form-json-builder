@@ -13,7 +13,7 @@ export function Modal({ isOpen, onClose, children }: { isOpen: boolean; onClose:
 export function ModalContent({ children }: PropsWithChildren) {
     const { colorMode } = useColorMode();
     return (
-        <ChakraModalContent backgroundColor={colorMode == "light" ? "#36393f" : "#ffffff"}>
+        <ChakraModalContent backgroundColor={colorMode == "dark" ? "#36393f" : "white"}>
             {children}
         </ChakraModalContent>
     )
@@ -22,7 +22,7 @@ export function ModalContent({ children }: PropsWithChildren) {
 export function ModalFooter({ children }: PropsWithChildren) {
     const { colorMode } = useColorMode();
     return (
-        <ChakraModalFooter borderBottomRadius={5} backgroundColor={colorMode == "light" ? "#2f3136" : "#f3f4f5"}>
+        <ChakraModalFooter borderBottomRadius={5} backgroundColor={colorMode == "dark" ? "#2f3136" : "#f3f4f5"}>
             {children}
         </ChakraModalFooter>
     )

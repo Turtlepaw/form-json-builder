@@ -13,38 +13,28 @@ export const Button: ComponentTheme<ButtonProps> = {
     variants: {
         primary: {
             bg: 'blurple',
-            _disabled: {
-                _hover: { bg: 'unset' }
-            },
+            _disabled: { _hover: { bg: 'blurple!important' } },
             _hover: { bg: '#4752c4' }
         },
         secondary: {
             bg: 'grey.light',
-            _disabled: {
-                _hover: { bg: 'unset' }
-            },
+            _disabled: { _hover: { bg: 'grey.light!important' } },
             _hover: { bg: '#686d73' }
         },
         success: {
             bg: 'green',
-            _disabled: {
-                _hover: { bg: 'unset' }
-            },
+            _disabled: { _hover: { bg: 'green!important' }},
             _hover: { bg: '#215b32' }
         },
         danger: {
             bg: 'red',
-            _disabled: {
-                _hover: { bg: 'unset' }
-            },
+            _disabled: { _hover: { bg: 'red!important' }},
             _hover: { bg: '#a12d2f' }
         },
         link: {
             bg: 'transparent',
             color: 'white',
-            _hover: {
-                textDecoration: 'underline'
-            }
+            _hover: { textDecoration: 'underline' }
         }
     },
     defaultProps: {

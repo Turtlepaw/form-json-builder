@@ -316,7 +316,7 @@ export function Editor({
         <Box>
           This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.
         </Box>
-        <JSONViewer {...{ downloadForm, animations: !SettingsModal.settings.LimitAnimations, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+        <JSONViewer {...{ downloadForm, animationsEnabled: !SettingsModal.settings.LimitAnimations, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
         <VStack alignItems='flex-start'>
           <HStack alignItems='flex-start'>
             <Button

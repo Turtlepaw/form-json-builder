@@ -102,19 +102,6 @@ export default function App({ Component, pageProps }: AppProps) {
           <ModalCloseButton />
           <ModalBody paddingY={6}>
             <VStack textAlign="center">
-              <Box pb={3}>
-                <Image
-                  src="https://cdn.discordapp.com/attachments/1062143703831031818/1063529406334763079/Screen_Shot_2023-01-13_at_10.46.05_AM.png"
-                  alt="Nelly Catching Bugs"
-                  width={1000}
-                  height={50}
-                  style={{
-                    borderRadius: "5px",
-                    objectFit: "cover",
-                    height: "10rem",
-                  }}
-                />
-              </Box>
               <Heading size="md" fontWeight="medium">What&apos;s New</Heading>
               <Text color={colorMode == "light" ? "#898c95" : "#b9bbbe"}>February 21 2023</Text>
             </VStack>

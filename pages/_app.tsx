@@ -82,7 +82,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ChakraProvider theme={theme}>
       <ColorModeCSS />
       {/* <SettingsManagerProvider value={SettingsManager}> */}

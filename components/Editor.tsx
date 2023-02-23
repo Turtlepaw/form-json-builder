@@ -235,7 +235,7 @@ export function Editor({
       let menus = 0;
       json.forms.forEach(form => {
         if (form.select_menu_option != null) menus++;
-        if (form.button) buttons++;
+        if (form.button != null) buttons++;
       });
 
       if (buttons < menus) {

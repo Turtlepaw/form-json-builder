@@ -19,7 +19,7 @@ const colours = {
 const { blurple } = colours;
 
 const config: ThemeConfig = {
-  initialColorMode: 'light',
+  initialColorMode: 'dark',
   useSystemColorMode: false,
 }
 

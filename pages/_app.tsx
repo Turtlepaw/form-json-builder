@@ -1,7 +1,7 @@
 import '../styles/App.css';
 import "../styles/Json.css";
 import '../util/framer-motion.d';
-import { Box, Button, ChakraProvider, Heading, Link, ListItem, ModalBody, ModalCloseButton, ModalOverlay, Spinner, Text, UnorderedList, useColorMode, useDisclosure, VStack } from '@chakra-ui/react';
+import { Box, Button, ChakraProvider, Heading, Link, ListItem, ModalBody, ModalCloseButton, ModalOverlay, Spinner, Text, UnorderedList, useColorMode, useDisclosure, VStack, ColorModeScript } from '@chakra-ui/react';
 import theme from "../components/theme";
 import { SettingsManagerBuilder } from '../util/settings';
 import { AppProps } from 'next/app';
@@ -81,6 +81,8 @@ export default function App({ Component, pageProps }: AppProps) {
   console.log("a", hasSeenRelease)
 
   return (
+    <>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ChakraProvider theme={theme}>
       <ColorModeCSS />
       {/* <SettingsManagerProvider value={SettingsManager}> */}
@@ -130,5 +132,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </Modal>
       {/* </SettingsManagerProvider> */}
     </ChakraProvider >
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { Box, FormLabel, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import { ComponentType } from "../pages";
@@ -113,6 +113,8 @@ export default function useMessageBuilder({
     const HandleComponentInteraction = (value: string) => {
         setComponentType(value as ComponentType);
         if (value == ComponentType.Button) {
+            // @ts-expect-error
+            setValue(`select_menu_placeholder`, null as any);
             getValues("forms").forEach((form, i) => {
                 setValue(`forms.${i}.select_menu_option`, null as any);
                 setValue(`forms.${i}.button`, {
@@ -124,7 +126,7 @@ export default function useMessageBuilder({
             getValues("forms").forEach((form, i) => {
                 setValue(`forms.${i}.button`, null as any);
                 setValue(`forms.${i}.select_menu_option`, {
-                    label: "",
+                    label: form.modal.title,
                     description: ""
                 });
             });
@@ -135,25 +137,34 @@ export default function useMessageBuilder({
         <>
             <FormLabel pb={2}>Message and Options</FormLabel>
             <Collapsible variant='large' name="Form Options">
-                <FormLabel htmlFor="componentType">Component Type</FormLabel>
-                <RadioGroup onChange={HandleComponentInteraction} value={componentType} id="componentType">
-                    <Stack direction="row">
-                        <Radio
-                            name={ComponentType.Button}
-                            value={ComponentType.Button}
-                            colorScheme='blurple'
-                        >
-                            <Text>Button</Text>
-                        </Radio>
-                        <Radio
-                            name={ComponentType.SelectMenu}
-                            value={ComponentType.SelectMenu}
-                            colorScheme='blurple'
-                        >
-                            <Text>Select Menu</Text>
-                        </Radio>
-                    </Stack>
-                </RadioGroup>
+                <HStack>
+                    <Box width='100%'>
+                        <FormLabel htmlFor="componentType">Component Type</FormLabel>
+                        <RadioGroup onChange={HandleComponentInteraction} value={componentType} id="componentType" height='36px'>
+                            <HStack>
+                                <Radio
+                                    name={ComponentType.Button}
+                                    value={ComponentType.Button}
+                                    colorScheme='blurple'
+                                >
+                                    <Text>Button</Text>
+                                </Radio>
+                                <Radio
+                                    name={ComponentType.SelectMenu}
+                                    value={ComponentType.SelectMenu}
+                                    colorScheme='blurple'
+                                >
+                                    <Text>Select Menu</Text>
+                                </Radio>
+                            </HStack>
+                        </RadioGroup>
+                    </Box>
+                    {componentType === 'SelectMenu' && <Box width='100%'>
+                        <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
+                        {/* @ts-expect-error */}
+                        <input {...register('select_menu_placeholder', { required: false })} maxLength='100' placeholder="Select a form" id='select_menu_placeholder' />
+                    </Box>}
+                </HStack>
             </Collapsible>
             <Collapsible variant='large' name="Message">
                 <Box width='100%' marginBottom="8px">

@@ -17,6 +17,7 @@ function isEmpty(value: any) {
 export interface PreviewProperties {
     message: FormMessageBuilder;
     forms: FormBuilder[];
+    select_menu_placeholder: string;
     displayForm: number;
     setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
     type: string;
@@ -27,6 +28,7 @@ export interface PreviewProperties {
 function Preview({
     message,
     forms,
+    select_menu_placeholder,
     displayForm,
     setDisplayForm,
     type,
@@ -137,7 +139,7 @@ function Preview({
                                             //@ts-expect-error
                                             forms.find(e => e?.select_menu_option?.description?.length > 40) != null ? 450 : "auto"
                                         } onClick={onToggle} cursor="pointer" backgroundColor={colorMode == "light" ? "#e9eaed" : "#1e1f22"} borderRadius={3.5} borderBottomRadius={isOpen ? 0 : 3.5} pl={3.5} pr={2} py={2}>
-                                            <Text color={colorMode == "light" ? "#5c5e66" : "#949a96"} display="inline-block">Pick a form to preview</Text>
+                                            <Text color={colorMode == "light" ? "#5c5e66" : "#949a96"} display="inline-block">{select_menu_placeholder || "Select a form to preview"}</Text>
                                             <Box float="right" display="inline-block" pr={1}>
                                                 <IconContext.Provider value={{
                                                     color: colorMode == "light" ? "#313338" : '#e0e1e5', size: '25px'

@@ -235,10 +235,11 @@ export function Editor({
       let menus = 0;
       json.forms.forEach(form => {
         if (form.select_menu_option != null) menus++;
-        if (form.button) buttons++;
+        if (form.button != null) buttons++;
       });
 
       if (buttons < menus) {
+        componentType[1](ComponentType.SelectMenu);
         json.forms.forEach((form, i) => {
           if (form.select_menu_option == null) {
             setValue(`forms.${i}.select_menu_option`, {
@@ -250,6 +251,7 @@ export function Editor({
           if (form.button != null) setValue(`forms.${i}.button`, null as any);
         });
       } else {
+        componentType[1](ComponentType.Button);
         json.forms.forEach((form, i) => {
           if (form.button == null) setValue(`forms.${i}.button`, {
             style: 1,

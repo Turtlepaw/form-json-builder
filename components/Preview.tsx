@@ -131,7 +131,7 @@ function Preview({
                             {Rendered}
                             <Box p='4px 0'>
                                 {componentType == ComponentType.Button && forms.map((form, index) => (
-                                    <Button key={Math.random()} onClick={() => setDisplayForm(index)} m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>
+                                    <Button key={Math.random()} onClick={() => setDisplayForm(index)} height='32px' fontSize='14px' paddingBlock={0} paddingInline={0} padding='2px 16px' m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>
                                 ))}
                                 {componentType == ComponentType.SelectMenu &&
                                     <Box>
@@ -202,7 +202,7 @@ function Preview({
                         ))}
                     </Box>
                     <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
-                        <Button variant='link' color={colorMode === 'dark' ? 'white' : '#747f8d'} border='0px' _focus={{ border: '0px' }} >Cancel</Button>
+                        <Button variant='link' color={colorMode === 'dark' ? 'white' : '#747f8d'} border='0px' mr={4} _focus={{ border: '0px' }} >Cancel</Button>
                         <Button variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
                     </Box>
                 </Box>

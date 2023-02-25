@@ -6,7 +6,6 @@ export const Button: ComponentTheme<ButtonProps> = {
         color: 'white',
         fontFamily: 'Whitney Bold',
         fontWeight: '500',
-        padding: '16px 2px',
         borderRadius: '3px',
         _focus: { boxShadow: 'none' },
     },

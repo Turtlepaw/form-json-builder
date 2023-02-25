@@ -1,4 +1,4 @@
-import { Box, Button, Tooltip } from "@chakra-ui/react";
+import { Box, Button, color, Tooltip, useColorMode } from "@chakra-ui/react";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useScreenWidth } from "../util/width";
@@ -12,6 +12,7 @@ export interface NavigationProps {
 
 export function Navigation({ modalHandler, displaySection, setDisplaySection }: NavigationProps) {
     const isSmallScreen = !useScreenWidth(500);
+    const colorMode = useColorMode().colorMode;
 
     return (
         <header>
@@ -29,9 +30,9 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                         />
                     </NextLink>
                 </Tooltip>
-                {(isSmallScreen && displaySection) && <Box bg='#302c34' height='28px' ml={isSmallScreen ? 4 : 5} px={'4px'} borderRadius={15}>
-                    <Button onClick={() => setDisplaySection(1)} variant='navigationDisplayMode' bg={displaySection === 1 ? '#4f545c' : 'transparent'}>Editor</Button>
-                    <Button onClick={() => setDisplaySection(2)} variant='navigationDisplayMode' bg={displaySection === 2 ? '#4f545c' : 'transparent'}>Preview</Button>
+                {(isSmallScreen && displaySection) && <Box bg={colorMode === 'dark' ? '#2b2d31' : '#e0e1e5'} height='28px' ml={isSmallScreen ? 4 : 5} px={'2px'} borderRadius={15}>
+                    <Button onClick={() => setDisplaySection(1)} variant='navigationDisplayMode' color={displaySection === 1 ? 'white' : (colorMode === 'dark' ? 'white' : '#82858f')} bg={displaySection === 1 ? (colorMode === 'dark' ? 'grey.light': 'grey.lighter') : 'transparent'}>Editor</Button>
+                    <Button onClick={() => setDisplaySection(2)} variant='navigationDisplayMode' color={displaySection === 2 ? 'white' : (colorMode === 'dark' ? 'white' : '#82858f')} bg={displaySection === 2 ? (colorMode === 'dark' ? 'grey.light': 'grey.lighter') : 'transparent'}>Preview</Button>
                 </Box>}
                 <nav>
                     <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">{isSmallScreen ? 'Help' : 'Support Server'}</a>

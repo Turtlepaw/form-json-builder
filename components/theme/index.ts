@@ -10,6 +10,7 @@ const colours = {
   'green': '#2d7d46',
   'red': '#ED4245',
   'grey.extralight': '#ebedef',
+  'grey.lighter': '#6d6f78',
   'grey.light': '#4f545c',
   'grey.dark': '#36393f',
   'grey.extradark': '#292b2f',

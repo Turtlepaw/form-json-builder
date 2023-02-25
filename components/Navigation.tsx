@@ -29,9 +29,9 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                         />
                     </NextLink>
                 </Tooltip>
-                {(isSmallScreen && displaySection) && <Box bg='#302c34' p='3px' ml={isSmallScreen ? 4 : 5} borderRadius={7.5}>
-                    <Button onClick={() => setDisplaySection(1)} height='2px' pl={2} pr={2} borderRadius={5} bg={displaySection === 1 ? '#4f545c' : 'transparent'}>Editor</Button>
-                    <Button onClick={() => setDisplaySection(2)} height='2px' pl={2} pr={2} borderRadius={5} bg={displaySection === 2 ? '#4f545c' : 'transparent'}>Preview</Button>
+                {(isSmallScreen && displaySection) && <Box bg='#302c34' height='28px' ml={isSmallScreen ? 4 : 5} px={'4px'} borderRadius={15}>
+                    <Button onClick={() => setDisplaySection(1)} variant='navigationDisplayMode' bg={displaySection === 1 ? '#4f545c' : 'transparent'}>Editor</Button>
+                    <Button onClick={() => setDisplaySection(2)} variant='navigationDisplayMode' bg={displaySection === 2 ? '#4f545c' : 'transparent'}>Preview</Button>
                 </Box>}
                 <nav>
                     <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">{isSmallScreen ? 'Help' : 'Support Server'}</a>

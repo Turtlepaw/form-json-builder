@@ -35,7 +35,8 @@ export const Button: ComponentTheme<ButtonProps> = {
             bg: 'transparent',
             color: 'white',
             _hover: { textDecoration: 'underline' }
-        }
+        },
+        navigationDisplayMode: { height: '20px', marginY: '4px', fontSize: 'sm', paddingInline: '6px',  paddingBlock: 0, borderRadius: 10 }
     },
     defaultProps: {
         variant: 'secondary',

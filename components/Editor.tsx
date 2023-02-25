@@ -24,6 +24,7 @@ import { ButtonBuilder, FormAndMessageBuilder } from "../util/types";
 import { useModal } from '../components/SettingsModal';
 import { createName } from '../util/form';
 import { ComponentType } from '../pages';
+import { useScreenWidth } from '../util/width';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -300,6 +301,8 @@ export function Editor({
 
   const SettingsModal = useModal();
 
+  const isSmallScreen = !useScreenWidth(500);
+
   return (
     <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
       <HStack>
@@ -357,7 +360,7 @@ export function Editor({
           Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.
         </Box>
       </VStack>
-      <Footer />
+      {!isSmallScreen && <Footer />}
     </VStack>
   )
 }

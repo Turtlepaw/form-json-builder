@@ -252,7 +252,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
     return (
         <>
             <Meta>Templates</Meta>
-            <Navigation displaySection={0} setDisplaySection={0} {...SettingsModal} />
+            <Navigation modalHandler={SettingsModal.modalHandler} />
             <Center pt={10}>
                 <VStack bgImage="/stars.svg" bgSize="contain" paddingX={150} bgRepeat="no-repeat">
                     {/* <Image src="/stars.svg" alt='Stars' width={5} height={5} /> */}

@@ -6,8 +6,8 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 export interface NavigationProps {
     modalHandler: () => void;
-    displaySection: number;
-    setDisplaySection: any;
+    displaySection?: number;
+    setDisplaySection?: any;
 }
 
 export function Navigation({ modalHandler, displaySection, setDisplaySection }: NavigationProps) {
@@ -16,7 +16,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
     return (
         <header>
             <Box display='flex' alignItems='center'>
-                <Tooltip label="Home" placement="right" hasArrow arrowSize={6}>
+                <Tooltip label="Home" placement="bottom-end" hasArrow arrowSize={6}>
                     <NextLink href="/">
                         <Image
                             src="/forms.svg"
@@ -29,7 +29,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                         />
                     </NextLink>
                 </Tooltip>
-                {(isSmallScreen && setDisplaySection !== 0) && <Box bg='#302c34' p='3px' ml={isSmallScreen ? 4 : 5} borderRadius={7.5}>
+                {(isSmallScreen && displaySection) && <Box bg='#302c34' p='3px' ml={isSmallScreen ? 4 : 5} borderRadius={7.5}>
                     <Button onClick={() => setDisplaySection(1)} height='2px' pl={2} pr={2} borderRadius={5} bg={displaySection === 1 ? '#4f545c' : 'transparent'}>Editor</Button>
                     <Button onClick={() => setDisplaySection(2)} height='2px' pl={2} pr={2} borderRadius={5} bg={displaySection === 2 ? '#4f545c' : 'transparent'}>Preview</Button>
                 </Box>}

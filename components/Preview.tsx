@@ -1,5 +1,5 @@
 /* eslint eqeqeq: 0 */
-import { Box, Button, HStack, Image, Link, Text, Tooltip, useColorMode, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Circle, VStack, Image, Link, Text, Tooltip, useColorMode, useDisclosure } from '@chakra-ui/react';
 //import Image from "next/image";
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { ComponentType } from '../pages';
 import { FormBuilder, FormMessageBuilder } from '../util/types';
 import { FormProfile } from './Mention';
+import { PreviewStep } from './PreviewStep';
 
 function isEmpty(value: any) {
     return value == null || value == '';
@@ -92,8 +93,9 @@ function Preview({
 
     return (
         <Box overflowY='scroll' p='16px 16px 16px 16px' maxHeight='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
-            <Box>
-                <Box display='flex'>
+            <VStack align='start'>
+            <PreviewStep number={1} title='A message with buttons to open forms is sent to a channel'>
+                <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                     <FormProfile {...{
                         avatar: "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096",
                         hidden: FormsProfileHidden,
@@ -160,91 +162,101 @@ function Preview({
                         </Box>
                     </Box>
                 </Box>
-            </Box>
+            </PreviewStep>
+
             {/* <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
                 <Button isDisabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
                 Form {displayForm + 1} Preview
                 <Button isDisabled={displayForm > forms.length - 2} onClick={() => setDisplayForm(displayForm + 1)}><HiChevronRight /></Button>
 
             </Box> */}
-            <Box display='flex' mt='30px'>
-                <Box border={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
-                    <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
-                        <Box display='flex' alignItems='center' height='24px'>
-                            <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
-                            <Text fontSize='24px' color={colorMode === 'dark' ? 'white' : '#060607'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
-                        </Box>
-                        <Box display='flex' p='4px' cursor='pointer'>
-                            <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
-                        </Box>
-                    </Box>
-                    <Box>
-                        {forms[displayForm]?.modal.components.map((actionRow, i) => (
-                            <Box key={Math.random()} m='0 1em 1em'>
-                                <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#b9bbbe' : '#4f5660'}>
-                                    {actionRow.components[0]?.label}
-                                    {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
-                                </Text>
-                                <Box
-                                    as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'}
-                                    bg={colorMode === 'dark' ? '#202225' : '#e3e5e8'}
-                                    height={actionRow.components[0]?.style == 2 ? '16' : '2.2rem'}
-                                    fontSize='16px'
-                                    resize='none'
-                                    border='0px'
-                                    _focus={{ border: '0px' }}
-                                    placeholder={actionRow.components[0]?.placeholder}
-                                    //@ts-ignore
-                                    //{...textInputs.register(`${actionRow.components[0].label}`)}
-                                    defaultValue={actionRow.components[0].value}
-                                />
+
+            <PreviewStep number={2} title='User opens a form'>
+                <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
+                    <Box border={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
+                        <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
+                            <Box display='flex' alignItems='center' height='24px'>
+                                <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
+                                <Text fontSize='24px' color={colorMode === 'dark' ? 'white' : '#060607'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
                             </Box>
-                        ))}
-                    </Box>
-                    <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
-                        <Button variant='link' color={colorMode === 'dark' ? 'white' : '#747f8d'} border='0px' mr={4} _focus={{ border: '0px' }} >Cancel</Button>
-                        <Button variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
-                    </Box>
-                </Box>
-            </Box>
-            <Box mt='12px'>
-                <Box display='flex'>
-                    <Image alt='Default Avatar' _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
-                    <Box>
-                        <Box display='flex' alignItems='center'>
-                            <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline', cursor: "pointer" }}>Webhook</Text>
-                            <Box display='flex' backgroundColor='#5865F2' color='white' borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
-                                <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
+                            <Box display='flex' p='4px' cursor='pointer'>
+                                <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
                             </Box>
-                            <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                         </Box>
-                        <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={colorMode === 'dark' ? '4px solid #202225' : '4px solid #e3e5e8'} maxWidth='520px' borderRadius='4px'>
-                            <Box padding='0.5rem 1rem 1rem 0.75rem'>
-                                <Box display='flex' alignItems='center' m='8px 0px 0px'>
-                                    <Image alt="Test User's Avatar" src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
-                                    <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500'>User#0000</Box>
+                        <Box>
+                            {forms[displayForm]?.modal.components.map((actionRow, i) => (
+                                <Box key={Math.random()} m='0 1em 1em'>
+                                    <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#b9bbbe' : '#4f5660'}>
+                                        {actionRow.components[0]?.label}
+                                        {actionRow.components[0]?.required && <span style={{ color: '#ed4245', paddingLeft: '4px' }}>*</span>}
+                                    </Text>
+                                    <Box
+                                        as={actionRow.components[0]?.style == 1 ? 'input' : 'textarea'}
+                                        bg={colorMode === 'dark' ? '#202225' : '#e3e5e8'}
+                                        height={actionRow.components[0]?.style == 2 ? '16' : '2.2rem'}
+                                        fontSize='16px'
+                                        resize='none'
+                                        border='0px'
+                                        _focus={{ border: '0px' }}
+                                        placeholder={actionRow.components[0]?.placeholder}
+                                        //@ts-ignore
+                                        //{...textInputs.register(`${actionRow.components[0].label}`)}
+                                        defaultValue={actionRow.components[0].value}
+                                    />
                                 </Box>
-                                <Box>
-                                    {forms[displayForm]?.modal.components.map(actionRow => (
-                                        <Box key={Math.random()}>
-                                            <Text fontFamily='Whitney Black' fontSize='0.875rem' mt='8px'>
-                                                {actionRow.components[0]?.label}
-                                            </Text>
-                                            <Text fontSize='0.875rem' color={actionRow.components[0]?.value ? 'white' : '#a3a6aa'}>
-                                                {actionRow.components[0]?.value || '(Answer will be displayed here)'}
-                                            </Text>
-                                        </Box>
-                                    ))}
-                                </Box>
-                                <Box display='flex' alignItems='center' mt='8px'>
-                                    <Image alt='ID' src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%' />
-                                    <Text fontFamily='Whitney Bold' fontSize='0.75rem' color={colorMode === 'dark' ? '#fbfbfb' : '#313338'}>643945264868098049</Text>
-                                </Box>
-                            </Box>
+                            ))}
+                        </Box>
+                        <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} p='16px' display='flex' justifyContent='flex-end' alignItems='center'>
+                            <Button variant='link' color={colorMode === 'dark' ? 'white' : '#747f8d'} border='0px' mr={4} _focus={{ border: '0px' }} >Cancel</Button>
+                            <Button variant='primary' border='0px' _focus={{ border: '0px' }}>Submit</Button>
                         </Box>
                     </Box>
                 </Box>
-            </Box>
+            </PreviewStep>
+
+            <PreviewStep number={3} title='The submission is sent to a channel'>
+                <Box bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
+                    <Box display='flex'>
+                        <Image alt='Default Avatar' _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />
+                        <Box>
+                            <Box display='flex' alignItems='center'>
+                                <Text fontFamily='Whitney Bold' _hover={{ textDecoration: 'underline', cursor: "pointer" }}>Webhook</Text>
+                                <Box display='flex' backgroundColor='#5865F2' color='white' borderRadius='.1875rem' ml='4px' height='.9375rem' p='0px 4px 0px 5px'>
+                                    <Text fontFamily='Whitney Bold' fontSize='.625rem'>BOT</Text>
+                                </Box>
+                                <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
+                            </Box>
+                            <Box bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={colorMode === 'dark' ? '4px solid #202225' : '4px solid #e3e5e8'} maxWidth='520px' borderRadius='4px'>
+                                <Box padding='0.5rem 1rem 1rem 0.75rem'>
+                                    <Box display='flex' alignItems='center' m='8px 0px 0px'>
+                                        <Image alt="Test User's Avatar" src='https://cdn.discordapp.com/embed/avatars/5.png' width='24px' height='24px' borderRadius='50%' mr='8px' />
+                                        <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500'>User#0000</Box>
+                                    </Box>
+                                    <Box>
+                                        {forms[displayForm]?.modal.components.map(actionRow => (
+                                            <Box key={Math.random()}>
+                                                <Text fontFamily='Whitney Black' fontSize='0.875rem' mt='8px'>
+                                                    {actionRow.components[0]?.label}
+                                                </Text>
+                                                <Text fontSize='0.875rem' color={actionRow.components[0]?.value ? 'white' : '#a3a6aa'}>
+                                                    {actionRow.components[0]?.value || '(Answer will be displayed here)'}
+                                                </Text>
+                                            </Box>
+                                        ))}
+                                    </Box>
+                                    <Box display='flex' alignItems='center' mt='8px'>
+                                        <Image alt='ID' src='https://cdn.discordapp.com/emojis/882601305871360040.png' width='20px' height='20px' mr='8px' borderRadius='50%' />
+                                        <Text fontFamily='Whitney Bold' fontSize='0.75rem' color={colorMode === 'dark' ? '#fbfbfb' : '#313338'}>643945264868098049</Text>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>
+            </PreviewStep>
+            </VStack>
+
+
             <Image alt='Forms Demo' pt={4} pb={1} src='https://cdn.discordapp.com/attachments/944646735643410482/953299030669152256/forms_demo.png' />
             <Text fontSize='0.875rem' color='#a3a6aa' textAlign='center'> Forms Demo Image </Text>
         </Box >

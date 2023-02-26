@@ -76,7 +76,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                 </nav>}
             </Box>
             {isSmallScreen ?
-                <HiOutlineMenu onClick={onOpen} cursor='pointer' size='24px' color={colorMode === 'dark' ? '#B8B9BF': '#4E5058'} />
+                <HiOutlineMenu onClick={onOpen} style={{ marginRight: 6 }} cursor='pointer' size='24px' color={colorMode === 'dark' ? '#B8B9BF': '#4E5058'} />
             : 
                 <ColorModeSwitcher placement='bottom-end' size='lg' />}
         </header >

@@ -32,8 +32,10 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
             <Drawer isOpen={isOpen} placement='right' onClose={onClose}>
                 <DrawerOverlay />
                 <DrawerContent bg={colorMode === 'dark' ? 'grey.dark' : 'grey.extralight'}>
-                    <DrawerCloseButton color="#bcbcbc" />
-                    <ColorModeSwitcher position='absolute' height='32px' width='32px' top={2} right={12}/>
+                    <Tooltip label='Back' hasArrow arrowSize={6}>
+                        <DrawerCloseButton color={colorMode === 'dark' ? '#B8B9BF' : '#4E5058'} _focusVisible={{ border: 'none' }} />
+                    </Tooltip>
+                    <ColorModeSwitcher placement='bottom' position='absolute' height='32px' width='32px' top={2} right={12}/>
                     <DrawerHeader height='48px'>Pages</DrawerHeader>
                     <DrawerBody display='flex' flexDirection='column'>
                         <Link href="https://discord.gg/cajZ7Mvzbp" onClick={onClose} target="_blank" rel="noopener noreferrer">Support Server</Link>
@@ -62,8 +64,8 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                     </NextLink>
                 </Tooltip>
                 {(isSmallScreen && displaySection) && <Box bg={colorMode === 'dark' ? '#2b2d31' : '#e0e1e5'} height='28px' ml={isSmallScreen ? 4 : 5} px={'2px'} borderRadius={15}>
-                    <Button onClick={() => setDisplaySection(1)} variant='navigationDisplayMode' color={displaySection === 1 ? 'white' : (colorMode === 'dark' ? 'white' : '#82858f')} bg={displaySection === 1 ? (colorMode === 'dark' ? 'grey.light' : 'grey.lighter') : 'transparent'}>Editor</Button>
-                    <Button onClick={() => setDisplaySection(2)} variant='navigationDisplayMode' color={displaySection === 2 ? 'white' : (colorMode === 'dark' ? 'white' : '#82858f')} bg={displaySection === 2 ? (colorMode === 'dark' ? 'grey.light' : 'grey.lighter') : 'transparent'}>Preview</Button>
+                    <Button onClick={() => setDisplaySection(1)} variant='navigationDisplayMode' color={displaySection === 1 ? 'white' : (colorMode === 'dark' ? 'white' : 'grey.lighter')} bg={displaySection === 1 ? (colorMode === 'dark' ? 'grey.light' : 'grey.lighter') : 'transparent'}>Editor</Button>
+                    <Button onClick={() => setDisplaySection(2)} variant='navigationDisplayMode' color={displaySection === 2 ? 'white' : (colorMode === 'dark' ? 'white' : 'grey.lighter')} bg={displaySection === 2 ? (colorMode === 'dark' ? 'grey.light' : 'grey.lighter') : 'transparent'}>Preview</Button>
                 </Box>}
                 {!isSmallScreen && <nav>
                     <a href="https://discord.gg/cajZ7Mvzbp" target="_blank" rel="noopener noreferrer">Support Server</a>
@@ -73,7 +75,10 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                     {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
                 </nav>}
             </Box>
-            {isSmallScreen ? <HiOutlineMenu onClick={onOpen} cursor='pointer' size='24px' color="#bcbcbc" /> : <ColorModeSwitcher height='0px' size='lg' />}
+            {isSmallScreen ?
+                <HiOutlineMenu onClick={onOpen} cursor='pointer' size='24px' color={colorMode === 'dark' ? '#B8B9BF': '#4E5058'} />
+            : 
+                <ColorModeSwitcher placement='bottom-end' size='lg' />}
         </header >
     )
 }

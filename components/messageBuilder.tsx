@@ -135,37 +135,8 @@ export default function useMessageBuilder({
 
     return (
         <>
-            <FormLabel pb={2}>Message and Options</FormLabel>
-            <Collapsible variant='large' name="Form Options">
-                <HStack>
-                    <Box width='100%'>
-                        <FormLabel htmlFor="componentType">Component Type</FormLabel>
-                        <RadioGroup onChange={HandleComponentInteraction} value={componentType} id="componentType" height='36px'>
-                            <HStack>
-                                <Radio
-                                    name={ComponentType.Button}
-                                    value={ComponentType.Button}
-                                    colorScheme='blurple'
-                                >
-                                    <Text>Button</Text>
-                                </Radio>
-                                <Radio
-                                    name={ComponentType.SelectMenu}
-                                    value={ComponentType.SelectMenu}
-                                    colorScheme='blurple'
-                                >
-                                    <Text>Select Menu</Text>
-                                </Radio>
-                            </HStack>
-                        </RadioGroup>
-                    </Box>
-                    {componentType === 'SelectMenu' && <Box width='100%'>
-                        <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
-                        {/* @ts-expect-error */}
-                        <input {...register('select_menu_placeholder', { required: false })} maxLength='100' placeholder="Select a form" id='select_menu_placeholder' />
-                    </Box>}
-                </HStack>
-            </Collapsible>
+            <FormLabel pb={2}>Message</FormLabel>
+
             <Collapsible variant='large' name="Message">
                 <Box width='100%' marginBottom="8px">
                     <FormLabel htmlFor="messageType">Message Type</FormLabel>
@@ -207,6 +178,36 @@ export default function useMessageBuilder({
                             </>
                         ))}
                     </Box>
+
+
+                <HStack>
+                    <Box width='100%'>
+                        <FormLabel htmlFor="componentType">Component Type</FormLabel>
+                        <RadioGroup onChange={HandleComponentInteraction} value={componentType} id="componentType" height='36px'>
+                            <HStack>
+                                <Radio
+                                    name={ComponentType.Button}
+                                    value={ComponentType.Button}
+                                    colorScheme='blurple'
+                                >
+                                    <Text>Button</Text>
+                                </Radio>
+                                <Radio
+                                    name={ComponentType.SelectMenu}
+                                    value={ComponentType.SelectMenu}
+                                    colorScheme='blurple'
+                                >
+                                    <Text>Select Menu</Text>
+                                </Radio>
+                            </HStack>
+                        </RadioGroup>
+                    </Box>
+                    {componentType === 'SelectMenu' && <Box width='100%'>
+                        <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
+                        {/* @ts-expect-error */}
+                        <input {...register('select_menu_placeholder', { required: false })} maxLength='100' placeholder="Select a form" id='select_menu_placeholder' />
+                    </Box>}
+                </HStack>
                 </Box>
             </Collapsible></>
     );

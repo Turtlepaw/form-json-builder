@@ -55,7 +55,7 @@ export default function useMessageBuilder({
                 <input
                     {...register('message.embeds.0.color')}
                     //@ts-expect-error
-                    onChange={(event) => setValue("message.embeds.0.color", event.target.valueAsNumber || null)}
+                    //onChange={(event) => setValue("message.embeds.0.color", event.target.valueAsNumber || null)}
 
                     id='message.embeds.0.color' />
                 <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds?.[0]?.color}></ErrorMessage>

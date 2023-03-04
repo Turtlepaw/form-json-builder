@@ -54,7 +54,7 @@ export default function useMessageBuilder({
                 <FormLabel htmlFor="message.embeds.0.color">Embed Color</FormLabel>
                 <input
                     {...register('message.embeds.0.color')}
-                    //@ts-expect-error
+                    //@ts- expect-error
                     //onChange={(event) => setValue("message.embeds.0.color", event.target.valueAsNumber || null)}
 
                     id='message.embeds.0.color' />

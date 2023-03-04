@@ -111,7 +111,7 @@ export function Editor({
 
   const fixForm = (toast = true) => {
     getValues("message.embeds").forEach(embed => {
-      // hex to decimal
+      //@ts-expect-error hex to decimal
       if(embed?.color != null && embed?.color != "") parseInt(embed.color, 16);
     });
     

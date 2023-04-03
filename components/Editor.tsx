@@ -112,9 +112,9 @@ export function Editor({
   const fixForm = (toast = true) => {
     getValues("message.embeds").forEach((embed, i) => {
       //@ts-expect-error hex to decimal
-      if(embed?.color != null && embed?.color != "") setValue(`message.embeds.${i}.color`, parseInt(embed.color.replace("#", ""), 16));
+      if (embed?.color != null && embed?.color != "" && typeof embed?.color == "string") setValue(`message.embeds.${i}.color`, parseInt(embed.color.replace("#", ""), 16));
     });
-    
+
     getValues("forms").forEach((form, i) => {
       if (componentType[0] == ComponentType.Button) setValue(`forms.${i}.button.style`, Number(form.button.style));
       //@ts-expect-error

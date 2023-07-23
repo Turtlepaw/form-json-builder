@@ -1,10 +1,12 @@
-import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack } from "@chakra-ui/react";
+import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import { ComponentType } from "../pages";
 import { EmbedBuilder, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
+import { IoInformationCircle } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 export const MessageType = {
     Content: "content",
@@ -51,12 +53,19 @@ export default function useMessageBuilder({
                 <textarea style={{ height: '99px' }} {...register('message.embeds.0.description', { minLength: 1, maxLength: 4096 })} id='message.embeds.0.description' />
                 <ErrorMessage fieldName='embed description' fieldType='The' field={errors?.message?.embeds?.[0]?.description}></ErrorMessage>
                 {/* Embed Color */}
-                <FormLabel htmlFor="message.embeds.0.color">Embed Color</FormLabel>
+                <FormLabel htmlFor="message.embeds.0.color" display='flex' alignItems='center'>
+                    <Text mr={1} >Embed Color</Text>
+                    <Tooltip hasArrow label={'The color has to be in the "decimal" color format.'} placement='right' shouldWrapChildren bg="#181414">
+                        <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
+                    </Tooltip>
+                </FormLabel>
+
+                
                 <input
                     {...register('message.embeds.0.color')}
                     //@ts- expect-error
-                    //onChange={(event) => setValue("message.embeds.0.color", event.target.valueAsNumber || null)}
-
+                    onChange={(event) => setValue("message.embeds.0.color", event.target.valueAsNumber)}
+                    type="number"
                     id='message.embeds.0.color' />
                 <ErrorMessage fieldName='embed color' fieldType='The' field={errors?.message?.embeds?.[0]?.color}></ErrorMessage>
                 {/* Embed Author */}

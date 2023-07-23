@@ -1,7 +1,6 @@
 {
   "message": {
-    "content": "Fill out the form below",
-    "embeds": []
+    "content": "Fill out the form below"
   },
   "forms": [
     {
@@ -23,8 +22,7 @@
                 "placeholder": "Write text here",
                 "value": "",
                 "min_length": 0,
-                "max_length": 1024,
-                "required": true
+                "max_length": 1024
               }
             ]
           }

@@ -309,7 +309,7 @@ export function Editor({
   const isSmallScreen = !useScreenWidth(500);
 
   return (
-    <VStack alignItems='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
+    <VStack align='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'flex' : 'none'}>
       <HStack>
         <Button onClick={() => {
           if (fileInput == null) {

@@ -157,7 +157,7 @@ export default function FormBuilder({
                 />
                 <ErrorMessage>{(errors.forms?.[index]?.modal?.title?.type === 'required' && 'The Title is required') || (errors.forms?.[index]?.modal?.title?.type === 'maxLength' && 'The Title is too long')}</ErrorMessage>
               </Collapsible >
-              <hr style={{ margin: '0 16px 0 16px' }} />
+              <hr/>
               <Collapsible name="Text Inputs">
                 <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue }} />
               </Collapsible>

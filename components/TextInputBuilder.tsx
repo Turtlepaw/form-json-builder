@@ -60,7 +60,7 @@ export default function TextInputBuilder({
   const colorMode = useColorMode().colorMode
 
   return (
-    <div id={id}>
+    <VStack align='flex-start' pl={3} pt={1} id={id}>
       {fields.map((item, k) => {
         let textInput = watch(`forms.${nestIndex}.modal.components.${k}.components.0`) as ModalComponentBuilder;
         //@ts-expect-error
@@ -68,8 +68,8 @@ export default function TextInputBuilder({
         //@ts-expect-error
         let maximumLength = parseInt(watch(`forms.${nestIndex}.modal.components.${k}.components[0].max_length`));
         return (
-          <Box key={item.id}>
-            <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ marginLeft: 20 }}>
+          <Box key={item.id} width='100%'>
+            <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ padding: 0 }}>
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.label?.length > 45 || textInput?.label?.length < 1) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45 })}
@@ -247,6 +247,6 @@ export default function TextInputBuilder({
           }
         ]
       })}>Add Text Input</Button>
-    </div>
+    </VStack>
   );
 };

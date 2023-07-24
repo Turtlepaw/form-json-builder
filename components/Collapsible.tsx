@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-import { Button, Collapse, Box, useDisclosure, useColorMode } from '@chakra-ui/react'
+import { Button, Collapse, Box, useDisclosure, useColorMode, Tooltip } from '@chakra-ui/react'
 
 export interface CollapsibleProperties {
   name: string;
@@ -27,7 +27,7 @@ function Collapsible({ name, deleteButton, children, variant, style }: Collapsib
         onClick={onToggle}
         as='div'
         margin={0}
-        padding={variant === 'large' ? '0px 6px 0px 10px' : '0px'}
+        padding={variant === 'large' ? '0px 6px 0px 14px' : '0px'}
         // paddingInlineStart={variant === 'large' ? '16px' : '0px'}
         // paddingInlineEnd={variant === 'large' ? '16px' : '0px'}
         height={variant === 'large' ? '40px' : '32px'}
@@ -48,10 +48,12 @@ function Collapsible({ name, deleteButton, children, variant, style }: Collapsib
               strokeLinejoin="round"
             />
           </svg> {name}
-        </Box>{deleteButton} </Button>
+        </Box>
+        {deleteButton}
+        </Button>
       <Collapse in={isOpen} animateOpacity style={{ margin: 0 }}>
         <Box
-          p='0px 10px 10px'
+          p='0px 14px 14px'
           rounded='md'
           shadow='md'
           margin='0'

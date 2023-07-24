@@ -144,8 +144,7 @@ export default function useMessageBuilder({
 
     return (
         <>
-            <FormLabel pb={2}>Message</FormLabel>
-
+            <FormLabel>Message</FormLabel>
             <Collapsible variant='large' name="Message">
                 <Box width='100%' marginBottom="8px">
                     <FormLabel htmlFor="messageType">Message Type</FormLabel>

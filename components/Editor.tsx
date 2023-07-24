@@ -110,7 +110,7 @@ export function Editor({
   }
 
   const fixForm = (toast = true) => {
-    getValues("message.embeds").forEach((embed, i) => {
+    if(getValues("message.embeds")) getValues("message.embeds").forEach((embed, i) => {
       //@ts-expect-error hex to decimal
       if (embed?.color != null && embed?.color != "" && typeof embed?.color == "string") setValue(`message.embeds.${i}.color`, parseInt(embed.color.replace("#", ""), 16));
     });

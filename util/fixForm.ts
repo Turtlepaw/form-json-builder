@@ -10,23 +10,26 @@ interface FixFormOptions<T extends FieldValues> {
     resetField: UseFormResetField<T>;
     componentType: [ComponentType, Dispatch<SetStateAction<ComponentType>>];
     toast: CreateToastFnReturn;
+    formData?: FormAndMessageBuilder;
 }
 
 export function fixForm(toast = true, {
     getValues,
     componentType,
     setValue,
-    toast: ToastState
+    toast: ToastState,
+    formData
 }: FixFormOptions<FormAndMessageBuilder>) {
-    if (getValues("message.embeds")) getValues("message.embeds").forEach((embed, i) => {
+    const data = formData ?? getValues();
+    if (data.message.embeds) data.message.embeds.forEach((embed, i) => {
         //@ts-expect-error hex to decimal
         if (embed?.color != null && embed?.color != "" && typeof embed?.color == "string") setValue(`message.embeds.${i}.color`, parseInt(embed.color.replace("#", ""), 16));
     });
 
-    getValues("forms").forEach((form, i) => {
+    data.forms.forEach((form, i) => {
         if (componentType[0] == ComponentType.Button) setValue(`forms.${i}.button.style`, Number(form.button.style));
         //@ts-expect-error
-        else if (componentType[0] == ComponentType.SelectMenu) Object.entries(getValues(`forms.${i}.select_menu_option`)).forEach(([k, v]) => {
+        else if (componentType[0] == ComponentType.SelectMenu) Object.entries(data.forms[i].select_menu_option).forEach(([k, v]) => {
             //@ts-expect-error
             if (v == "") resetField(`forms.${i}.select_menu_option.${k}`);
         })
@@ -52,7 +55,7 @@ export function fixForm(toast = true, {
         });
     });
 
-    const Message = getValues("message");
+    const Message = data.message;
 
     if (Message?.embeds != null && Message.embeds.length > 0) {
         console.log("fixing...")

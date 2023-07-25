@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { useForm } from "react-hook-form";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useForm, useWatch } from "react-hook-form";
 import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { FormAndMessageBuilder } from "../util/types";
+import { FormAndMessageBuilder, FormBuilder, FormMessageBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
 import { useModal } from '../components/SettingsModal';
 import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
+import { fixForm } from '../util/fixForm';
+import { debounce } from 'lodash';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const defaultValues = DefaultValues as FormAndMessageBuilder;
@@ -41,6 +43,27 @@ export default function App() {
   const [componentType, setComponentType] = useState(ComponentType.Button);
   const SettingsModal = useModal();
   const isNotSmallScreen = useScreenWidth(500);
+
+  // Get access to the form values using watch
+  const formData = watch();
+
+  // Define the fixForm function
+  const fixFormFunction = () => {
+    fixForm(false, {
+      componentType: [componentType, setComponentType],
+      getValues,
+      resetField,
+      setValue,
+      toast: undefined as any,
+    });
+  };
+
+  // Run the fixForm function with debounce when the form values change
+  useEffect(() => {
+    const debouncedFixForm = debounce(fixFormFunction, 1000);
+    debouncedFixForm();
+    return debouncedFixForm.cancel; // Clean up the debounce on unmount
+  }, [formData]);
 
   return (
     <>

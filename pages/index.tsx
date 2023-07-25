@@ -28,6 +28,7 @@ export default function App() {
     reset,
     setValue,
     formState,
+    resetField,
     formState: { errors }
   } = useForm<FormAndMessageBuilder>({
     mode: 'onChange',
@@ -46,7 +47,7 @@ export default function App() {
       <Meta>Home</Meta>
       <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler} />
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
-        <Editor messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} componentType={[componentType, setComponentType]} />
+        <Editor resetField={resetField} messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} componentType={[componentType, setComponentType]} />
         {/* @ts-expect-error */}
         <Preview componentType={componentType} type={messageType} message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} />
       </Grid>

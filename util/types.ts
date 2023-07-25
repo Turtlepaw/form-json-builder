@@ -66,3 +66,11 @@ export interface FormAndMessageBuilder {
     message: FormMessageBuilder;
     forms: FormBuilder[];
 }
+
+export enum ToastStyles {
+    Success = "success",
+    Info = "info",
+    Warning = "wraning",
+    Error = "error",
+    Loading = "loading"
+}

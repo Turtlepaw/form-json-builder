@@ -17,6 +17,7 @@ export function fixForm(toast = true, {
     getValues,
     componentType,
     setValue,
+    resetField,
     toast: ToastState,
     formData
 }: FixFormOptions<FormAndMessageBuilder>) {
@@ -27,7 +28,12 @@ export function fixForm(toast = true, {
     });
 
     data.forms.forEach((form, i) => {
-        if (componentType[0] == ComponentType.Button) setValue(`forms.${i}.button.style`, Number(form.button.style));
+        if (componentType[0] == ComponentType.Button) {
+            setValue(`forms.${i}.button.style`, Number(form.button.style));
+            resetField(`forms.${i}.select_menu_option`);
+            //@ts-expect-error
+            resetField(`select_menu_placeholder`);
+        }
         //@ts-expect-error
         else if (componentType[0] == ComponentType.SelectMenu) Object.entries(data.forms[i].select_menu_option).forEach(([k, v]) => {
             //@ts-expect-error

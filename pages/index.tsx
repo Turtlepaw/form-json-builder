@@ -58,12 +58,22 @@ export default function App() {
     });
   };
 
-  // Run the fixForm function with debounce when the form values change
+  const formWatch = useWatch({
+    control,
+    exact: true
+  });
+
   useEffect(() => {
-    const debouncedFixForm = debounce(fixFormFunction, 1000);
-    debouncedFixForm();
-    return debouncedFixForm.cancel; // Clean up the debounce on unmount
-  }, [formData]);
+    console.log("value changed");
+    fixForm(false, {
+      componentType: [componentType, setComponentType],
+      getValues,
+      resetField,
+      setValue,
+      formData,
+      toast: null as any
+    })
+  }, [formWatch]);
 
   return (
     <>

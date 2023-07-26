@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
-import { Control, FieldValues, FormState, useForm, UseFormGetValues, UseFormRegister, UseFormReset, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Control, FieldValues, FormState, useForm, UseFormGetValues, UseFormRegister, UseFormReset, UseFormResetField, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import FormBuilder from "../components/FormBuilder";
 import {
   Box,
@@ -20,11 +20,12 @@ import { SlashCommand, UserMention } from '../components/Mention';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
-import { ButtonBuilder, FormAndMessageBuilder } from "../util/types";
+import { ButtonBuilder, FormAndMessageBuilder, ToastStyles } from "../util/types";
 import { useModal } from '../components/SettingsModal';
 import { createName } from '../util/form';
 import { ComponentType } from '../pages';
 import { useScreenWidth } from '../util/width';
+import { fixForm } from '../util/fixForm';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -63,6 +64,7 @@ export interface EditorProps<T extends FieldValues> {
   componentType: [ComponentType, React.Dispatch<React.SetStateAction<ComponentType>>];
   reset: UseFormReset<T>;
   displaySection: boolean;
+  resetField: UseFormResetField<T>;
 }
 
 export function Editor({
@@ -78,17 +80,10 @@ export function Editor({
   register,
   reset,
   displaySection,
-  componentType
+  componentType,
+  resetField
 }: EditorProps<FormAndMessageBuilder>) {
   const toast = useToast();
-
-  enum ToastStyles {
-    Success = "success",
-    Info = "info",
-    Warning = "wraning",
-    Error = "error",
-    Loading = "loading"
-  }
 
   function postToast({ title, description, style }: {
     title: string;
@@ -106,70 +101,6 @@ export function Editor({
       position: "bottom",
       duration: 3000,
       isClosable: true,
-    });
-  }
-
-  const fixForm = (toast = true) => {
-    if(getValues("message.embeds")) getValues("message.embeds").forEach((embed, i) => {
-      //@ts-expect-error hex to decimal
-      if (embed?.color != null && embed?.color != "" && typeof embed?.color == "string") setValue(`message.embeds.${i}.color`, parseInt(embed.color.replace("#", ""), 16));
-    });
-
-    getValues("forms").forEach((form, i) => {
-      if (componentType[0] == ComponentType.Button) setValue(`forms.${i}.button.style`, Number(form.button.style));
-      //@ts-expect-error
-      else if (componentType[0] == ComponentType.SelectMenu) Object.entries(getValues(`forms.${i}.select_menu_option`)).forEach(([k, v]) => {
-        //@ts-expect-error
-        if (v == "") setValue(`forms.${i}.select_menu_option.${k}`, null);
-      })
-      form.modal.components.forEach((actionRow, rowIndex) => {
-        actionRow.components.forEach((e, index) => {
-          console.log(e)
-          Object.entries(e).map(([k, v]) => {
-            console.log(k, v, index)
-            if (v === null) return { key: k, value: v };
-            //@ts-expect-error
-            if (v == '') e[k] = null;
-            //@ts-expect-error
-            else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
-            return { key: k, value: v };
-          });
-          setValue(`forms.${i}.modal.components.${rowIndex}.components.${index}`, e);
-        })
-      })
-    });
-
-    const Message = getValues("message");
-
-    if (Message?.embeds != null && Message.embeds.length > 0) {
-      console.log("fixing...")
-      Message.embeds.forEach((embed, i) => {
-        Object.entries(embed).forEach(([k, v]) => {
-          if (typeof v == "string") {
-            //@ts-expect-error
-            if (v == null || v === "") setValue(`message.embeds.${i}.${k}`, null);
-          } else if (typeof v == "object") {
-            Object.entries(v).forEach(([k2, v2], i2) => {
-              //@ts-expect-error
-              if (v2 == null || v2 === "") setValue(`message.embeds.${i}.${k}.${k2}`, null);
-            })
-          }
-        })
-      });
-    }
-
-    if (
-      Message?.embeds == null && (Message.content === "" || Message.content == null)
-    ) {
-      setValue("message", {
-        content: null,
-        embeds: []
-      });
-    }
-
-    if (toast) postToast({
-      title: 'Form Fixed',
-      style: ToastStyles.Success
     });
   }
 
@@ -254,7 +185,7 @@ export function Editor({
             });
           }
 
-          if (form.button != null) setValue(`forms.${i}.button`, null as any);
+          if (form.button != null) resetField(`forms.${i}.button`);
         });
       } else {
         componentType[1](ComponentType.Button);
@@ -264,7 +195,7 @@ export function Editor({
             label: "Open Form"
           });
 
-          if (form.select_menu_option != null) setValue(`forms.${i}.select_menu_option`, null as any);
+          if (form.select_menu_option != null) resetField(`forms.${i}.select_menu_option`);
         });
       }
 
@@ -284,7 +215,13 @@ export function Editor({
   }
 
   const downloadForm = () => {
-    fixForm(false);
+    fixForm(false, {
+      componentType,
+      getValues,
+      resetField,
+      setValue,
+      toast
+    });
     setTimeout(() => {
       console.log("downloading...")
       const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -357,7 +294,13 @@ export function Editor({
               {(loading && SettingsModal.settings.LimitAnimations == false) && <Spinner size="sm" />}
               {(loading && SettingsModal.settings.LimitAnimations == true) && "Downloading..."}
             </Button>
-            {SettingsModal.settings.ShowFixButton && <Button onClick={() => fixForm()}>Fix Form</Button>}
+            {SettingsModal.settings.ShowFixButton && <Button onClick={() => fixForm(true, {
+              componentType,
+              getValues,
+              resetField,
+              setValue,
+              toast
+            })}>Fix Form</Button>}
           </HStack>
           {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>

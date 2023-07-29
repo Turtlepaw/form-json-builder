@@ -55,11 +55,11 @@ export default function FormBuilder({
 
   return (
     <Box width='100%' pb={2}>
-      {/*@ts-expect-error*/}
       <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms').length > 5 || getValues('application_command') && getValues('forms').length > 1 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms').length}/{getValues('application_command') ? 1 : 5}</span></FormLabel>
       <ul>
         {fields.map((item, index) => {
           return (
+            
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
               setDisplayForm(displayForm - 1)
@@ -85,7 +85,6 @@ export default function FormBuilder({
                 <ErrorMessage>{(errors.forms?.[index]?.webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index]?.webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
                 <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                   {
-                    //@ts-expect-error
                     componentType == ComponentType.SelectMenu && !getValues('application_command') && <>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
@@ -120,7 +119,6 @@ export default function FormBuilder({
                   }
                   
                   {
-                    //@ts-expect-error
                     componentType == ComponentType.Button && !getValues('application_command') && <>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
@@ -173,7 +171,6 @@ export default function FormBuilder({
       <section>
         <Button
           variant='primary'
-          //@ts-expect-error
           isDisabled={getValues('forms').length >= 5 || getValues('application_command') && getValues('forms').length >= 1 }
           onClick={() => {
             setDisplayForm(fields.length)
@@ -208,7 +205,6 @@ export default function FormBuilder({
         >
           Add Form
         </Button>
-        {/*@ts-expect-error*/}
         {getValues('forms').length > 5 || getValues('application_command') && getValues('forms').length > 1 && <ErrorMessage>You have too many forms</ErrorMessage>}
       </section>
     </Box >

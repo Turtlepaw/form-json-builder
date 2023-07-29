@@ -11,7 +11,7 @@ export interface EmbedFooter {
     icon_url: string;
 }
 
-export interface EmbedBuilder {
+export interface Embed {
     title: string;
     description: string;
     author: EmbedAuthor;
@@ -21,7 +21,7 @@ export interface EmbedBuilder {
 
 export interface FormMessageBuilder {
     content: string | null;
-    embeds: EmbedBuilder[];
+    embeds: Embed[];
 }
 
 export interface ButtonBuilder {
@@ -63,7 +63,11 @@ export interface FormBuilder {
 }
 
 export interface FormAndMessageBuilder {
-    message: FormMessageBuilder;
+    message?: FormMessageBuilder;
+    application_command?: {
+        name: String,
+        description: String
+    };
     forms: FormBuilder[];
 }
 

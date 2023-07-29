@@ -173,60 +173,7 @@ export default function TextInputBuilder({
                   />
                 </Box>
               </HStack>
-
-              {/* <Controller
-                control={control}
-                name={`forms.${nestIndex}.modal.components.${k}.components.0.min`}
-                render={({ field }) => (
-                  <RangeSlider aria-label={['min', 'max']} min={1} max={1024} defaultValue={[1, 1024]} onChange={(val) => {
-                    // field.onChange(e.target.checked);
-                    setSliderValue(val)
-                  }} margin='50px 30px 25px 30px' width='600px' maxWidth="86%" colorScheme='blurple'>
-                    <RangeSliderTrack>
-                      <RangeSliderFilledTrack />
-                    </RangeSliderTrack>
-
-                    <RangeSliderThumb index={0} />
-                    <RangeSliderThumb index={1} />
-                    <RangeSliderMark value={1} {...labelStyles} >1</RangeSliderMark>
-                    <RangeSliderMark value={250} {...labelStyles} >250</RangeSliderMark>
-                    <RangeSliderMark value={500} {...labelStyles} >500</RangeSliderMark>
-                    <RangeSliderMark value={750} {...labelStyles} >750</RangeSliderMark>
-                    <RangeSliderMark value={1024} {...labelStyles} >1024</RangeSliderMark>
-                    <RangeSliderMark
-                      value={sliderValue[0]}
-                      textAlign='center'
-                      bg='blurple'
-                      color='white'
-                      mt='-10'
-                      ml='-8'
-                      minWidth={sliderValue[0] > 955 ? '85px' : '0px'}
-                      borderRadius='3px'
-                      p='0px 6px'
-                    >
-                      Min: {sliderValue[0]}
-                    </RangeSliderMark>
-                    <RangeSliderMark
-                      value={sliderValue[1]}
-                      textAlign='center'
-                      bg='blurple'
-                      color='white'
-                      mt='-10'
-                      ml='-8'
-                      minWidth={sliderValue[0] === sliderValue[1] ? '101px' : (sliderValue[1] > 947 ? '85px' : '0px')}
-                      borderRadius='3px'
-                      p='0px 6px'
-                    >
-                      {sliderValue[0] === sliderValue[1] ? `Exactly: ${sliderValue[1]}` : `Max: ${sliderValue[1]}`}
-                    </RangeSliderMark>
-                  </RangeSlider>
-                )}
-              /> */}
-
-
-
             </Collapsible>
-            {/* {k + 1 === fields.length || k + 1 === 0 ? null : <hr />} */}
           </Box>
 
         );

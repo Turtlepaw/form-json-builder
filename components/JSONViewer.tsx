@@ -8,21 +8,20 @@ import Highlight from "react-highlight"
 export interface JSONViewerProperties {
   downloadForm: () => void;
   children: string;
-  animationsEnabled: boolean;
   getValues: UseFormGetValues<FormAndMessageBuilder>;
 }
 
 export const DOWNLOAD_SPINNER_TIME = 600;
 
-function JSONViewer({ children, downloadForm: downloadFile, animationsEnabled, getValues }: JSONViewerProperties) {
+function JSONViewer({ children, downloadForm: downloadFile, getValues }: JSONViewerProperties) {
   const [show, setShow] = useState(false)
   const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
   const [loading, setLoading] = useState(false);
   const downloadForm = () => {
-    if (animationsEnabled) setLoading(true);
+    setLoading(true);
     downloadFile();
-    if (animationsEnabled) setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
+    setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
   }
   const fileName = `${createName({ getValues })}.json`
 

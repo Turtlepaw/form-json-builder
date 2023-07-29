@@ -21,7 +21,6 @@ import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
 import { ButtonBuilder, FormAndMessageBuilder, ToastStyles } from "../util/types";
-import { useModal } from '../components/SettingsModal';
 import { createName } from '../util/form';
 import { ComponentType } from '../pages';
 import { useScreenWidth } from '../util/width';
@@ -147,7 +146,6 @@ export function Editor({
         
         json?.forms == null ||
         !Array.isArray(json?.forms) ||
-        //@ts-expect-error
         (json?.message == null && json?.application_command == null)
       ) {
         return makeError();
@@ -162,7 +160,6 @@ export function Editor({
       // Add the json.forms array to the form hook
       setValue("forms", json.forms);
 
-      //@ts-expect-error
       if(!json.application_command) {
         const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
         const isMessage = json.message?.content != null
@@ -242,12 +239,9 @@ export function Editor({
 
   const [loading, setLoading] = useState(false);
   const handleLoad = () => {
-    //if (SettingsModal.settings.LimitAnimations == true) return;
     setLoading(true);
     setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
-
-  const SettingsModal = useModal();
 
   const isSmallScreen = !useScreenWidth(500);
 
@@ -271,9 +265,8 @@ export function Editor({
         }} />
         <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
-      {SettingsModal.modal}
       <MessageBuilder
-        {...{ Defaults, getValues, resetField, componentType, formState, messageType, register, setMessageType, setValue }}
+        {...{ Defaults, getValues, resetField, control, componentType, formState, messageType, register, setMessageType, setValue }}
       />
       <FormBuilder
         {...{ componentType: componentType[0], control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
@@ -283,7 +276,7 @@ export function Editor({
         <Box>
           This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.
         </Box>
-        <JSONViewer {...{ downloadForm, animationsEnabled: !SettingsModal.settings.LimitAnimations, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+        <JSONViewer {...{ downloadForm, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
         <VStack alignItems='flex-start'>
           <HStack alignItems='flex-start'>
             <Button
@@ -297,16 +290,8 @@ export function Editor({
             // bgColor={loading ? "#215b32" : undefined}
             >
               {!loading && "Download Configuration File"}
-              {(loading && SettingsModal.settings.LimitAnimations == false) && <Spinner size="sm" />}
-              {(loading && SettingsModal.settings.LimitAnimations == true) && "Downloading..."}
+              {loading && <Spinner size="sm" />}
             </Button>
-            {SettingsModal.settings.ShowFixButton && <Button onClick={() => fixForm(true, {
-              componentType,
-              getValues,
-              resetField,
-              setValue,
-              toast
-            })}>Fix Form</Button>}
           </HStack>
           {!formState.isValid && (!watch('message') && watch('forms').length == 1) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>

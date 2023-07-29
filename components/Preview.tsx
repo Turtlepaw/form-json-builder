@@ -22,7 +22,6 @@ export interface PreviewProperties {
     select_menu_placeholder: string;
     displayForm: number;
     setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
-    type: string;
     displaySection: boolean;
     componentType: ComponentType;
 }
@@ -35,7 +34,6 @@ function Preview({
     select_menu_placeholder,
     displayForm,
     setDisplayForm,
-    type,
     displaySection,
     componentType
 }: PreviewProperties) {
@@ -43,7 +41,6 @@ function Preview({
     const defaultValues = {
         ...forms[displayForm]?.modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
     };
-    console.log(defaultValues)
     const textInputs = useForm({
         defaultValues
     });
@@ -55,41 +52,34 @@ function Preview({
     </>;
 
     const MessageEmbed = <>
-        {message?.embeds && <Box whiteSpace='pre-wrap' borderLeftColor={message.embeds[0]?.color ? `#${message.embeds[0]?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(message.embeds[0]?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && message.embeds.map(embed => <Box key={Math.random()} whiteSpace='pre-wrap' borderLeftColor={embed?.color ? `#${embed?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(embed?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <Link href={isEmpty(message.embeds[0]?.author?.url) ? undefined : message.embeds[0].author.url} style={{ cursor: isEmpty(message.embeds[0]?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(message.embeds[0]?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
+                <Link href={isEmpty(embed?.author?.url) ? undefined : embed.author.url} style={{ cursor: isEmpty(embed?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(embed?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
                     <Box display='flex' alignItems='center' m='2px 0px 0px'>
-                        {!isEmpty(message.embeds[0]?.author?.icon_url) && <Image alt='Author Image' src={message.embeds[0].author.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
-                        <Box fontSize='0.875rem' fontWeight='500'>{message.embeds[0]?.author?.name}</Box>
+                        {!isEmpty(embed?.author?.icon_url) && <Image alt='Author Image' src={embed.author.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
+                        <Box fontSize='0.875rem' fontWeight='500'>{embed?.author?.name}</Box>
                     </Box>
                 </Link>
                 <Box>
                     <Text fontFamily='Whitney Bold' fontSize='0.975rem' mt='3px'>
-                        {message.embeds[0]?.title}
+                        {embed?.title}
                     </Text>
                     <Text fontSize='0.875rem' color='#c5c5d3'>
-                        {message.embeds[0]?.description}
+                        {embed?.description}
                     </Text>
                 </Box>
-                {!isEmpty(message.embeds[0]?.footer?.text) && (
+                {!isEmpty(embed?.footer?.text) && (
                     <Box display='flex' alignItems='center' mt='8px'>
-                        {!isEmpty(message.embeds[0]?.footer?.icon_url) && <Image alt='Footer Icon' src={message.embeds[0].footer.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
-                        <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{message.embeds[0]?.footer?.text}</Text>
+                        {!isEmpty(embed?.footer?.icon_url) && <Image alt='Footer Icon' src={embed.footer.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
+                        <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{embed?.footer?.text}</Text>
                     </Box>
                 )}
             </Box>
-        </Box>
+        </Box>)
         }
     </>;
 
-    let Rendered = MessageText;
-    if (type == "content") Rendered = MessageText;
-    else if (type == "embed") Rendered = MessageEmbed;
-    else Rendered = (<>
-        {MessageText}
-        {MessageEmbed}
-    </>);
     const [FormsProfileHidden, setHidden] = useState(true);
     const HandleInteraction = () => setHidden(!FormsProfileHidden);
     const { isOpen, onToggle } = useDisclosure();
@@ -133,7 +123,8 @@ function Preview({
                                 <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                             </Box>
                             <Box>
-                                {Rendered}
+                               {MessageText}
+                                 {MessageEmbed}
                                 <Box p='4px 0'>
                                     {componentType == ComponentType.Button && forms.map((form, index) => (
                                         <Button key={Math.random()} onClick={() => setDisplayForm(index)} height='32px' fontSize='14px' paddingBlock={0} paddingInline={0} padding='2px 16px' m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>

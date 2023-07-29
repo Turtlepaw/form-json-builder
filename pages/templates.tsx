@@ -24,7 +24,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { EmbedAuthor, EmbedBuilder, EmbedFooter, FormAndMessageBuilder } from "../util/types";
+import { EmbedAuthor, Embed, EmbedFooter, FormAndMessageBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
 import * as StaffAppForm from "../templates/StaffApp";
 import { FormDataResponse } from '../util/api';
@@ -194,7 +194,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
             console.log("fixing...")
             Message.embeds.forEach((embed, i) => {
                 Object.entries(embed).forEach(([_key, v]) => {
-                    const k = _key as keyof EmbedBuilder;
+                    const k = _key as keyof Embed;
                     if (typeof v == "string") {
                         //@ts-expect-error
                         if (v == null || v === "") formData.message.embeds[i][k] = null;

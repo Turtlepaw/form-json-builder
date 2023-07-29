@@ -11,7 +11,8 @@ import {
   HStack,
   Input,
   cssVar,
-  Spinner
+  Spinner,
+  Text
 } from '@chakra-ui/react';
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
@@ -281,7 +282,7 @@ export function Editor({
           <HStack alignItems='flex-start'>
             <Button
               variant='success'
-              isDisabled={!formState.isValid}
+              isDisabled={(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : 5))}
               onClick={() => {
                 handleLoad();
                 downloadForm();
@@ -293,7 +294,7 @@ export function Editor({
               {loading && <Spinner size="sm" />}
             </Button>
           </HStack>
-          {!formState.isValid && (!watch('message') && watch('forms').length == 1) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
+          {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : 5)) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>
         <Box>
           Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.

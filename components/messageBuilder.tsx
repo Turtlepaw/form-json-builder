@@ -1,6 +1,6 @@
 import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip, Select, useColorMode, SelectField } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
-import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues, useFieldArray } from "react-hook-form";
+import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues, useFieldArray, UseFormSetError } from "react-hook-form";
 import { ComponentType } from "../pages";
 import { Embed, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
@@ -57,8 +57,12 @@ export default function useMessageBuilder({
                 label: 'Open Form',
                 style: 1
               }); break;
-            //@ts-expect-error
-            case 'application_command': setValue('forms[0].button', null); setValue('message', null); break;
+            case 'application_command':
+                //@ts-expect-error
+                setValue('forms[0].button', null);
+                //@ts-expect-error
+                setValue('message', null);
+                break;
         }
         _setOpenFormType(type)
     }
@@ -145,11 +149,11 @@ export default function useMessageBuilder({
                 {/* @ts-expect-error */}
                 <FormLabel htmlFor={'application_command.name'} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('application_command')?.name?.length > 32 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('application_command')?.name?.length || 0}/32</span></FormLabel>
                 <input {...register('application_command.name', { required: true, pattern: /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u, maxLength: 32 }) } id='application_command.name' />
-                <ErrorMessage>{(errors?.application_command?.name?.type === 'required' && 'The name is required') || (errors?.application_command?.name?.type === 'pattern' && 'Invalid Name') || (errors?.application_command?.name?.type === 'maxLength' && 'The name is too long')}</ErrorMessage>
+                <ErrorMessage error={errors?.application_command?.name}/>
                 {/* @ts-expect-error */}
                 <FormLabel htmlFor={'application_command.description'} display='flex' alignItems='flex-end'><Text>Description</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('application_command')?.description?.length > 100 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('application_command')?.description?.length || 0}/100</span></FormLabel>
-                <input {...register('application_command.description', { required: true, maxLength: 100 }) } id='application_command.description' />
-                <ErrorMessage>{(errors?.application_command?.description?.type === 'required' && 'The description is required') || (errors?.application_command?.description?.type === 'maxLength' && 'The description is too long')}</ErrorMessage>
+                <input {...register('application_command.description', { maxLength: 100 }) } id='application_command.description' />
+                <ErrorMessage error={errors?.application_command?.description}/>
                 </>
             }</Collapsible>
             </>

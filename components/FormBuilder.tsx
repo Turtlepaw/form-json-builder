@@ -46,7 +46,8 @@ export default function FormBuilder({
 }: FormBuilderProperties<FormAndMessageBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "forms"
+    name: "forms",
+    rules: { minLength: 1 }
   });
 
   const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false);
@@ -82,7 +83,7 @@ export default function FormBuilder({
                   placeholder='https://discord.com/api/webhooks/ ...'
                   style={{ marginBottom: '8px' }}
                 />
-                <ErrorMessage>{(errors.forms?.[index]?.webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index]?.webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
+                <ErrorMessage error={errors.forms?.[index]?.webhook_url}/>
                 <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                   {
                     componentType == ComponentType.SelectMenu && !getValues('application_command') && <>
@@ -99,7 +100,7 @@ export default function FormBuilder({
                           id={`forms[${index}].select_menu_option.label`}
                           placeholder='Form'
                         />
-                        <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                        <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.label}/>
                       </Box>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
@@ -114,6 +115,7 @@ export default function FormBuilder({
                           {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100 })}
                           id={`forms[${index}].select_menu_option.description`}
                         />
+                        <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.description}/>
                       </Box>
                     </>
                   }
@@ -127,7 +129,7 @@ export default function FormBuilder({
                           id={`forms[${index}].button.label`}
                           placeholder='Open Form'
                         />
-                        <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                        <ErrorMessage error={errors.forms?.[index]?.button?.label}/>
                       </Box>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
@@ -157,7 +159,7 @@ export default function FormBuilder({
                   id={`forms[${index}].modal.title`}
                   style={{ marginBottom: '8px' }}
                 />
-                <ErrorMessage>{(errors.forms?.[index]?.modal?.title?.type === 'required' && 'The Title is required') || (errors.forms?.[index]?.modal?.title?.type === 'maxLength' && 'The Title is too long')}</ErrorMessage>
+                <ErrorMessage error={errors.forms?.[index]?.modal?.title}/>
               </Collapsible >
               <hr/>
               <Collapsible name="Text Inputs">

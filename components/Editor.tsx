@@ -144,10 +144,11 @@ export function Editor({
       console.log(json)
 
       if (
+        
         json?.forms == null ||
         !Array.isArray(json?.forms) ||
-        json?.message == null ||
-        typeof json?.message != "object"
+        //@ts-expect-error
+        (json?.message == null && json?.application_command == null)
       ) {
         return makeError();
       }
@@ -160,47 +161,52 @@ export function Editor({
 
       // Add the json.forms array to the form hook
       setValue("forms", json.forms);
-      const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
-      const isMessage = json.message?.content != null
-      // Set the type of the message
-      if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
-      else if (isMessage) setMessageType(MessageType.Content);
-      else if (isEmbed) setMessageType(MessageType.Embed);
-      // Check the number of button components and menu components
-      // incase of a button modal and a select menu modal
-      let buttons = 0;
-      let menus = 0;
-      json.forms.forEach(form => {
-        if (form.select_menu_option != null) menus++;
-        if (form.button != null) buttons++;
-      });
 
-      if (buttons < menus) {
-        componentType[1](ComponentType.SelectMenu);
-        json.forms.forEach((form, i) => {
-          if (form.select_menu_option == null) {
-            setValue(`forms.${i}.select_menu_option`, {
-              label: "Select Menu Option",
-              description: ""
-            });
-          }
-
-          if (form.button != null) resetField(`forms.${i}.button`);
+      //@ts-expect-error
+      if(!json.application_command) {
+        const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
+        const isMessage = json.message?.content != null
+        // Set the type of the message
+        if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
+        else if (isMessage) setMessageType(MessageType.Content);
+        else if (isEmbed) setMessageType(MessageType.Embed);
+        // Check the number of button components and menu components
+        // incase of a button modal and a select menu modal
+        let buttons = 0;
+        let menus = 0;
+        json.forms.forEach(form => {
+          if (form.select_menu_option != null) menus++;
+          if (form.button != null) buttons++;
         });
-      } else {
-        componentType[1](ComponentType.Button);
-        json.forms.forEach((form, i) => {
-          if (form.button == null) setValue(`forms.${i}.button`, {
-            style: 1,
-            label: "Open Form"
+  
+        if (buttons < menus) {
+          componentType[1](ComponentType.SelectMenu);
+          json.forms.forEach((form, i) => {
+            if (form.select_menu_option == null) {
+              setValue(`forms.${i}.select_menu_option`, {
+                label: "Select Menu Option",
+                description: ""
+              });
+            }
+  
+            if (form.button != null) resetField(`forms.${i}.button`);
           });
-
-          if (form.select_menu_option != null) resetField(`forms.${i}.select_menu_option`);
-        });
+        } else {
+          componentType[1](ComponentType.Button);
+          json.forms.forEach((form, i) => {
+            if (form.button == null) setValue(`forms.${i}.button`, {
+              style: 1,
+              label: "Open Form"
+            });
+  
+            if (form.select_menu_option != null) resetField(`forms.${i}.select_menu_option`);
+          });
+        }
+  
+        // Add the json.message object to the form hook
+        setValue("message", json.message);
       }
 
-      // Add the json.message object to the form hook
-      setValue("message", json.message);
 
       // Send a toast the the user notifying that the form has
       // been uploaded
@@ -267,7 +273,7 @@ export function Editor({
       </HStack>
       {SettingsModal.modal}
       <MessageBuilder
-        {...{ Defaults, getValues, componentType, formState, messageType, register, setMessageType, setValue }}
+        {...{ Defaults, getValues, resetField, componentType, formState, messageType, register, setMessageType, setValue }}
       />
       <FormBuilder
         {...{ componentType: componentType[0], control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
@@ -302,7 +308,7 @@ export function Editor({
               toast
             })}>Fix Form</Button>}
           </HStack>
-          {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
+          {!formState.isValid && (!watch('message') && watch('forms').length == 1) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>
         <Box>
           Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.

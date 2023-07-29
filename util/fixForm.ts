@@ -22,23 +22,22 @@ export function fixForm(toast = true, {
     formData
 }: FixFormOptions<FormAndMessageBuilder>) {
     const data = formData ?? getValues();
-    if (data.message.embeds) data.message.embeds.forEach((embed, i) => {
-        //@ts-expect-error hex to decimal
-        if (embed?.color != null && embed?.color != "" && typeof embed?.color == "string") setValue(`message.embeds.${i}.color`, parseInt(embed.color.replace("#", ""), 16));
-    });
 
     data.forms.forEach((form, i) => {
-        if (componentType[0] == ComponentType.Button) {
-            setValue(`forms.${i}.button.style`, Number(form.button.style));
-            resetField(`forms.${i}.select_menu_option`);
-            //@ts-expect-error
-            resetField(`select_menu_placeholder`);
-        }
         //@ts-expect-error
-        else if (componentType[0] == ComponentType.SelectMenu) Object.entries(data.forms[i].select_menu_option).forEach(([k, v]) => {
+        if(!data.application_command) {
+            if (componentType[0] == ComponentType.Button) {
+                setValue(`forms.${i}.button.style`, Number(form.button.style));
+                resetField(`forms.${i}.select_menu_option`);
+                //@ts-expect-error
+                resetField(`select_menu_placeholder`);
+            }
             //@ts-expect-error
-            if (v == "") resetField(`forms.${i}.select_menu_option.${k}`);
-        })
+            else if (componentType[0] == ComponentType.SelectMenu) Object.entries(data.forms[i].select_menu_option).forEach(([k, v]) => {
+                //@ts-expect-error
+                if (v == "") resetField(`forms.${i}.select_menu_option.${k}`);
+            })
+        }
         form.modal.components.forEach((actionRow, rowIndex) => {
             actionRow.components.forEach((e, index) => {
                 console.log(e);
@@ -62,32 +61,35 @@ export function fixForm(toast = true, {
     });
 
     const Message = data.message;
+    if(Message) {
+        
 
-    if (Message?.embeds != null && Message.embeds.length > 0) {
-        console.log("fixing...")
-        Message.embeds.forEach((embed, i) => {
-            Object.entries(embed).forEach(([k, v]) => {
-                if (typeof v == "string") {
-                    //@ts-expect-error
-                    if (v == null || v === "") resetField(`message.embeds.${i}.${k}`);
-                } else if (typeof v == "object") {
-                    Object.entries(v).forEach(([k2, v2], i2) => {
+        if (Message?.embeds != null && Message.embeds.length > 0) {
+            console.log("fixing...")
+            Message.embeds.forEach((embed, i) => {
+                Object.entries(embed).forEach(([k, v]) => {
+                    if (typeof v == "string") {
                         //@ts-expect-error
-                        if (v2 == null || v2 === "") resetField(`message.embeds.${i}.${k}.${k2}`);
-                    })
-                }
-            })
-        });
+                        if (v == null || v === "") resetField(`message.embeds.${i}.${k}`);
+                    } else if (typeof v == "object") {
+                        Object.entries(v).forEach(([k2, v2], i2) => {
+                            //@ts-expect-error
+                            if (v2 == null || v2 === "") resetField(`message.embeds.${i}.${k}.${k2}`);
+                        })
+                    }
+                })
+            });
+        }
+    
+        if (
+            Message?.embeds == null && (Message.content === "" || Message.content == null)
+        ) {
+            //@ts-expect-error
+            setValue("message", null);
+        }
     }
 
-    if (
-        Message?.embeds == null && (Message.content === "" || Message.content == null)
-    ) {
-        setValue("message", {
-            content: null,
-            embeds: []
-        });
-    }
+  
 
     if (toast) ToastState({
         title: 'Form Fixed',

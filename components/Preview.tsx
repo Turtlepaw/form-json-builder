@@ -30,6 +30,8 @@ export interface PreviewProperties {
 function Preview({
     message,
     forms,
+    //@ts-expect-error
+    application_command,
     select_menu_placeholder,
     displayForm,
     setDisplayForm,
@@ -95,7 +97,7 @@ function Preview({
     return (
         <Box overflowY='scroll' p='16px 16px 16px 12px' maxHeight='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
             <VStack align='start' spacing={3}>
-                <PreviewStep number={1} title='A message with buttons to open forms is sent to a channel'>
+                {message && <PreviewStep number={1} title='A message with buttons to open forms is sent to a channel'>
                     <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <FormProfile {...{
                             avatar: "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096",
@@ -163,16 +165,10 @@ function Preview({
                             </Box>
                         </Box>
                     </Box>
-                </PreviewStep>
+                </PreviewStep>}
 
-                {/* <Box display='flex' alignItems='center' justifyContent='space-between' m='8px'>
-                <Button isDisabled={displayForm < 1} onClick={() => setDisplayForm(displayForm - 1)}><HiChevronLeft /></Button>
-                Form {displayForm + 1} Preview
-                <Button isDisabled={displayForm > forms.length - 2} onClick={() => setDisplayForm(displayForm + 1)}><HiChevronRight /></Button>
 
-            </Box> */}
-
-                <PreviewStep number={2} title='User opens a form'>
+                <PreviewStep number={message ? 2 : 1} title={message ? 'User opens a form' : `User opens the form with ${application_command?.name ? `/${application_command?.name}` : 'the slash command'}`}>
                     <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <Box border={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                             <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
@@ -215,7 +211,7 @@ function Preview({
                     </Box>
                 </PreviewStep>
 
-                <PreviewStep number={3} title='The submission is sent to a channel'>
+                <PreviewStep number={message ? 3 : 2} title='The submission is sent to a channel'>
                     <Box bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <Box display='flex'>
                             <Image alt='Default Avatar' _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />

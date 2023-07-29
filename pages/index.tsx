@@ -82,7 +82,7 @@ export default function App() {
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
         <Editor resetField={resetField} messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} componentType={[componentType, setComponentType]} />
         {/* @ts-expect-error */}
-        <Preview componentType={componentType} type={messageType} message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} />
+        <Preview componentType={componentType} type={messageType} message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} />
       </Grid>
     </>
   );

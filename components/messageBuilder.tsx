@@ -1,5 +1,5 @@
-import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip } from "@chakra-ui/react";
-import { Dispatch, SetStateAction } from "react";
+import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip, Select, useColorMode, SelectField } from "@chakra-ui/react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues } from "react-hook-form";
 import { ComponentType } from "../pages";
 import { EmbedBuilder, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
@@ -35,11 +35,33 @@ export default function useMessageBuilder({
     formState: { errors },
     setValue,
     getValues,
+    //@ts-expect-error
+    resetField,
     setMessageType,
     messageType,
     Defaults,
     componentType: [componentType, setComponentType]
 }: MessageBuilderProperties<FormAndMessageBuilder>) {
+    const colorMode = useColorMode().colorMode
+    const [openFormType, _setOpenFormType] = useState('message')
+
+    //@ts-expect-error
+    const setOpenFormType = type => {
+        switch(type) {
+            //@ts-expect-error
+            case 'message':  resetField('application_command'); setValue('message', {
+                "content": "Fill out the form below"
+                //@ts-expect-error
+            }); setValue('forms[0].button', {
+                label: 'Open Form',
+                style: 1
+              }); break;
+            //@ts-expect-error
+            case 'application_command': setValue('forms[0].button', null); setValue('message', null); break;
+        }
+        _setOpenFormType(type)
+    }
+
     const Embed = () => (
         <>
             <FormLabel pb={2}>Embed</FormLabel>
@@ -144,8 +166,24 @@ export default function useMessageBuilder({
 
     return (
         <>
-            <FormLabel>Message</FormLabel>
-            <Collapsible variant='large' name="Message">
+            <HStack >
+                <FormLabel whiteSpace='nowrap' m={0}>Open form using</FormLabel>
+                <Select
+                    height='24px!important'
+                    borderWidth='2px'
+                    borderColor='transparent'
+                    borderRadius='4px'
+                    bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
+                    _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
+                    _hover={{ borderColor: 'transparent' }}
+                    onChange={event => setOpenFormType(event.target.value)}
+                >
+                    <option value="message">Message Components</option>
+                    <option value="application_command">a Slash Command</option>
+                </Select>
+            </HStack>
+            <Collapsible variant='large' name={openFormType === 'message' ? 'Message' : 'Slash Command'}>
+            {openFormType === 'message' &&
                 <Box width='100%' marginBottom="8px">
                     <FormLabel htmlFor="messageType">Message Type</FormLabel>
                     <RadioGroup onChange={HandleInteraction} value={messageType} id="messageType">
@@ -217,6 +255,23 @@ export default function useMessageBuilder({
                     </Box>}
                 </HStack>
                 </Box>
-            </Collapsible></>
+            }
+            
+            {openFormType === 'application_command' && <>
+                {/* @ts-expect-error */}
+                <FormLabel htmlFor={'application_command.name'} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('application_command')?.name?.length > 32 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('application_command')?.name?.length || 0}/32</span></FormLabel>
+                {/* @ts-expect-error */}
+                <input {...register('application_command.name', { required: true, pattern: /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u, maxLength: 32 }) } id='application_command.name' />
+                {/* @ts-expect-error */}
+                <ErrorMessage>{(errors?.application_command?.name?.type === 'required' && 'The name is required') || (errors?.application_command?.name?.type === 'pattern' && 'Invalid Name') || (errors?.application_command?.name?.type === 'maxLength' && 'The name is too long')}</ErrorMessage>
+                {/* @ts-expect-error */}
+                <FormLabel htmlFor={'application_command.description'} display='flex' alignItems='flex-end'><Text>Description</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('application_command')?.description?.length > 100 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('application_command')?.description?.length || 0}/100</span></FormLabel>
+                {/* @ts-expect-error */}
+                <input {...register('application_command.description', { required: true, maxLength: 100 }) } id='application_command.description' />
+                {/* @ts-expect-error */}
+                <ErrorMessage>{(errors?.application_command?.description?.type === 'required' && 'The description is required') || (errors?.application_command?.description?.type === 'maxLength' && 'The description is too long')}</ErrorMessage>
+                </>
+            }</Collapsible>
+            </>
     );
 }

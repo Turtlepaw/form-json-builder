@@ -24,7 +24,6 @@ export function fixForm(toast = true, {
     const data = formData ?? getValues();
 
     data.forms.forEach((form, i) => {
-        //@ts-expect-error
         if(!data.application_command) {
             if (componentType[0] == ComponentType.Button) {
                 setValue(`forms.${i}.button.style`, Number(form.button.style));

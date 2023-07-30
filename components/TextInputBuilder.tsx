@@ -30,6 +30,7 @@ import { IoInformationCircle } from "react-icons/io5";
 import { FormAndMessageBuilder, ModalComponentBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
 import Collapsible from "./Collapsible";
+import ErrorMessage from "./ErrorMessage";
 
 export interface TextInputBuilderProperties<T extends FieldValues> {
   nestIndex: number;
@@ -70,13 +71,14 @@ export default function TextInputBuilder({
         return (
           <Box key={item.id} width='100%'>
             <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ padding: 0 }}>
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.label?.length > 45 || textInput?.label?.length < 1) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45 })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.label`}
                 defaultValue={textInput.label}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
+              <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label}/>
 
               <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>

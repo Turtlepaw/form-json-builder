@@ -89,7 +89,7 @@ export default function FormBuilder({
                     componentType == ComponentType.SelectMenu && !getValues('application_command') && <>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
-                          <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Option Label</Text>
+                          <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
                           <span style={{
                             display: 'inline', marginLeft: '7px', fontSize: '13px',
                             //@ts-expect-error
@@ -104,7 +104,7 @@ export default function FormBuilder({
                       </Box>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
-                          <Text>Option Description</Text>
+                          <Text>Select Menu Option Description</Text>
                           <span style={{
                             display: 'inline', marginLeft: '7px', fontSize: '13px',
                             //@ts-expect-error

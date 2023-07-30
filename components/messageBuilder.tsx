@@ -44,7 +44,7 @@ export default function useMessageBuilder({
     componentType: [componentType, setComponentType]
 }: MessageBuilderProperties<FormAndMessageBuilder>) {
     const colorMode = useColorMode().colorMode
-    const [openFormType, _setOpenFormType] = useState('message')
+    const [openFormType, _setOpenFormType] = useState('button')
 
     //@ts-expect-error
     const setOpenFormType = (type) => {

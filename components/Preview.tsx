@@ -47,10 +47,6 @@ function Preview({
 
     if (displayForm < 0) displayForm = 0;
 
-    const MessageText = <>
-        {message?.content && <Text fontFamily='Whitney'>{message.content || ' '}</Text>}
-    </>;
-
     const MessageEmbed = <>
         {message?.embeds && message.embeds.map(embed => <Box key={Math.random()} whiteSpace='pre-wrap' borderLeftColor={embed?.color ? `#${embed?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(embed?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
@@ -123,7 +119,7 @@ function Preview({
                                 <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                             </Box>
                             <Box>
-                               {MessageText}
+                                 {message?.content && <Text fontFamily='Whitney'>{message.content || ' '}</Text>}
                                  {MessageEmbed}
                                 <Box p='4px 0'>
                                     {componentType == ComponentType.Button && forms.map((form, index) => (

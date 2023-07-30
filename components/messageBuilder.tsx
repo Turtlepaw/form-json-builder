@@ -47,46 +47,44 @@ export default function useMessageBuilder({
     const [openFormType, _setOpenFormType] = useState('message')
 
     //@ts-expect-error
-    const setOpenFormType = type => {
-        switch(type) {
-            //@ts-expect-error
-            case 'message':  resetField('application_command'); setValue('message', {
-                "content": "Fill out the form below"
-                //@ts-expect-error
-            }); setValue('forms[0].button', {
-                label: 'Open Form',
-                style: 1
-              }); break;
-            case 'application_command':
-                //@ts-expect-error
-                setValue('forms[0].button', null);
-                //@ts-expect-error
-                setValue('message', null);
-                break;
-        }
+    const setOpenFormType = (type) => {
         _setOpenFormType(type)
-    }
+        switch(type) {
+            case 'button':
+                setComponentType(ComponentType.Button)
+                resetField('application_command');
+                resetField(`select_menu_placeholder`);
 
-    const HandleComponentInteraction = (value: string) => {
-        setComponentType(value as ComponentType);
-        if (value == ComponentType.Button) {
-            // @ts-expect-error
-            setValue(`select_menu_placeholder`, null as any);
-            getValues("forms").forEach((form, i) => {
-                setValue(`forms.${i}.select_menu_option`, null as any);
-                setValue(`forms.${i}.button`, {
-                    label: "",
-                    style: 1
+                getValues("forms").forEach((form, i) => {
+                    setValue(`forms.${i}.select_menu_option`, null as any);
+                    setValue(`forms.${i}.button`, {
+                        label: "",
+                        style: 1
+                    });
                 });
-            });
-        } else if (value == ComponentType.SelectMenu) {
-            getValues("forms").forEach((form, i) => {
-                setValue(`forms.${i}.button`, null as any);
-                setValue(`forms.${i}.select_menu_option`, {
-                    label: form.modal.title,
-                    description: ""
+                break;
+            case 'select_menu':
+                setComponentType(ComponentType.SelectMenu)
+                resetField('application_command');
+                getValues("forms").forEach((form, i) => {
+                    setValue(`forms.${i}.button`, null as any);
+                    setValue(`forms.${i}.select_menu_option`, {
+                        label: form.modal.title,
+                        description: ""
+                    });
                 });
-            });
+                break;
+            case 'application_command':     
+                setValue('message', null as any);
+                getValues("forms").forEach((form, i) => {
+                    setValue(`forms.${i}.select_menu_option`, null as any);
+                    setValue(`forms.${i}.button`, null as any);
+                    //@ts-expect-error
+                    setValue('application_command', {
+                        name: ''
+                    })
+                });
+                break;
         }
     }
 
@@ -102,46 +100,25 @@ export default function useMessageBuilder({
                     bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
                     _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
                     _hover={{ borderColor: 'transparent' }}
-                    onChange={event => setOpenFormType(event.target.value)}
+                    onChange={(event) => setOpenFormType(event.target.value)}
                 >
-                    <option value="message">Message Components</option>
+                    <option value="button">Buttons</option>
                     <option value="application_command">Slash Command</option>
+                    <option value="select_menu">Select Menu</option>
                 </Select>
             </HStack>
-            <Collapsible variant='large' name={openFormType === 'message' ? 'Message' : 'Slash Command'}>
-            {openFormType === 'message' &&
+            <Collapsible variant='large' name={(openFormType === 'button' || openFormType === 'select_menu')? 'Message' : 'Slash Command'}>
+            {(openFormType === 'button' || openFormType === 'select_menu') &&
                 <VStack align='flex-start' width='100%' marginBottom="8px">
                     <FormLabel htmlFor="message.content">Message</FormLabel>
                     <textarea style={{ height: '99px' }} {...register('message.content', { required: true })} id='message.content' />
                     <EmbedBuilder {...{ control, register, errors, setValue, getValues }}/>
-                    <HStack>
-                        <Box width='100%'>
-                            <FormLabel htmlFor="componentType">Component Type</FormLabel>
-                            <RadioGroup onChange={HandleComponentInteraction} value={componentType} id="componentType" height='36px'>
-                                <HStack>
-                                    <Radio
-                                        name={ComponentType.Button}
-                                        value={ComponentType.Button}
-                                        colorScheme='blurple'
-                                    >
-                                        <Text>Button</Text>
-                                    </Radio>
-                                    <Radio
-                                        name={ComponentType.SelectMenu}
-                                        value={ComponentType.SelectMenu}
-                                        colorScheme='blurple'
-                                    >
-                                        <Text>Select Menu</Text>
-                                    </Radio>
-                                </HStack>
-                            </RadioGroup>
-                        </Box>
-                        {componentType === 'SelectMenu' && <Box width='100%'>
-                            <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
-                            {/* @ts-expect-error */}
-                            <input {...register('select_menu_placeholder', { required: false })} maxLength='100' placeholder="Select a form" id='select_menu_placeholder' />
-                        </Box>}
-                    </HStack>
+                    {openFormType === 'select_menu' && <Box width='100%'>
+                        <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
+                        {/* @ts-expect-error */}
+                        <input {...register('select_menu_placeholder', { required: false })} maxLength='100' placeholder="Select a form" id='select_menu_placeholder' />
+                    </Box>}
+
                 </VStack>
             }
             

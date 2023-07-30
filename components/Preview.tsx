@@ -119,7 +119,7 @@ function Preview({
                                 <Text fontFamily='Whitney Bold' fontSize='0.75rem' color='#a3a6aa' ml='.5rem' alignSelf='flex-end' mb='1px'>Today at {new Date().getHours() < 10 ? '0' : ''}{new Date().getHours()}:{new Date().getMinutes() < 10 ? '0' : ''}{new Date().getMinutes()}</Text>
                             </Box>
                             <Box>
-                                 {message?.content && <Text fontFamily='Whitney'>{message.content || ' '}</Text>}
+                                 {message?.content && <Text fontFamily='Whitney' whiteSpace='pre-wrap'>{message.content}</Text>}
                                  {MessageEmbed}
                                 <Box p='4px 0'>
                                     {componentType == ComponentType.Button && forms.map((form, index) => (

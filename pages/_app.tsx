@@ -10,6 +10,7 @@ import { LinkStyle } from '../util/styles';
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 import Image from 'next/image';
+import { SessionProvider } from "next-auth/react"
 
 export function ColorModeCSS() {
   const { colorMode } = useColorMode();
@@ -56,7 +57,7 @@ export function ColorModeCSS() {
   )
 }
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const SettingsManager = new SettingsManagerBuilder();
   const [hasSeenRelease, setReleaseSeen] = useState(false);
   const { colorMode } = useColorMode();
@@ -82,14 +83,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <ChakraProvider theme={theme}>
-      <ColorModeCSS />
-      {/* <SettingsManagerProvider value={SettingsManager}> */}
-      <Component {...pageProps} />
-      <Modal {...{ isOpen, onClose }}>
-        <ModalContent>
-          {/* <HStack pl={5} pt={4}>
+      <SessionProvider session={session}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ChakraProvider theme={theme}>
+          <ColorModeCSS />
+          {/* <SettingsManagerProvider value={SettingsManager}> */}
+          <Component {...pageProps} />
+          <Modal {...{ isOpen, onClose }}>
+            <ModalContent>
+              {/* <HStack pl={5} pt={4}>
             <Image
               src="/forms.svg"
               alt="Forms Logo"
@@ -101,37 +103,38 @@ export default function App({ Component, pageProps }: AppProps) {
             />
             <Heading size="md" pl={2} fontWeight="medium">Download Template</Heading>
           </HStack> */}
-          <ModalCloseButton />
-          <ModalBody paddingY={6}>
-            <VStack textAlign="center">
-              <Heading size="md" fontWeight="medium">What&apos;s New</Heading>
-              <Text color={colorMode == "light" ? "#898c95" : "#b9bbbe"}>February 21 2023</Text>
-            </VStack>
-            <VStack pt={5}>
-              <UnorderedList>
-                <ListItem py={1}>Added support for select menus</ListItem>
-                <ListItem py={1}>Added syntax highlighting to the JSON Preview</ListItem>
-                <ListItem py={1}>Support for smaller screens (e.g. phones) has been optimized</ListItem>
-              </UnorderedList>
-            </VStack>
-          </ModalBody>
+              <ModalCloseButton />
+              <ModalBody paddingY={6}>
+                <VStack textAlign="center">
+                  <Heading size="md" fontWeight="medium">What&apos;s New</Heading>
+                  <Text color={colorMode == "light" ? "#898c95" : "#b9bbbe"}>February 21 2023</Text>
+                </VStack>
+                <VStack pt={5}>
+                  <UnorderedList>
+                    <ListItem py={1}>Added support for select menus</ListItem>
+                    <ListItem py={1}>Added syntax highlighting to the JSON Preview</ListItem>
+                    <ListItem py={1}>Support for smaller screens (e.g. phones) has been optimized</ListItem>
+                  </UnorderedList>
+                </VStack>
+              </ModalBody>
 
-          <ModalFooter>
-            <Button
-              variant="success"
-              onClick={() => {
-                onClose();
-              }}
-              //width="26"
-              width={24}
-            >
-              Got It
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {/* </SettingsManagerProvider> */}
-    </ChakraProvider >
+              <ModalFooter>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    onClose();
+                  }}
+                  //width="26"
+                  width={24}
+                >
+                  Got It
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+          {/* </SettingsManagerProvider> */}
+        </ChakraProvider >
+      </SessionProvider>
     </>
   );
 }

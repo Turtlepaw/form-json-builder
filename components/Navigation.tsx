@@ -1,4 +1,4 @@
-import { Box, Button, color, Tooltip, useColorMode, useDisclosure, Input, Link } from "@chakra-ui/react";
+import { Box, Button, color, Tooltip, useColorMode, useDisclosure, Input, Link, Avatar, HStack, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import {
     Drawer,
     DrawerBody,
@@ -15,6 +15,7 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import React from "react";
 import { HiOutlineMenu } from 'react-icons/hi'
 import { Footer } from "./Footer";
+import { signIn, useSession, signOut } from "next-auth/react"
 
 export interface NavigationProps {
     modalHandler: () => void;
@@ -26,6 +27,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
     const isSmallScreen = !useScreenWidth(500);
     const colorMode = useColorMode().colorMode;
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const session = useSession()
 
     return (
         <header>
@@ -35,7 +37,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                     <Tooltip label='Back' hasArrow arrowSize={6}>
                         <DrawerCloseButton color={colorMode === 'dark' ? '#B8B9BF' : '#4E5058'} _focusVisible={{ border: 'none' }} />
                     </Tooltip>
-                    <ColorModeSwitcher placement='bottom' position='absolute' height='32px' width='32px' top={2} right={12}/>
+                    <ColorModeSwitcher placement='bottom' position='absolute' height='32px' width='32px' top={2} right={12} />
                     <DrawerHeader height='48px'>Pages</DrawerHeader>
                     <DrawerBody display='flex' flexDirection='column'>
                         <Link href="https://discord.gg/cajZ7Mvzbp" onClick={onClose} target="_blank" rel="noopener noreferrer">Support Server</Link>
@@ -45,7 +47,7 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                         {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
                     </DrawerBody>
                     <DrawerFooter>
-                        <Footer/>
+                        <Footer />
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
@@ -75,10 +77,20 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
                     {/* <Link cursor="pointer" onClick={modalHandler}>Settings</Link> */}
                 </nav>}
             </Box>
-            {isSmallScreen ?
-                <HiOutlineMenu onClick={onOpen} style={{ marginRight: 6 }} cursor='pointer' size='24px' color={colorMode === 'dark' ? '#B8B9BF': '#4E5058'} />
-            : 
-                <ColorModeSwitcher placement='bottom-end' size='lg' />}
+            <Box style={{ marginRight: 6 }}>
+                <HStack>
+                    <Menu>
+                        <MenuButton as={Avatar} size="xs" onClick={session.status != "authenticated" ? () => signIn("discord") : undefined} src={session?.data?.user?.image ?? "unknown"} />
+                        <MenuList>
+                            <MenuItem color={"red"} onClick={() => signOut()}>Log out</MenuItem>
+                        </MenuList>
+                    </Menu>
+                    {isSmallScreen ?
+                        <HiOutlineMenu onClick={onOpen} cursor='pointer' size='24px' color={colorMode === 'dark' ? '#B8B9BF' : '#4E5058'} />
+                        :
+                        <ColorModeSwitcher placement='bottom-end' size='lg' />}
+                </HStack>
+            </Box>
         </header >
     )
 }

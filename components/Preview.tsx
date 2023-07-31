@@ -11,7 +11,6 @@ import { FormBuilder, FormMessageBuilder } from '../util/types';
 import { FormProfile } from './Mention';
 import { PreviewStep } from './PreviewStep';
 
-
 function isEmpty(value: any) {
     return value == null || value == '';
 }

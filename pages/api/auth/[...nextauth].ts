@@ -6,8 +6,8 @@ export const authOptions = {
   // Configure one or more authentication providers
   providers: [
     DiscordProvider({
-      clientId: process.env.CLIENT_ID as string,
-      clientSecret: process.env.CLIENT_SECRET as string
+      clientId: process.env.NEXTAUTH_ID as string,
+      clientSecret: process.env.NEXTAUTH_SECRET as string
     }),
     // ...add more providers here
   ],

@@ -121,8 +121,7 @@ export default function TextInputBuilder({
                     control={control}
                     name={`forms.${nestIndex}.modal.components.${k}.components.0.required`}
                     render={({ field }) => (
-                      <Switch
-                        //@ts-expect-error
+                      <Switch
                         onChange={(e) => field.onChange(e.target.checked)}
                         colorScheme='blurple'
                         isChecked={field.value === false ? false : true}

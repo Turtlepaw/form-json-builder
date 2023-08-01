@@ -5,10 +5,7 @@ console.log(process.env.CLIENT_ID as string, process.env.CLIENT_SECRET as string
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
-    DiscordProvider({
-      clientId: process.env.CLIENT_ID as string,
-      clientSecret: process.env.CLIENT_SECRET as string
-    }),
+    DiscordProvider(),
     // ...add more providers here
   ],
 }

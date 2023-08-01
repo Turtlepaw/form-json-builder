@@ -16,6 +16,7 @@ import React from "react";
 import { HiOutlineMenu } from 'react-icons/hi'
 import { Footer } from "./Footer";
 import { signIn, useSession, signOut } from "next-auth/react"
+import { MdLogout } from "react-icons/md";
 
 export interface NavigationProps {
     modalHandler: () => void;
@@ -80,10 +81,14 @@ export function Navigation({ modalHandler, displaySection, setDisplaySection }: 
             <Box style={{ marginRight: 6 }}>
                 <HStack>
                     <Menu>
-                        <MenuButton as={Avatar} size="xs" onClick={session.status != "authenticated" ? () => signIn("discord") : undefined} src={session?.data?.user?.image ?? "unknown"} />
-                        <MenuList>
-                            <MenuItem color={"red"} onClick={() => signOut()}>Log out</MenuItem>
-                        </MenuList>
+                        <Tooltip label={session.status != "authenticated" ? "Sign In" : ""} placement="bottom" hasArrow arrowSize={6}>
+                            <MenuButton as={Avatar} cursor="pointer" size="xs" onClick={session.status != "authenticated" ? () => signIn("discord") : undefined} src={session?.data?.user?.image ?? "unknown"} />
+                        </Tooltip>
+                        {session.status == "authenticated" && (
+                            <MenuList>
+                                <MenuItem icon={<MdLogout size={20} />} color={"red"} onClick={() => signOut()}>Log out</MenuItem>
+                            </MenuList>
+                        )}
                     </Menu>
                     {isSmallScreen ?
                         <HiOutlineMenu onClick={onOpen} cursor='pointer' size='24px' color={colorMode === 'dark' ? '#B8B9BF' : '#4E5058'} />

@@ -11,7 +11,8 @@ import {
   HStack,
   Input,
   cssVar,
-  Spinner
+  Spinner,
+  Stack
 } from '@chakra-ui/react';
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
@@ -26,6 +27,7 @@ import { createName } from '../util/form';
 import { ComponentType } from '../pages';
 import { useScreenWidth } from '../util/width';
 import { fixForm } from '../util/fixForm';
+import fetch from 'isomorphic-fetch';
 
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
@@ -241,6 +243,31 @@ export function Editor({
     setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
 
+  const [sending, setSending] = useState(false);
+  const sendForm = async () => {
+    try {
+      setSending(true);
+      const response = await fetch("https://forms.antouto.workers.dev/dashboard");
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      postToast({
+        title: "Form Sent",
+        style: ToastStyles.Success,
+        description: data ?? "unknown",
+      });
+
+      setTimeout(() => setSending(false), DOWNLOAD_SPINNER_TIME);
+    } catch (error) {
+      console.error("Network request failed:", error);
+      // Handle the error as needed, e.g., show an error toast or message to the user.
+    }
+  }
+
   const SettingsModal = useModal();
 
   const isSmallScreen = !useScreenWidth(500);
@@ -279,7 +306,7 @@ export function Editor({
         </Box>
         <JSONViewer {...{ downloadForm, animationsEnabled: !SettingsModal.settings.LimitAnimations, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
         <VStack alignItems='flex-start'>
-          <HStack alignItems='flex-start'>
+          <Stack direction={isSmallScreen ? "row" : "column"} alignItems='flex-start'>
             <Button
               variant='success'
               isDisabled={!formState.isValid}
@@ -287,12 +314,20 @@ export function Editor({
                 handleLoad();
                 downloadForm();
               }}
-              width={225}
+              width={275}
             // bgColor={loading ? "#215b32" : undefined}
             >
               {!loading && "Download Configuration File"}
               {(loading && SettingsModal.settings.LimitAnimations == false) && <Spinner size="sm" />}
               {(loading && SettingsModal.settings.LimitAnimations == true) && "Downloading..."}
+            </Button>
+            <Button
+              variant="success"
+              isDisabled={!formState.isValid}
+              width={100}
+              onClick={() => sendForm()}
+            >
+              Send
             </Button>
             {SettingsModal.settings.ShowFixButton && <Button onClick={() => fixForm(true, {
               componentType,
@@ -301,7 +336,7 @@ export function Editor({
               setValue,
               toast
             })}>Fix Form</Button>}
-          </HStack>
+          </Stack>
           {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>
         <Box>

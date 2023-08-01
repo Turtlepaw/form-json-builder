@@ -67,16 +67,10 @@ export interface FormAndMessageBuilder {
     forms: FormBuilder[];
 }
 
-export interface DiscordUser {
-    id: string;
-    username: string;
-    avatar: string;
-    discriminator: string;
-    public_flags: number;
-    flags: number;
-    locale: string;
-    mfa_enabled: boolean;
-    premium_type: number;
-    avatarURL: string;
-    guilds: (any | undefined)[] | null;
+export enum ToastStyles {
+    Success = "success",
+    Info = "info",
+    Warning = "wraning",
+    Error = "error",
+    Loading = "loading"
 }

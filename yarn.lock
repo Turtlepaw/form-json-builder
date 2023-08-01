@@ -1811,6 +1811,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/isomorphic-fetch@npm:^0.0.36":
+  version: 0.0.36
+  resolution: "@types/isomorphic-fetch@npm:0.0.36"
+  checksum: 1ffaa1c97a019b1f7a682e2ae31bd4cc3f324198b422c62cece51b42d2750e0dde0c4df2320a52874d6c6019ee4b00ca2e736010d34b206a82e63ef82ef85bbe
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0":
   version: 2.0.4
   resolution: "@types/istanbul-lib-coverage@npm:2.0.4"
@@ -4002,6 +4009,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isomorphic-fetch@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "isomorphic-fetch@npm:3.0.0"
+  dependencies:
+    node-fetch: ^2.6.1
+    whatwg-fetch: ^3.4.1
+  checksum: e5ab79a56ce5af6ddd21265f59312ad9a4bc5a72cebc98b54797b42cb30441d5c5f8d17c5cd84a99e18101c8af6f90c081ecb8d12fd79e332be1778d58486d75
+  languageName: node
+  linkType: hard
+
 "jest-diff@npm:^29.6.1":
   version: 29.6.1
   resolution: "jest-diff@npm:29.6.1"
@@ -4454,7 +4471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.12":
+"node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.12":
   version: 2.6.12
   resolution: "node-fetch@npm:2.6.12"
   dependencies:
@@ -5294,6 +5311,7 @@ __metadata:
     "@testing-library/react": ^13.2.0
     "@testing-library/user-event": ^13.5.0
     "@types/cookie": ^0.5.1
+    "@types/isomorphic-fetch": ^0.0.36
     "@types/jsonwebtoken": ^9.0.2
     "@types/node": 18.11.18
     "@types/react": 18.0.27
@@ -5306,6 +5324,7 @@ __metadata:
     eslint: 8.33.0
     eslint-config-next: ^13.1.6
     framer-motion: 6.5.1
+    isomorphic-fetch: ^3.0.0
     jsonwebtoken: ^9.0.1
     lodash: ^4.17.21
     mobx: ^6.7.0
@@ -5758,6 +5777,13 @@ __metadata:
   version: 3.0.1
   resolution: "webidl-conversions@npm:3.0.1"
   checksum: c92a0a6ab95314bde9c32e1d0a6dfac83b578f8fa5f21e675bc2706ed6981bc26b7eb7e6a1fab158e5ce4adf9caa4a0aee49a52505d4d13c7be545f15021b17c
+  languageName: node
+  linkType: hard
+
+"whatwg-fetch@npm:^3.4.1":
+  version: 3.6.17
+  resolution: "whatwg-fetch@npm:3.6.17"
+  checksum: 0a8785dc2d1515c17ee9365d3f6438cf8fd281567426652fc6c55fc99e58cc6287ae5d1add5b8b1dd665f149e38d3de4ebe3812fd7170438ba0681d03b88b4dd
   languageName: node
   linkType: hard
 

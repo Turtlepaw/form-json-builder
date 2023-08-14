@@ -6,6 +6,7 @@ import { Embed, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 import EmbedBuilder from "./EmbedBuilder";
+import Counter from "./Counter";
 
 export const MessageType = {
     Content: "content",
@@ -123,12 +124,16 @@ export default function useMessageBuilder({
             }
             
             {openFormType === 'application_command' && <>
-                {/* @ts-expect-error */}
-                <FormLabel htmlFor={'application_command.name'} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('application_command')?.name?.length > 32 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('application_command')?.name?.length || 0}/32</span></FormLabel>
+                <FormLabel htmlFor={'application_command.name'} display='flex' alignItems='flex-end'>
+                    <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text>
+                    <Counter count={getValues('application_command')?.name?.length} max={32}/>
+                </FormLabel>
                 <input {...register('application_command.name', { required: true, pattern: /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u, maxLength: 32 }) } id='application_command.name' />
                 <ErrorMessage error={errors?.application_command?.name}/>
-                {/* @ts-expect-error */}
-                <FormLabel htmlFor={'application_command.description'} display='flex' alignItems='flex-end'><Text>Description</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('application_command')?.description?.length > 100 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('application_command')?.description?.length || 0}/100</span></FormLabel>
+                <FormLabel htmlFor={'application_command.description'} display='flex' alignItems='flex-end'>
+                    <Text>Description</Text>
+                    <Counter count={getValues('application_command')?.description?.length} max={100}/>
+                </FormLabel>
                 <input {...register('application_command.description', { maxLength: 100 }) } id='application_command.description' />
                 <ErrorMessage error={errors?.application_command?.description}/>
                 </>

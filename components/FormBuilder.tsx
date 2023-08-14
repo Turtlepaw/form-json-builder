@@ -19,6 +19,7 @@ import { FormAndMessageBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
 import { ComponentType } from "../pages";
 import { useColorMode } from "@chakra-ui/react";
+import Counter from "./Counter";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -56,7 +57,7 @@ export default function FormBuilder({
 
   return (
     <Box width='100%' pb={2}>
-      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms').length > 5 || getValues('application_command') && getValues('forms').length > 1 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms').length}/{getValues('application_command') ? 1 : 5}</span></FormLabel>
+      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms').length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)}/></FormLabel>
       <ul>
         {fields.map((item, index) => {
           return (
@@ -90,11 +91,8 @@ export default function FormBuilder({
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
                           <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
-                          <span style={{
-                            display: 'inline', marginLeft: '7px', fontSize: '13px',
-                            //@ts-expect-error
-                            color: getValues('forms')[index].select_menu_option?.label?.length > 100 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
-                          }}>{getValues('forms')[index].select_menu_option?.label?.length}/100</span></FormLabel>
+                          <Counter count={getValues('forms')[index].select_menu_option?.label?.length} max={100} />
+                        </FormLabel>
                         <input
                           {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100 })}
                           id={`forms[${index}].select_menu_option.label`}
@@ -105,11 +103,7 @@ export default function FormBuilder({
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
                           <Text>Select Menu Option Description</Text>
-                          <span style={{
-                            display: 'inline', marginLeft: '7px', fontSize: '13px',
-                            //@ts-expect-error
-                            color: getValues('forms')[index].select_menu_option?.description?.length > 100 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
-                          }}>{getValues('forms')[index].select_menu_option?.description?.length}/100</span>
+                          <Counter count={getValues('forms')[index].select_menu_option?.description?.length} max={100}></Counter>
                         </FormLabel>
                         <input
                           {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100 })}
@@ -123,7 +117,9 @@ export default function FormBuilder({
                   {
                     componentType == ComponentType.Button && !getValues('application_command') && <>
                       <Box width='100%'>
-                        <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
+                        <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text>
+                          <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>
+                        </FormLabel>
                         <input
                           {...register(`forms.${index}.button.label`, { required: true, maxLength: 80 })}
                           id={`forms[${index}].button.label`}
@@ -153,7 +149,10 @@ export default function FormBuilder({
                   }
                 </Stack>
 
-                <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].modal.title?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index]?.modal.title?.length}/45</span></FormLabel>
+                <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'>
+                  <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text>
+                  <Counter count={getValues('forms')[index]?.modal.title?.length} max={45} />
+                </FormLabel>
                 <input
                   {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45 })}
                   id={`forms[${index}].modal.title`}
@@ -173,7 +172,7 @@ export default function FormBuilder({
       <section>
         <Button
           variant='primary'
-          isDisabled={getValues('forms').length >= 5 || getValues('application_command') && getValues('forms').length >= 1 }
+          isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && getValues('forms.0.button') && getValues('forms').length >= 5) || getValues('application_command') && getValues('forms').length >= 1 }
           onClick={() => {
             setDisplayForm(fields.length)
             append({

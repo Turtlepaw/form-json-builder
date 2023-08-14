@@ -154,8 +154,8 @@ export function Editor({
 
       // Validator for the number of forms
       // 🔗 https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-modal
-      if (json.forms.length > 5) {
-        json.forms.length = 5;
+      if (json.forms.length > 25) {
+        json.forms.length = 25;
       }
 
       // Add the json.forms array to the form hook
@@ -282,7 +282,7 @@ export function Editor({
           <HStack alignItems='flex-start'>
             <Button
               variant='success'
-              isDisabled={(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : 5))}
+              isDisabled={(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5) ))}
               onClick={() => {
                 handleLoad();
                 downloadForm();
@@ -294,7 +294,7 @@ export function Editor({
               {loading && <Spinner size="sm" />}
             </Button>
           </HStack>
-          {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : 5)) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
+          {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5))) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>
         <Box>
           Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.

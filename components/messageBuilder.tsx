@@ -82,6 +82,7 @@ export default function useMessageBuilder({
                 </VStack>
             }
             
+            
             {openFormType === 'application_command' && <>
                 <FormLabel htmlFor={'application_command.name'} display='flex' alignItems='flex-end'>
                     <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Name</Text>

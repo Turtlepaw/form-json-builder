@@ -1,7 +1,6 @@
 import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip, Select, useColorMode, SelectField } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues, useFieldArray, UseFormSetError } from "react-hook-form";
-import { ComponentType } from "../pages";
 import { Embed, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
@@ -27,7 +26,8 @@ export interface MessageBuilderProperties<T extends FieldValues> {
     setMessageType: React.Dispatch<React.SetStateAction<string>>;
     messageType: string;
     Defaults: Defaults;
-    componentType: [string, Dispatch<SetStateAction<ComponentType>>];
+    openFormType: string;
+    setOpenFormType: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function useMessageBuilder({
@@ -42,52 +42,10 @@ export default function useMessageBuilder({
     Defaults,
     //@ts-expect-error
     control,
-    componentType: [componentType, setComponentType]
+    openFormType,
+    setOpenFormType
 }: MessageBuilderProperties<FormAndMessageBuilder>) {
     const colorMode = useColorMode().colorMode
-    const [openFormType, _setOpenFormType] = useState('button')
-
-    //@ts-expect-error
-    const setOpenFormType = (type) => {
-        _setOpenFormType(type)
-        switch(type) {
-            case 'button':
-                setComponentType(ComponentType.Button)
-                resetField('application_command');
-                resetField(`select_menu_placeholder`);
-
-                getValues("forms").forEach((form, i) => {
-                    setValue(`forms.${i}.select_menu_option`, null as any);
-                    setValue(`forms.${i}.button`, {
-                        label: "",
-                        style: 1
-                    });
-                });
-                break;
-            case 'select_menu':
-                setComponentType(ComponentType.SelectMenu)
-                resetField('application_command');
-                getValues("forms").forEach((form, i) => {
-                    setValue(`forms.${i}.button`, null as any);
-                    setValue(`forms.${i}.select_menu_option`, {
-                        label: form.modal.title,
-                        description: ""
-                    });
-                });
-                break;
-            case 'application_command':     
-                setValue('message', null as any);
-                getValues("forms").forEach((form, i) => {
-                    setValue(`forms.${i}.select_menu_option`, null as any);
-                    setValue(`forms.${i}.button`, null as any);
-                    //@ts-expect-error
-                    setValue('application_command', {
-                        name: ''
-                    })
-                });
-                break;
-        }
-    }
 
     return (
         <>
@@ -102,6 +60,7 @@ export default function useMessageBuilder({
                     _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
                     _hover={{ borderColor: 'transparent' }}
                     onChange={(event) => setOpenFormType(event.target.value)}
+                    value={openFormType}
                 >
                     <option value="button">Buttons</option>
                     <option value="application_command">Slash Command</option>

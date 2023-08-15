@@ -16,9 +16,10 @@ import { debounce } from 'lodash';
 const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const defaultValues = DefaultValues as FormAndMessageBuilder;
 
-export enum ComponentType {
-  SelectMenu = "SelectMenu",
-  Button = "Button"
+export enum OpenFormType {
+  button,
+  select_menu,
+  application_command
 }
 
 export default function App() {
@@ -40,7 +41,6 @@ export default function App() {
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");
   const [displaySection, setDisplaySection] = useState(1);
-  const [componentType, setComponentType] = useState(ComponentType.Button);
   const SettingsModal = useModal();
   const isNotSmallScreen = useScreenWidth(500);
 
@@ -50,7 +50,6 @@ export default function App() {
   // Define the fixForm function
   const fixFormFunction = () => {
     fixForm(false, {
-      componentType: [componentType, setComponentType],
       getValues,
       resetField,
       setValue,
@@ -66,7 +65,6 @@ export default function App() {
   useEffect(() => {
     console.log("value changed");
     fixForm(false, {
-      componentType: [componentType, setComponentType],
       getValues,
       resetField,
       setValue,
@@ -80,9 +78,9 @@ export default function App() {
       <Meta>Home</Meta>
       <Navigation displaySection={displaySection} setDisplaySection={setDisplaySection} modalHandler={SettingsModal.modalHandler} />
       <Grid gridTemplateColumns={isNotSmallScreen ? '1fr 1fr' : '1fr'}>
-        <Editor resetField={resetField} messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} componentType={[componentType, setComponentType]} />
+        <Editor resetField={resetField} messageType={messageType} setMessageType={setMessageType} displayForm={displayForm} setDisplayForm={setDisplayForm} watch={watch} getValues={getValues} setValue={setValue} formState={formState} control={control} register={register} reset={reset} displaySection={isNotSmallScreen || displaySection !== 2} />
         {/* @ts-expect-error */}
-        <Preview componentType={componentType} type={messageType} message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} />
+        <Preview type={messageType} message={watch('message')} forms={watch('forms')} select_menu_placeholder={watch('select_menu_placeholder')} application_command={watch('application_command')} displayForm={displayForm} setDisplayForm={setDisplayForm} displaySection={isNotSmallScreen || displaySection !== 1} />
       </Grid>
     </>
   );

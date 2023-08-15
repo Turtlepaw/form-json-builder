@@ -17,7 +17,6 @@ import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 import { FormAndMessageBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
-import { ComponentType } from "../pages";
 import { useColorMode } from "@chakra-ui/react";
 import Counter from "./Counter";
 
@@ -30,7 +29,6 @@ export interface FormBuilderProperties<T extends FieldValues> {
   getValues: UseFormGetValues<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
-  componentType: ComponentType;
 }
 
 export default function FormBuilder({
@@ -43,7 +41,7 @@ export default function FormBuilder({
   watch,
   displayForm,
   setDisplayForm,
-  componentType
+  
 }: FormBuilderProperties<FormAndMessageBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -87,7 +85,7 @@ export default function FormBuilder({
                 <ErrorMessage error={errors.forms?.[index]?.webhook_url}/>
                 <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                   {
-                    componentType == ComponentType.SelectMenu && !getValues('application_command') && <>
+                    watch('forms.0.select_menu_option') && <>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
                           <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
@@ -115,7 +113,7 @@ export default function FormBuilder({
                   }
                   
                   {
-                    componentType == ComponentType.Button && !getValues('application_command') && <>
+                    watch('forms.0.button') && <>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text>
                           <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>

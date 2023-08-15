@@ -23,7 +23,6 @@ import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
 import { ButtonBuilder, FormAndMessageBuilder, ToastStyles } from "../util/types";
 import { createName } from '../util/form';
-import { ComponentType } from '../pages';
 import { useScreenWidth } from '../util/width';
 import { fixForm } from '../util/fixForm';
 
@@ -61,7 +60,6 @@ export interface EditorProps<T extends FieldValues> {
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
   messageType: string;
   setMessageType: React.Dispatch<React.SetStateAction<string>>;
-  componentType: [ComponentType, React.Dispatch<React.SetStateAction<ComponentType>>];
   reset: UseFormReset<T>;
   displaySection: boolean;
   resetField: UseFormResetField<T>;
@@ -80,7 +78,6 @@ export function Editor({
   register,
   reset,
   displaySection,
-  componentType,
   resetField
 }: EditorProps<FormAndMessageBuilder>) {
   const toast = useToast();
@@ -161,6 +158,15 @@ export function Editor({
       // Add the json.forms array to the form hook
       setValue("forms", json.forms);
 
+      if(json.forms[0].button) {
+        setOpenFormType('button')
+      } else if (json.forms[0].select_menu_option) {
+        setOpenFormType('select_menu')
+      }
+        else if (json.application_command) {
+        setOpenFormType('application_command')
+      }
+
       if(!json.application_command) {
         const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
         const isMessage = json.message?.content != null
@@ -178,7 +184,7 @@ export function Editor({
         });
   
         if (buttons < menus) {
-          componentType[1](ComponentType.SelectMenu);
+          setOpenFormType('select_menu')
           json.forms.forEach((form, i) => {
             if (form.select_menu_option == null) {
               setValue(`forms.${i}.select_menu_option`, {
@@ -190,7 +196,7 @@ export function Editor({
             if (form.button != null) resetField(`forms.${i}.button`);
           });
         } else {
-          componentType[1](ComponentType.Button);
+          setOpenFormType('button')
           json.forms.forEach((form, i) => {
             if (form.button == null) setValue(`forms.${i}.button`, {
               style: 1,
@@ -220,7 +226,6 @@ export function Editor({
 
   const downloadForm = () => {
     fixForm(false, {
-      componentType,
       getValues,
       resetField,
       setValue,
@@ -246,6 +251,49 @@ export function Editor({
 
   const isSmallScreen = !useScreenWidth(500);
 
+  const [openFormType, _setOpenFormType] = useState('button')
+
+  //@ts-expect-error
+  const setOpenFormType = (type) => {
+    _setOpenFormType(type)
+    switch(type) {
+        case 'button':
+            resetField('application_command');
+            //@ts-expect-error
+            resetField(`select_menu_placeholder`);
+
+            getValues("forms").forEach((form, i) => {
+                setValue(`forms.${i}.select_menu_option`, null as any);
+                setValue(`forms.${i}.button`, {
+                    label: "",
+                    style: 1
+                });
+            });
+            break;
+        case 'select_menu':
+            resetField('application_command');
+            getValues("forms").forEach((form, i) => {
+                setValue(`forms.${i}.button`, null as any);
+                setValue(`forms.${i}.select_menu_option`, {
+                    label: form.modal.title,
+                    description: ""
+                });
+            });
+            break;
+        case 'application_command':     
+            setValue('message', null as any);
+            getValues("forms").forEach((form, i) => {
+                setValue(`forms.${i}.select_menu_option`, null as any);
+                setValue(`forms.${i}.button`, null as any);
+                //@ts-expect-error
+                setValue('application_command', {
+                    name: ''
+                })
+            });
+            break;
+    }
+  }
+
   return (
     <VStack align='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'flex' : 'none'}>
       <HStack>
@@ -267,10 +315,10 @@ export function Editor({
         <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
       <MessageBuilder
-        {...{ Defaults, getValues, resetField, control, componentType, formState, messageType, register, setMessageType, setValue }}
+        {...{ Defaults, getValues, resetField, control, formState, messageType, register, setMessageType, setValue, openFormType, setOpenFormType }}
       />
       <FormBuilder
-        {...{ componentType: componentType[0], control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
+        {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
       />
       <VStack width='100%' align='flex-start'>
         <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>

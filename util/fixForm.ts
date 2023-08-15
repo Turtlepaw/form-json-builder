@@ -1,21 +1,19 @@
 import { FieldValues, UseFormGetValues, UseFormResetField, UseFormSetValue } from "react-hook-form";
 import { FormAndMessageBuilder, ToastStyles } from "./types";
-import { ComponentType } from "../pages";
 import { CreateToastFnReturn } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
+import { OpenFormType } from "../pages";
 
 interface FixFormOptions<T extends FieldValues> {
     getValues: UseFormGetValues<T>;
     setValue: UseFormSetValue<T>;
     resetField: UseFormResetField<T>;
-    componentType: [ComponentType, Dispatch<SetStateAction<ComponentType>>];
     toast: CreateToastFnReturn;
     formData?: FormAndMessageBuilder;
 }
 
 export function fixForm(toast = true, {
     getValues,
-    componentType,
     setValue,
     resetField,
     toast: ToastState,
@@ -24,19 +22,7 @@ export function fixForm(toast = true, {
     const data = formData ?? getValues();
 
     data.forms.forEach((form, i) => {
-        if(!data.application_command) {
-            if (componentType[0] == ComponentType.Button) {
-                setValue(`forms.${i}.button.style`, Number(form.button.style));
-                resetField(`forms.${i}.select_menu_option`);
-                //@ts-expect-error
-                resetField(`select_menu_placeholder`);
-            }
-            //@ts-expect-error
-            else if (componentType[0] == ComponentType.SelectMenu) Object.entries(data.forms[i].select_menu_option).forEach(([k, v]) => {
-                //@ts-expect-error
-                if (v == "") resetField(`forms.${i}.select_menu_option.${k}`);
-            })
-        }
+
         form.modal.components.forEach((actionRow, rowIndex) => {
             actionRow.components.forEach((e, index) => {
                 console.log(e);

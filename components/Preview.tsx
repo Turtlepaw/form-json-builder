@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { IoInformationCircle } from 'react-icons/io5';
 import { IconContext } from 'react-icons/lib';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
-import { ComponentType } from '../pages';
 import { FormBuilder, FormMessageBuilder } from '../util/types';
 import { FormProfile } from './Mention';
 import { PreviewStep } from './PreviewStep';
@@ -23,7 +22,6 @@ export interface PreviewProperties {
     displayForm: number;
     setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
     displaySection: boolean;
-    componentType: ComponentType;
 }
 
 function Preview({
@@ -35,7 +33,6 @@ function Preview({
     displayForm,
     setDisplayForm,
     displaySection,
-    componentType
 }: PreviewProperties) {
     const { colorMode } = useColorMode();
     const defaultValues = {
@@ -122,10 +119,10 @@ function Preview({
                                  {message?.content && <Text fontFamily='Whitney' whiteSpace='pre-wrap'>{message.content}</Text>}
                                  {MessageEmbed}
                                 <Box p='4px 0'>
-                                    {componentType == ComponentType.Button && forms.map((form, index) => (
+                                    {forms[0].button && forms.map((form, index) => (
                                         <Button key={Math.random()} onClick={() => setDisplayForm(index)} height='32px' fontSize='14px' paddingBlock={0} paddingInline={0} padding='2px 16px' m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>
                                     ))}
-                                    {componentType == ComponentType.SelectMenu &&
+                                    {forms[0].select_menu_option &&
                                         <Box>
                                             <Box width={
                                                 //@ts-expect-error

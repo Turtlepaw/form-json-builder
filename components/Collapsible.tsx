@@ -32,8 +32,7 @@ function Collapsible({ name, deleteButton, children, variant, style }: Collapsib
         // paddingInlineEnd={variant === 'large' ? '16px' : '0px'}
         height={variant === 'large' ? '40px' : '32px'}
         justifyContent='space-between'
-        //@ts-expect-error
-        width='100%' _focus='unset'
+        width='100%'
         _hover={{ bg: 'transparent' }}
         bg='transparent'
         color={variant === 'large' ? (colorMode === 'dark' ? 'white' : 'black') : (colorMode === 'dark' ? '#bcbcbc' : '#4f5660')}

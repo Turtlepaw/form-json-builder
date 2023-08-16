@@ -25,21 +25,18 @@ export function fixForm(toast = true, {
 
         form.modal.components.forEach((actionRow, rowIndex) => {
             actionRow.components.forEach((e, index) => {
-                console.log(e);
 
                 // Filter out properties with value null
                 //@ts-expect-error
                 e = Object.fromEntries(Object.entries(e).filter(([k, v]) => v !== null));
 
                 Object.entries(e).forEach(([k, v]) => {
-                    console.log(k, v, index);
                     //@ts-expect-error
                     if (v == '') delete e[k];
                     //@ts-expect-error
                     else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
                 });
 
-                console.log("modal data: ", e);
                 setValue(`forms.${i}.modal.components.${rowIndex}.components.${index}`, e);
             });
         });
@@ -50,7 +47,6 @@ export function fixForm(toast = true, {
         
 
         if (Message?.embeds != null && Message.embeds.length > 0) {
-            console.log("fixing...")
             Message.embeds.forEach((embed, i) => {
                 Object.entries(embed).forEach(([k, v]) => {
                     if (typeof v == "string") {

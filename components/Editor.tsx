@@ -232,7 +232,6 @@ export function Editor({
       toast
     });
     setTimeout(() => {
-      console.log("downloading...")
       const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
         JSON.stringify(watch(), null, 2)
       )}`;
@@ -299,7 +298,6 @@ export function Editor({
       <HStack>
         <Button onClick={() => {
           if (fileInput == null) {
-            console.log("FILE_INPUT_NULLISH");
             return postToast({
               title: "Something didn't go right.",
               style: ToastStyles.Error
@@ -307,10 +305,9 @@ export function Editor({
           } else fileInput.click()
         }} variant="primary">Upload JSON</Button>
         <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => {
-          if (input == null) {
-            console.log("SETTING_FILE_INPUT_NULLISH");
-            return;
-          } else setFileInput(input);
+          if (input != null) {
+            setFileInput(input);
+          }
         }} />
         <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>

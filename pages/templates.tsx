@@ -119,7 +119,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
 
     const downloadForm = (formData: any, fileName: string) => {
         setTimeout(() => {
-            console.log("downloading...")
             const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                 JSON.stringify(formData, null, 2)
             )}`;

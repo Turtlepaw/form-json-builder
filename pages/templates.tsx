@@ -170,9 +170,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
             if (formData.forms[i].button != null) formData.forms[i].button.style = Number(form.button.style);
             form.modal.components.forEach((actionRow) => {
                 actionRow.components.forEach((e, index) => {
-                    console.log(e)
                     Object.entries(e).map(([k, v]) => {
-                        console.log(k, v)
                         if (v === null) return { key: k, value: v };
                         //@ts-expect-error
                         // eslint-disable-next-line eqeqeq
@@ -190,7 +188,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
         const Message = formData.message;
 
         if (Message?.embeds != null && Message.embeds.length > 0) {
-            console.log("fixing...")
             Message.embeds.forEach((embed, i) => {
                 Object.entries(embed).forEach(([_key, v]) => {
                     const k = _key as keyof Embed;

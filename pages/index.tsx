@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useForm, useWatch } from "react-hook-form";
 import { Grid } from '@chakra-ui/react';
 import Preview from '../components/Preview';
-import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
 import { FormAndMessageBuilder, FormBuilder, FormMessageBuilder } from "../util/types";
@@ -12,9 +11,6 @@ import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
 import { fixForm } from '../util/fixForm';
 import { debounce } from 'lodash';
-
-const DefaultValues = _DefaultValues as FormAndMessageBuilder;
-const defaultValues = DefaultValues as FormAndMessageBuilder;
 
 export enum OpenFormType {
   button,
@@ -34,9 +30,44 @@ export default function App() {
     resetField,
     formState: { errors }
   } = useForm<FormAndMessageBuilder>({
-    mode: 'onChange',
-    defaultValues
+    mode: 'onChange'
   });
+
+  useEffect(()=> {
+    setValue('message', {
+      content: 'Fill out the form below'
+    })
+    setValue('forms', [
+      {
+        "webhook_url": "",
+        "button": {
+          "label": "Open Form",
+          "style": 1
+        },
+        "modal": {
+          "title": "Example Form",
+          "components": [
+            {
+              "type": 1,
+              "components": [
+                {
+                  "type": 4,
+                  "label": "Example Text Input",
+                  "style": 1,
+                  "placeholder": "Write text here",
+                  "value": "",
+                  "min_length": 0,
+                  "max_length": 1024
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ])
+  }, [])
+ 
+
 
   const [displayForm, setDisplayForm] = useState(0);
   const [messageType, setMessageType] = useState("content");

@@ -21,7 +21,6 @@ import {
 } from '@chakra-ui/react';
 import { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
-import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
 import { EmbedAuthor, Embed, EmbedFooter, FormAndMessageBuilder } from "../util/types";
@@ -35,7 +34,6 @@ import Preview from '../components/Preview';
 import Link from 'next/link';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
-const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
 const $SwitchBackground = cssVar("switch-bg");
 
@@ -56,8 +54,6 @@ const Defaults = {
     },
     Message: 'Fill out the form below!'
 };
-
-const defaultValues = DefaultValues as FormAndMessageBuilder;
 
 export interface TemplateData {
     // templates: FormDataResponse[] | null;
@@ -166,7 +162,7 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
     const { colorMode } = useColorMode();
 
     function FixForm(formData: FormAndMessageBuilder) {
-        formData.forms.forEach((form, i) => {
+        formData.forms?.forEach((form, i) => {
             if (formData.forms[i].button != null) formData.forms[i].button.style = Number(form.button.style);
             form.modal.components.forEach((actionRow) => {
                 actionRow.components.forEach((e, index) => {

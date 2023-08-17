@@ -21,7 +21,6 @@ function getParameterByName(name: string, url: string) {
 }
 
 //http://127.0.0.1:8788/app?name=Example Form&data={ "message": { "content": "Fill out the form below", "embeds": [] }, "forms": [ { "webhook_url": "", "button": { "label": "Open Form", "style": 1 }, "modal": { "title": "Example Form", "components": [ { "type": 1, "components": [ { "type": 4, "label": "Example Text Input", "style": "1", "placeholder": "Write text here", "value": "", "min_length": 0, "max_length": 1024, "required": true } ] } ] } } ] }&description=Example form to help you get started!&official=true&options=[{ "type": "array", "dataName": "forms", "dataSelection": "webhook_url" }]
-//@ts-expect-error
 export const onRequestPut: PagesFunction<Env> = async (context) => {
     const requestBody = context.request.url.includes("?") ? {
         data: getParameterByName("data", context.request.url),
@@ -41,7 +40,6 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         status: 200
     });
 }
-//@ts-expect-error
 export const onRequestGet: PagesFunction<Env> = async (context) => {
     const requestBody = context.request.url.includes("?") ? {
         id: getParameterByName("id", context.request.url)
@@ -53,7 +51,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     });
 
     return jsonResponse(
-        //@ts-expect-error
         await context.env.TEMPLATES.get(requestBody.id), {
         status: 200
     });

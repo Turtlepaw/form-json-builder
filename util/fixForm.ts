@@ -21,7 +21,7 @@ export function fixForm(toast = true, {
 }: FixFormOptions<FormAndMessageBuilder>) {
     const data = formData ?? getValues();
 
-    data.forms.forEach((form, i) => {
+    data.forms?.forEach((form, i) => {
 
         form.modal.components.forEach((actionRow, rowIndex) => {
             actionRow.components.forEach((e, index) => {

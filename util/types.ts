@@ -20,8 +20,8 @@ export interface Embed {
 }
 
 export interface FormMessageBuilder {
-    content: string | null;
-    embeds: Embed[];
+    content?: string;
+    embeds?: Embed[];
 }
 
 export interface ButtonBuilder {
@@ -38,11 +38,11 @@ export interface ModalComponentBuilder {
     type: number;
     label: string;
     style: number;
-    placeholder: string;
-    value: string;
-    min_length: number;
-    max_length: number;
-    required: boolean;
+    placeholder?: string;
+    value?: string;
+    min_length?: number;
+    max_length?: number;
+    required?: boolean;
 }
 
 export interface ModalActionRowBuilder {
@@ -64,9 +64,10 @@ export interface FormBuilder {
 
 export interface FormAndMessageBuilder {
     message?: FormMessageBuilder;
+    select_menu_placeholder?: string;
     application_command?: {
         name: String,
-        description: String
+        description?: String
     };
     forms: FormBuilder[];
 }

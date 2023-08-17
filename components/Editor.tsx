@@ -18,7 +18,6 @@ import JSONViewer, { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
 import MessageBuilder, { MessageType } from '../components/messageBuilder';
 import { SlashCommand, UserMention } from '../components/Mention';
-import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
 import { ButtonBuilder, FormAndMessageBuilder, ToastStyles } from "../util/types";
@@ -26,7 +25,6 @@ import { createName } from '../util/form';
 import { useScreenWidth } from '../util/width';
 import { fixForm } from '../util/fixForm';
 
-const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
 
 const Defaults = {
@@ -46,8 +44,6 @@ const Defaults = {
   },
   Message: 'Fill out the form below!'
 };
-
-const defaultValues = DefaultValues as FormAndMessageBuilder;
 
 export interface EditorProps<T extends FieldValues> {
   control: Control<T>;
@@ -258,13 +254,12 @@ export function Editor({
     switch(type) {
         case 'button':
             resetField('application_command');
-            //@ts-expect-error
-            resetField(`select_menu_placeholder`);
+            resetField('select_menu_placeholder');
 
             getValues("forms").forEach((form, i) => {
-                setValue(`forms.${i}.select_menu_option`, null as any);
+                resetField(`forms.${i}.select_menu_option`)
                 setValue(`forms.${i}.button`, {
-                    label: "",
+                    label: '',
                     style: 1
                 });
             });
@@ -272,19 +267,18 @@ export function Editor({
         case 'select_menu':
             resetField('application_command');
             getValues("forms").forEach((form, i) => {
-                setValue(`forms.${i}.button`, null as any);
+                resetField(`forms.${i}.button`)
                 setValue(`forms.${i}.select_menu_option`, {
                     label: form.modal.title,
-                    description: ""
+                    description: ''
                 });
             });
             break;
         case 'application_command':     
-            setValue('message', null as any);
+            resetField('message')
             getValues("forms").forEach((form, i) => {
-                setValue(`forms.${i}.select_menu_option`, null as any);
-                setValue(`forms.${i}.button`, null as any);
-                //@ts-expect-error
+                resetField(`forms.${i}.select_menu_option`)
+                resetField(`forms.${i}.button`)
                 setValue('application_command', {
                     name: ''
                 })
@@ -315,7 +309,7 @@ export function Editor({
         {...{ Defaults, getValues, resetField, control, formState, messageType, register, setMessageType, setValue, openFormType, setOpenFormType }}
       />
       <FormBuilder
-        {...{ control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
+        {...{ control, register, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
       />
       <VStack width='100%' align='flex-start'>
         <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>

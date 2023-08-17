@@ -55,7 +55,7 @@ export default function FormBuilder({
 
   return (
     <Box width='100%' pb={2}>
-      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms').length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)}/></FormLabel>
+      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)}/></FormLabel>
       <ul>
         {fields.map((item, index) => {
           return (
@@ -204,7 +204,7 @@ export default function FormBuilder({
         >
           Add Form
         </Button>
-        {getValues('forms').length > 5 || getValues('application_command') && getValues('forms').length > 1 && <ErrorMessage>You have too many forms</ErrorMessage>}
+        {getValues('forms')?.length > 5 || getValues('application_command') && getValues('forms').length > 1 && <ErrorMessage>You have too many forms</ErrorMessage>}
       </section>
     </Box >
   );

@@ -36,7 +36,7 @@ function Preview({
 }: PreviewProperties) {
     const { colorMode } = useColorMode();
     const defaultValues = {
-        ...forms[displayForm]?.modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
+        ...forms?.[displayForm]?.modal.components.map(e => e.components[0]).map(e => ({ [e.label]: e.value }))
     };
     const textInputs = useForm({
         defaultValues
@@ -45,7 +45,7 @@ function Preview({
     if (displayForm < 0) displayForm = 0;
 
     const MessageEmbed = <>
-        {message?.embeds && message.embeds.map(embed => <Box key={Math.random()} whiteSpace='pre-wrap' borderLeftColor={embed?.color ? `#${embed?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(embed?.color) ? message?.embeds[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && message.embeds.map(embed => <Box key={Math.random()} whiteSpace='pre-wrap' borderLeftColor={embed?.color ? `#${embed?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(embed?.color) ? message?.embeds?.[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <Link href={isEmpty(embed?.author?.url) ? undefined : embed.author.url} style={{ cursor: isEmpty(embed?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(embed?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
@@ -158,14 +158,14 @@ function Preview({
                             <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
                                 <Box display='flex' alignItems='center' height='24px'>
                                     <Image src="https://cdn.discordapp.com/attachments/944646735643410482/953304477102915624/unknown.png" alt="Forms Logo" width="24px" height='24px' style={{ clipPath: 'circle(50%)', marginRight: '8px' }} />
-                                    <Text fontSize='24px' color={colorMode === 'dark' ? 'white' : '#060607'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms[displayForm]?.modal.title}</Text>
+                                    <Text fontSize='24px' color={colorMode === 'dark' ? 'white' : '#060607'} textOverflow='ellipsis' overflow='hidden' whiteSpace='nowrap'>{forms?.[displayForm]?.modal.title}</Text>
                                 </Box>
                                 <Box display='flex' p='4px' cursor='pointer'>
                                     <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#b9bbbe" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
                                 </Box>
                             </Box>
                             <Box>
-                                {forms[displayForm]?.modal.components.map((actionRow, i) => (
+                                {forms?.[displayForm]?.modal.components.map((actionRow, i) => (
                                     <Box key={Math.random()} m='0 1em 1em'>
                                         <Text textTransform='uppercase' fontFamily='Sofia Sans' fontWeight='extrabold' fontSize='14px' mb='8px' color={colorMode === 'dark' ? '#b9bbbe' : '#4f5660'}>
                                             {actionRow.components[0]?.label}
@@ -214,7 +214,7 @@ function Preview({
                                             <Box fontFamily='Whitney Bold' fontSize='0.875rem' fontWeight='500'>User#0000</Box>
                                         </Box>
                                         <Box>
-                                            {forms[displayForm]?.modal.components.map(actionRow => (
+                                            {forms?.[displayForm]?.modal.components.map(actionRow => (
                                                 <Box key={Math.random()}>
                                                     <Text fontFamily='Whitney Black' fontSize='0.875rem' mt='8px'>
                                                         {actionRow.components[0]?.label}

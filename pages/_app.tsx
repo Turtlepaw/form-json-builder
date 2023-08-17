@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
     localStorage.setItem(ValueName, JSON.stringify(hasSeenRelease));
   }, [hasSeenRelease, initialLoad]);
 
-  console.log("a", hasSeenRelease)
+  console.log("Has seen release", hasSeenRelease)
 
   return (
     <>

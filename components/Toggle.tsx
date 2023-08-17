@@ -14,7 +14,6 @@ export function useToggle(switchName: Switches, itemName: string) {
     useEffect(() => {
         if (initialCheck) return;
         const switchValue = localStorage.getItem(switchName);
-        console.log(switchValue)
         if (switchValue != null) {
             checkState(true);
             setToggle(
@@ -66,7 +65,6 @@ export function Toggle({ switchName, itemName, getItem: item, setItem: _item }: 
     useEffect(() => {
         if (!initialCheck) return;
         localStorage.setItem(switchName, JSON.stringify(item))
-        console.log("switch", item)
     }, [switchName, item, initialCheck]);
 
     return (

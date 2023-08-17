@@ -31,6 +31,7 @@ import { FormAndMessageBuilder, ModalComponentBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
+import Counter from "./Counter";
 
 export interface TextInputBuilderProperties<T extends FieldValues> {
   nestIndex: number;
@@ -133,7 +134,9 @@ export default function TextInputBuilder({
                 </Box>
               </Stack>
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.placeholder?.length > 100) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.placeholder?.length || 0}/100</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text>
+              <Counter count={textInput?.placeholder?.length || 0} max={100}/>  
+              </FormLabel>
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100 })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`}
@@ -141,7 +144,7 @@ export default function TextInputBuilder({
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length !== 0 && (Number.isNaN(minimumLength) || Number.isNaN(maximumLength) || minimumLength < 0 || minimumLength > 1024 || maximumLength < 1 || maximumLength > 1024 || textInput?.value?.length < minimumLength || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{(!(minimumLength < 0 || maximumLength < 0) && (isNaN(minimumLength) || isNaN(maximumLength) || (minimumLength <= maximumLength && minimumLength >= 0 && minimumLength <= 1024 && maximumLength >= 1 && maximumLength <= 1024))) ? `Must be betweeen ${isNaN(minimumLength) ? 1 : (minimumLength < 1024 ? minimumLength : 1024)} and ${maximumLength <= 1024 ? maximumLength : 1024}` : 'Invalid minimum/maximum characters, fix these first'}</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length !== 0 && (Number.isNaN(minimumLength) || Number.isNaN(maximumLength) || minimumLength < 0 || minimumLength > 1024 || maximumLength < 1 || maximumLength > 1024 || textInput?.value?.length || 0 < minimumLength || textInput?.value?.length || 0 > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{(!(minimumLength < 0 || maximumLength < 0) && (isNaN(minimumLength) || isNaN(maximumLength) || (minimumLength <= maximumLength && minimumLength >= 0 && minimumLength <= 1024 && maximumLength >= 1 && maximumLength <= 1024))) ? `Must be betweeen ${isNaN(minimumLength) ? 1 : (minimumLength < 1024 ? minimumLength : 1024)} and ${maximumLength <= 1024 ? maximumLength : 1024}` : 'Invalid minimum/maximum characters, fix these first'}</span></FormLabel>
               <Box
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength })}

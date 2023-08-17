@@ -41,6 +41,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         status: 200
     });
 }
+//@ts-expect-error
 export const onRequestGet: PagesFunction<Env> = async (context) => {
     const requestBody = context.request.url.includes("?") ? {
         id: getParameterByName("id", context.request.url)
@@ -52,6 +53,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     });
 
     return jsonResponse(
+        //@ts-expect-error
         await context.env.TEMPLATES.get(requestBody.id), {
         status: 200
     });

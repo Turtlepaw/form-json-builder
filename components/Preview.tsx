@@ -80,7 +80,7 @@ function Preview({
     return (
         <Box overflowY='scroll' p='16px 16px 16px 12px' maxHeight='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
             <VStack align='start' spacing={3}>
-                {message && <PreviewStep number={1} title='A message with buttons to open forms is sent to a channel'>
+                {message && <PreviewStep number={1} title={`A message with ${forms[0].button ? 'buttons' : 'a select menu'} to open forms is sent to a channel`}>
                     <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <FormProfile {...{
                             avatar: "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096",

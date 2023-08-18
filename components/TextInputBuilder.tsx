@@ -142,9 +142,9 @@ export default function TextInputBuilder({
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100 })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`}
-                defaultValue={textInput.placeholder}
                 onInput={(event) => {
                   setTimeout(() => {
+                    //@ts-expect-error
                     if(!event.target.value) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)
                   }, 1);
                 }}
@@ -156,8 +156,10 @@ export default function TextInputBuilder({
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
+                //@ts-expect-error
                 onInput={(event) => {
                   setTimeout(() => {
+                    //@ts-expect-error
                     if(!event.target.value) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
                   }, 1);
                 }}

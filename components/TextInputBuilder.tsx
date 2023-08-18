@@ -156,7 +156,6 @@ export default function TextInputBuilder({
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
-                //@ts-expect-error
                 onInput={(event) => {
                   setTimeout(() => {
                     //@ts-expect-error

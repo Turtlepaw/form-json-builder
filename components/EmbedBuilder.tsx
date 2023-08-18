@@ -12,7 +12,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
       name: 'message.embeds'
   });
 
-  function remove(index) {
+  function remove(index: number) {
     _remove(index)
     if(!getValues('message.embeds')?.length) {
       resetField('message.embeds')

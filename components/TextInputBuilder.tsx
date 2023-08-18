@@ -51,6 +51,8 @@ export default function TextInputBuilder({
   formState: { errors },
   watch,
   setValue,
+  //@ts-expect-error
+  resetField,
   id
 }: TextInputBuilderProperties<FormAndMessageBuilder>) {
   const { fields, remove, append } = useFieldArray({
@@ -141,6 +143,11 @@ export default function TextInputBuilder({
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100 })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`}
                 defaultValue={textInput.placeholder}
+                onInput={(event) => {
+                  setTimeout(() => {
+                    if(!event.target.value) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)
+                  }, 1);
+                }}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
@@ -149,7 +156,11 @@ export default function TextInputBuilder({
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
-                defaultValue={textInput.value}
+                onInput={(event) => {
+                  setTimeout(() => {
+                    if(!event.target.value) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
+                  }, 1);
+                }}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
               <HStack marginBottom='8px' alignItems='flex-start'>
@@ -190,10 +201,8 @@ export default function TextInputBuilder({
             type: 4,
             label: '',
             style: 1,
-            placeholder: '',
             min_length: 0,
             max_length: 1024,
-            value: '',
             required: true
           }
         ]

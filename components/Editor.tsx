@@ -313,7 +313,7 @@ export function Editor({
         {...{ Defaults, getValues, resetField, control, formState, messageType, register, setMessageType, setValue, openFormType, setOpenFormType }}
       />
       <FormBuilder
-        {...{ control, register, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
+        {...{ control, register, getValues, setValue, resetField, formState, watch, displayForm, setDisplayForm }}
       />
       <VStack width='100%' align='flex-start'>
         <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>

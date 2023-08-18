@@ -36,6 +36,8 @@ export default function FormBuilder({
   register,
   setValue,
   getValues,
+  //@ts-expect-error
+  resetField,
   formState,
   formState: { errors },
   watch,
@@ -160,7 +162,7 @@ export default function FormBuilder({
               </Collapsible >
               <hr/>
               <Collapsible name="Text Inputs">
-                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue }} />
+                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField }} />
               </Collapsible>
             </Collapsible >
           );

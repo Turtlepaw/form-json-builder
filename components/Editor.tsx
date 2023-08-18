@@ -255,6 +255,8 @@ export function Editor({
         case 'button':
             resetField('application_command');
             resetField('select_menu_placeholder');
+            resetField('message')
+            setTimeout(() => setValue('message', { content: 'Fill out the form below' }), 0.0001)
 
             getValues("forms").forEach((form, i) => {
                 resetField(`forms.${i}.select_menu_option`)
@@ -266,6 +268,8 @@ export function Editor({
             break;
         case 'select_menu':
             resetField('application_command');
+            resetField('message')
+            setTimeout(() => setValue('message', { content: 'Fill out the form below' }), 0.0001)
             getValues("forms").forEach((form, i) => {
                 resetField(`forms.${i}.button`)
                 setValue(`forms.${i}.select_menu_option`, {

@@ -3,13 +3,21 @@ import { useFieldArray } from "react-hook-form";
 import Collapsible from "./Collapsible";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
+import { useEffect } from "react";
 
 //@ts-expect-error
-export default function EmbedBuilder({ control, register, errors, setValue, getValues }) {
-  const { fields, remove, append } = useFieldArray({
+export default function EmbedBuilder({ control, register, errors, setValue, getValues, resetField }) {
+  const { fields, remove: _remove, append } = useFieldArray({
       control,
       name: 'message.embeds'
   });
+
+  function remove(index) {
+    _remove(index)
+    if(!getValues('message.embeds')?.length) {
+      resetField('message.embeds')
+    }
+  }
 
   return <>
       <FormLabel pb={2}>Embed</FormLabel>

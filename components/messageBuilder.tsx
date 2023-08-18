@@ -71,8 +71,8 @@ export default function useMessageBuilder({
             {(openFormType === 'button' || openFormType === 'select_menu') &&
                 <VStack align='flex-start' width='100%' marginBottom="8px">
                     <FormLabel htmlFor="message.content">Message</FormLabel>
-                    <textarea style={{ height: '99px' }} {...register('message.content', { required: true })} id='message.content' />
-                    <EmbedBuilder {...{ control, register, errors, setValue, getValues }}/>
+                    <textarea style={{ height: '99px' }} {...register('message.content')} id='message.content' />
+                    <EmbedBuilder {...{ control, register, errors, setValue, getValues, resetField }}/>
                     {openFormType === 'select_menu' && <Box width='100%'>
                         <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
                         {/* @ts-expect-error */}

@@ -23,7 +23,6 @@ import { Footer } from '../components/Footer';
 import { ButtonBuilder, FormAndMessageBuilder, ToastStyles } from "../util/types";
 import { createName } from '../util/form';
 import { useScreenWidth } from '../util/width';
-import { fixForm } from '../util/fixForm';
 
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
 
@@ -221,12 +220,6 @@ export function Editor({
   }
 
   const downloadForm = () => {
-    fixForm(false, {
-      getValues,
-      resetField,
-      setValue,
-      toast
-    });
     setTimeout(() => {
       const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
         JSON.stringify(watch(), null, 2)

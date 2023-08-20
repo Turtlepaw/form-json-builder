@@ -12,7 +12,11 @@ import {
   HStack,
   Image,
   VStack,
-  useColorMode
+  useColorMode,
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderThumb,
+  RangeSliderFilledTrack
 } from "@chakra-ui/react";
 import React from "react";
 import {
@@ -23,7 +27,8 @@ import {
   FieldValues,
   FormState,
   UseFormWatch,
-  UseFormSetValue
+  UseFormSetValue,
+  UseFormResetField
 } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
@@ -32,6 +37,7 @@ import { useScreenWidth } from "../util/width";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 import Counter from "./Counter";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 export interface TextInputBuilderProperties<T extends FieldValues> {
   nestIndex: number;
@@ -40,6 +46,7 @@ export interface TextInputBuilderProperties<T extends FieldValues> {
   formState: FormState<T>;
   watch: UseFormWatch<T>;
   setValue: UseFormSetValue<T>;
+  resetField: UseFormResetField<T>;
   id?: string;
 }
 
@@ -51,7 +58,6 @@ export default function TextInputBuilder({
   formState: { errors },
   watch,
   setValue,
-  //@ts-expect-error
   resetField,
   id
 }: TextInputBuilderProperties<FormAndMessageBuilder>) {
@@ -62,6 +68,13 @@ export default function TextInputBuilder({
   const [textInputStyle, setTextInputStyle] = React.useState(['1', '1', '1', '1', '1'])
   const isSmallScreen = !useScreenWidth(500);
   const colorMode = useColorMode().colorMode
+
+  function fixTextInput(k: number) {
+    setTimeout(() => {
+      if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)
+      if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.value`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
+    }, 1);
+  }
 
   return (
     <VStack align='flex-start' pl={3} pt={1} id={id}>
@@ -127,7 +140,7 @@ export default function TextInputBuilder({
                     name={`forms.${nestIndex}.modal.components.${k}.components.0.required`}
                     render={({ field }) => (
                       <Switch
-                        onChange={(e) => field.onChange(e.target.checked)}
+                        onChange={event => field.onChange(event)}
                         colorScheme='blurple'
                         isChecked={field.value === false ? false : true}
                       />
@@ -142,37 +155,39 @@ export default function TextInputBuilder({
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100 })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`}
-                onInput={(event) => {
-                  setTimeout(() => {
-                    //@ts-expect-error
-                    if(!event.target.value) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)
-                  }, 1);
-                }}
+                onInput={() => fixTextInput(k)}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
-              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'><Text>Preset Value</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (textInput?.value?.length !== 0 && (Number.isNaN(minimumLength) || Number.isNaN(maximumLength) || minimumLength < 0 || minimumLength > 1024 || maximumLength < 1 || maximumLength > 1024 || textInput?.value?.length || 0 < minimumLength || textInput?.value?.length || 0 > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{(!(minimumLength < 0 || maximumLength < 0) && (isNaN(minimumLength) || isNaN(maximumLength) || (minimumLength <= maximumLength && minimumLength >= 0 && minimumLength <= 1024 && maximumLength >= 1 && maximumLength <= 1024))) ? `Must be betweeen ${isNaN(minimumLength) ? 1 : (minimumLength < 1024 ? minimumLength : 1024)} and ${maximumLength <= 1024 ? maximumLength : 1024}` : 'Invalid minimum/maximum characters, fix these first'}</span></FormLabel>
+              <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].value`} display='flex' alignItems='flex-end'>
+                <Text>Preset Value</Text>
+                <span
+                  style={{
+                    display: 'inline',
+                    marginLeft: '7px',
+                    fontSize: '13px',
+                    color: (textInput?.value?.length !== 0 && (textInput?.value?.length < (Number.isNaN(minimumLength) ? 1 : minimumLength) || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'),
+                    fontFamily: 'Whitney Bold Italic' }}
+                >
+                  {`Must be betweeen ${(Number.isNaN(minimumLength) ? 1 : minimumLength)} and ${maximumLength}`}
+                </span>
+                </FormLabel>
               <Box
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
-                onInput={(event) => {
-                  setTimeout(() => {
-                    //@ts-expect-error
-                    if(!event.target.value) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
-                  }, 1);
-                }}
+                onInput={() => fixTextInput(k)}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
               <HStack marginBottom='8px' alignItems='flex-start'>
-                <Box width='100%'>
+                {/* <Box width='100%'>
                   <FormLabel display='flex' alignItems='flex-end'><Text>Minimum Characters</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: (minimumLength > maximumLength || minimumLength < 0 || minimumLength > 1024) ? (colorMode === 'dark' ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>Must be betweeen 1 and {maximumLength > 1024 ? 1024 : (maximumLength < 1 ? 0 : maximumLength || 1024)}</span></FormLabel>
                   <input
                     {...register(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, { min: 0, max: 1024 })}
                     id={`forms[${nestIndex}].modal.components[${k}].components[0].min_length`}
                     defaultValue={textInput.min_length}
                     //@ts-expect-error
-                    onChange={(event) => setValue(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, event.target.valueAsNumber || null)}
+                    onChange={(event) => event.target.valueAsNumber ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, event.target.valueAsNumber) : resetField(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`)}
                     type='number'
                     style={{ marginRight: "25px" }}
                   />
@@ -188,7 +203,25 @@ export default function TextInputBuilder({
                     type='number'
                     style={{ marginRight: "25px" }}
                   />
-                </Box>
+                </Box> */}
+                <VStack width='100%' alignItems='flex-start' gap={8}>
+                  <FormLabel>Minimum to Maximum Character Range</FormLabel>
+                  <RangeSlider
+                  
+                  width='99%' ml='.5%' defaultValue={[1, 1024]} min={1} max={1024} onChange={(value) => {
+                    setValue(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, value[0])
+                    if(value[0] === 1) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`)
+                    value[1] ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, 1)
+                    fixTextInput(k)
+                  }}>
+                    <RangeSliderTrack height='8px'>
+                      <RangeSliderFilledTrack bg='blurple'/>
+                    </RangeSliderTrack>
+                    <RangeSliderThumb {...register(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, { min: 1, max: 1024 })} border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={0}><Text mb={14}>{watch(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`) || '1'}</Text></RangeSliderThumb>
+                    <RangeSliderThumb border='1px solid lightgrey' borderRadius='3px' height='25px' width='10px' index={1}><Text mb={14}>{watch(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`)}</Text></RangeSliderThumb>
+                  </RangeSlider>
+                </VStack>
+
               </HStack>
             </Collapsible>
           </Box>

@@ -8,7 +8,8 @@ import {
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
-  UseFormGetValues
+  UseFormGetValues,
+  UseFormResetField
 } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
@@ -27,6 +28,7 @@ export interface FormBuilderProperties<T extends FieldValues> {
   watch: UseFormWatch<T>;
   setValue: UseFormSetValue<T>;
   getValues: UseFormGetValues<T>;
+  resetField: UseFormResetField<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
 }

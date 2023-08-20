@@ -9,7 +9,6 @@ import { Navigation } from '../components/Navigation';
 import { useModal } from '../components/SettingsModal';
 import { Editor } from '../components/Editor';
 import { useScreenWidth } from '../util/width';
-import { fixForm } from '../util/fixForm';
 import { debounce } from 'lodash';
 
 export enum OpenFormType {
@@ -55,7 +54,6 @@ export default function App() {
                   "label": "Example Text Input",
                   "style": 1,
                   "placeholder": "Write text here",
-                  "min_length": 0,
                   "max_length": 1024
                 }
               ]
@@ -73,35 +71,6 @@ export default function App() {
   const [displaySection, setDisplaySection] = useState(1);
   const SettingsModal = useModal();
   const isNotSmallScreen = useScreenWidth(500);
-
-  // Get access to the form values using watch
-  const formData = watch();
-
-  // Define the fixForm function
-  const fixFormFunction = () => {
-    fixForm(false, {
-      getValues,
-      resetField,
-      setValue,
-      toast: undefined as any,
-    });
-  };
-
-  const formWatch = useWatch({
-    control,
-    exact: true
-  });
-
-  useEffect(() => {
-    console.log("value changed");
-    fixForm(false, {
-      getValues,
-      resetField,
-      setValue,
-      formData,
-      toast: null as any
-    })
-  }, [formWatch]);
 
   return (
     <>

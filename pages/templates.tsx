@@ -161,47 +161,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
 
     const { colorMode } = useColorMode();
 
-    function FixForm(formData: FormAndMessageBuilder) {
-        formData.forms?.forEach((form, i) => {
-            if (formData.forms[i].button != null) formData.forms[i].button.style = Number(form.button.style);
-            form.modal.components.forEach((actionRow) => {
-                actionRow.components.forEach((e, index) => {
-                    Object.entries(e).map(([k, v]) => {
-                        if (v === null) return { key: k, value: v };
-                        //@ts-expect-error
-                        // eslint-disable-next-line eqeqeq
-                        if (v == '') e[k] = null;
-                        //@ts-expect-error
-                        else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
-                        return { key: k, value: v };
-                    });
-
-                    formData.forms[i].modal.components[index].components[index] = e;
-                })
-            })
-        });
-
-        const Message = formData.message;
-
-        if (Message?.embeds != null && Message.embeds.length > 0) {
-            Message.embeds.forEach((embed, i) => {
-                Object.entries(embed).forEach(([_key, v]) => {
-                    const k = _key as keyof Embed;
-                    if (typeof v == "string") {
-                        //@ts-expect-error
-                        if (v == null || v === "") formData.message.embeds[i][k] = null;
-                    } else if (typeof v == "object") {
-                        Object.entries(v).forEach(([_k, v2], i2) => {
-                            const k2 = _k as keyof EmbedAuthor | keyof EmbedFooter;
-                            //@ts-expect-error
-                            if (v2 == null || v2 === "") formData.message.embeds[i][k][k2] = null;
-                        })
-                    }
-                })
-            });
-        }
-    }
-
     async function postWebhook(message: string, name: string, description: string, username: string) {
         const fetched = await fetch(REQUEST_WEBHOOK, {
             body: JSON.stringify({

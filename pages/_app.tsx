@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <ColorModeCSS />
         <Component {...pageProps} />
-        <Modal {...{ isOpen, onClose }}>
+        {/* <Modal {...{ isOpen, onClose }}>
           <ModalContent>
             <ModalCloseButton />
             <ModalBody paddingY={6}>
@@ -69,7 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
               </Button>
             </ModalFooter>
           </ModalContent>
-        </Modal>
+        </Modal> */}
       </ChakraProvider >
     </>
   );

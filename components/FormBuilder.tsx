@@ -192,11 +192,7 @@ export default function FormBuilder({
                         type: 4,
                         label: '',
                         style: 1,
-                        placeholder: '',
-                        min_length: 0,
-                        max_length: 1024,
-                        value: '',
-                        required: true
+                        max_length: 1024
                       }
                     ]
                   }

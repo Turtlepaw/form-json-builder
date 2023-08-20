@@ -18,7 +18,7 @@ import {
   RangeSliderThumb,
   RangeSliderFilledTrack
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Controller,
   useFieldArray,
@@ -75,6 +75,8 @@ export default function TextInputBuilder({
       if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.value`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
     }, 1);
   }
+
+  useEffect(() => fixTextInput(0), [])
 
   return (
     <VStack align='flex-start' pl={3} pt={1} id={id}>

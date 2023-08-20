@@ -166,6 +166,7 @@ export default function TextInputBuilder({
                     display: 'inline',
                     marginLeft: '7px',
                     fontSize: '13px',
+                    //@ts-expect-error
                     color: (textInput?.value?.length !== 0 && (textInput?.value?.length < (Number.isNaN(minimumLength) ? 1 : minimumLength) || textInput?.value?.length > maximumLength)) ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'),
                     fontFamily: 'Whitney Bold Italic' }}
                 >
@@ -209,8 +210,10 @@ export default function TextInputBuilder({
                   <RangeSlider
                   
                   width='99%' ml='.5%' defaultValue={[1, 1024]} min={1} max={1024} onChange={(value) => {
+                    //@ts-expect-error
                     setValue(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`, value[0])
                     if(value[0] === 1) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`)
+                    //@ts-expect-error
                     value[1] ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, 1)
                     fixTextInput(k)
                   }}>

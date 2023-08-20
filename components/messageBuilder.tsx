@@ -1,17 +1,10 @@
 import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip, Select, useColorMode, SelectField } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useState } from "react";
 import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues, useFieldArray, UseFormSetError } from "react-hook-form";
 import { Embed, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
 import EmbedBuilder from "./EmbedBuilder";
 import Counter from "./Counter";
-
-export const MessageType = {
-    Content: "content",
-    Embed: "embed",
-    ContentAndEmbed: "both"
-};
 
 export interface Defaults {
     Message: string;
@@ -23,22 +16,18 @@ export interface MessageBuilderProperties<T extends FieldValues> {
     setValue: UseFormSetValue<T>;
     getValues: UseFormGetValues<T>;
     formState: FormState<T>;
-    setMessageType: React.Dispatch<React.SetStateAction<string>>;
-    messageType: string;
     Defaults: Defaults;
     openFormType: string;
     setOpenFormType: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function useMessageBuilder({
+export default function MessageBuilder({
     register,
     formState: { errors },
     setValue,
     getValues,
     //@ts-expect-error
     resetField,
-    setMessageType,
-    messageType,
     Defaults,
     //@ts-expect-error
     control,

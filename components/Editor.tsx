@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
-import MessageBuilder, { MessageType } from '../components/messageBuilder';
+import MessageBuilder from './MessageBuilder';
 import { SlashCommand, UserMention } from '../components/Mention';
 import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
@@ -53,16 +53,12 @@ export interface EditorProps<T extends FieldValues> {
   getValues: UseFormGetValues<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
-  messageType: string;
-  setMessageType: React.Dispatch<React.SetStateAction<string>>;
   reset: UseFormReset<T>;
   displaySection: boolean;
   resetField: UseFormResetField<T>;
 }
 
 export function Editor({
-  messageType,
-  setMessageType,
   displayForm,
   setDisplayForm,
   watch,
@@ -163,12 +159,6 @@ export function Editor({
       }
 
       if(!json.application_command) {
-        const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
-        const isMessage = json.message?.content != null
-        // Set the type of the message
-        if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
-        else if (isMessage) setMessageType(MessageType.Content);
-        else if (isEmbed) setMessageType(MessageType.Embed);
         // Check the number of button components and menu components
         // incase of a button modal and a select menu modal
         let buttons = 0;
@@ -303,7 +293,7 @@ export function Editor({
         <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
       <MessageBuilder
-        {...{ Defaults, getValues, resetField, control, formState, messageType, register, setMessageType, setValue, openFormType, setOpenFormType }}
+        {...{ Defaults, getValues, resetField, control, formState, register, setValue, openFormType, setOpenFormType }}
       />
       <FormBuilder
         {...{ control, register, getValues, setValue, resetField, formState, watch, displayForm, setDisplayForm }}

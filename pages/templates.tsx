@@ -266,7 +266,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                     const handleLoad = () => {
                         setLoading(true);
                         (() => {
-                            FixForm(form.data);
                             setTimeout(() => {
                                 downloadForm(form.data, form.name.split(" ").map((e: string) => e.toLowerCase()).join("_"))
                             }, 500);

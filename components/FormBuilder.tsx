@@ -38,7 +38,6 @@ export default function FormBuilder({
   register,
   setValue,
   getValues,
-  //@ts-expect-error
   resetField,
   formState,
   formState: { errors },

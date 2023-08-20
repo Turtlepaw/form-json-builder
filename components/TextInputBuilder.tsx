@@ -233,19 +233,20 @@ export default function TextInputBuilder({
 
         );
       })}
-      <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => append({
-        type: 1,
-        components: [
-          {
-            type: 4,
-            label: '',
-            style: 1,
-            min_length: 0,
-            max_length: 1024,
-            required: true
-          }
-        ]
-      })}>Add Text Input</Button>
+      <Button variant="primary" isDisabled={fields.length >= 5} onClick={() => {
+        append({
+          type: 1,
+          components: [
+            {
+              type: 4,
+              label: '',
+              style: 1,
+              max_length: 1024
+            }
+          ]
+        })
+        fixTextInput(fields.length)
+      }}>Add Text Input</Button>
     </VStack>
   );
 };

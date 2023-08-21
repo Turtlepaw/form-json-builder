@@ -56,6 +56,13 @@ export default function FormBuilder({
   const isSmallScreen = !useScreenWidth(500);
   const colorMode = useColorMode().colorMode
 
+  function fixButton(index: number) {
+    setTimeout(()=> {
+      //@ts-expect-error
+      if(typeof watch(`forms.${index}.button.style`) === 'string') setValue(`forms.${index}.button.style`, parseInt(watch(`forms.${index}.button.style`)))
+    },1)
+  }
+
   return (
     <Box width='100%' pb={2}>
       <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)}/></FormLabel>
@@ -139,6 +146,8 @@ export default function FormBuilder({
                           bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
                           _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
                           _hover={{ borderColor: 'transparent' }}
+                          //@ts-expect-error
+                          onInput={fixButton(index)}
                         >
                           <option value="1">Blurple</option>
                           <option value="2">Grey</option>

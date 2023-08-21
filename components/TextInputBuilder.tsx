@@ -73,6 +73,8 @@ export default function TextInputBuilder({
     setTimeout(() => {
       if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)
       if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.value`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
+      //@ts-expect-error
+      if(typeof watch(`forms.${nestIndex}.modal.components.${k}.components.0.style`) === 'string') setValue(`forms.${nestIndex}.modal.components.${k}.components.0.style`, parseInt(watch(`forms.${nestIndex}.modal.components.${k}.components.0.style`)))
     }, 1);
   }
 
@@ -114,6 +116,7 @@ export default function TextInputBuilder({
                     let newTextInputStyle = textInputStyle
                     newTextInputStyle[k] = value
                     setTextInputStyle(newTextInputStyle)
+                    fixTextInput(k)
                   }} value={textInputStyle[k]} id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
                     <Stack direction={isSmallScreen ? "column" : "row"}>
                       <Radio

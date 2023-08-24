@@ -4,9 +4,10 @@ import Collapsible from "./Collapsible";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { useEffect } from "react";
+import ErrorMessage from "./ErrorMessage";
 
 //@ts-expect-error
-export default function EmbedBuilder({ control, register, errors, setValue, getValues, resetField }) {
+export default function EmbedBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage }) {
   const { fields, remove: _remove, append } = useFieldArray({
       control,
       name: 'message.embeds'
@@ -19,34 +20,15 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
     }
   }
 
-  function fixMessage() {
-    const { content, embeds } = getValues('message')
-    for (let i = 0; i < embeds.length; i++) {
-      const { title, description, color, author, footer } = embeds[i]
-      if(!title) resetField(`message.embeds.${i}.title`)
-      if(!description) resetField(`message.embeds.${i}.description`)
-      if(typeof color === 'string' && color.length) { setValue(`message.embeds.${i}.color`, parseInt(color)) }
-      if (typeof color === 'string' && !color.length) { resetField(`message.embeds.${i}.color`) }
-      if(!author?.name && !author?.icon_url && !author?.url) {
-        resetField(`message.embeds.${i}.author`)
-      } else {
-        if(!author?.name) resetField(`message.embeds.${i}.author.name`)
-        if(!author?.icon_url) resetField(`message.embeds.${i}.author.icon_url`)
-        if(!author?.url) resetField(`message.embeds.${i}.author.url`)
-      }
-      if (!footer?.text && !footer?.icon_url) {
-        resetField(`message.embeds.${i}.footer`)
-      } else {
-        if(!footer?.text) resetField(`message.embeds.${i}.footer.text`)
-        if(!footer?.icon_url) resetField(`message.embeds.${i}.footer.icon_url`)
-      }
-    }
-  }
+
 
   return <>
       <FormLabel pb={2}>Embeds</FormLabel>
 
-      {Array.isArray(getValues('message.embeds')) ? fields.map((item, index) => <Collapsible key={item.id} name={`Embed ${index + 1}${getValues('message.embeds')[index]?.title && getValues('message.embeds')[index]?.title.match(/\S/) ? ` – ${getValues('message.embeds')[index]?.title}` : ''}`} deleteButton={<CloseButton onClick={() => remove(index)} />} style={{ padding: 0 }}>
+      {Array.isArray(getValues('message.embeds')) ? fields.map((item, index) =>
+      
+      <>
+      <Collapsible key={item.id} name={`Embed ${index + 1}${getValues('message.embeds')[index]?.title && getValues('message.embeds')[index]?.title.match(/\S/) ? ` – ${getValues('message.embeds')[index]?.title}` : ''}`} deleteButton={<CloseButton onClick={() => { remove(index); fixMessage(); }} />} style={{ padding: 0 }}>
           {/* Embed Title */}
           <FormLabel htmlFor={`message.embeds.${index}.title`}>Title</FormLabel>
           <textarea {...register(`message.embeds.${index}.title`, { minLength: 1, maxLength: 256, onChange: () => fixMessage()})} id={`message.embeds.${index}.title`} />
@@ -91,7 +73,10 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
               <input {...register(`message.embeds.${index}.footer.icon_url`, { minLength: 1, onChange: () => fixMessage() })} id={`message.embeds.${index}.footer.icon_url`} />
           </Collapsible >
 
-      </Collapsible >) : ''}
+      </Collapsible>
+      {!(getValues(`message.embeds.${index}.title`) || getValues(`message.embeds.${index}.description`) || getValues(`message.embeds.${index}.author.name`) || getValues(`message.embeds.${index}.footer.text`)) && <ErrorMessage>Embed {index+1} is empty</ErrorMessage>}
+      </>
+      ) : ''}
       <Button
           variant='primary'
           isDisabled={getValues('message.embeds')?.length >= 10}
@@ -99,6 +84,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
             append({
               color: 5793266
             })
+            
             setTimeout(() => {
               setValue(`message.embeds.${getValues('message.embeds')?.length - 1}`, {
                 color: 5793266

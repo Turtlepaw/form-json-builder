@@ -1,5 +1,5 @@
 import { Box, FormLabel, HStack, Radio, RadioGroup, Stack, Text, VStack, Tooltip, Select, useColorMode, SelectField } from "@chakra-ui/react";
-import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues, useFieldArray, UseFormSetError } from "react-hook-form";
+import { FieldValues, Control, UseFormRegister, FormState, UseFormWatch, UseFormSetValue, UseFormGetValues, useFieldArray } from "react-hook-form";
 import { Embed, FormAndMessageBuilder, SelectMenuBuilder } from "../util/types";
 import Collapsible from "./Collapsible";
 import ErrorMessage from "./ErrorMessage";
@@ -21,6 +21,7 @@ export interface MessageBuilderProperties<T extends FieldValues> {
     setOpenFormType: React.Dispatch<React.SetStateAction<string>>;
 }
 
+
 export default function MessageBuilder({
     register,
     formState: { errors },
@@ -28,13 +29,39 @@ export default function MessageBuilder({
     getValues,
     //@ts-expect-error
     resetField,
-    Defaults,
     //@ts-expect-error
     control,
     openFormType,
     setOpenFormType
 }: MessageBuilderProperties<FormAndMessageBuilder>) {
     const colorMode = useColorMode().colorMode
+    
+    function fixMessage() {
+        const message = getValues('message'); if(!message) return;
+        const { content, embeds } = message
+        if(!content && !embeds?.length) setTimeout(() => resetField('message'), 1); 
+        if(!content) resetField(`message.content`)
+        if(embeds?.length) for (let i = 0; i < embeds.length; i++) {
+            const { title, description, color, author, footer } = embeds[i]
+            if(!title) resetField(`message.embeds.${i}.title`)
+            if(!description) resetField(`message.embeds.${i}.description`)
+            if(typeof color === 'string' && color.length) { setValue(`message.embeds.${i}.color`, parseInt(color)) }
+            if (typeof color === 'string' && !color.length) { resetField(`message.embeds.${i}.color`) }
+            if(!author?.name && !author?.icon_url && !author?.url) {
+            resetField(`message.embeds.${i}.author`)
+            } else {
+            if(!author?.name) resetField(`message.embeds.${i}.author.name`)
+            if(!author?.icon_url) resetField(`message.embeds.${i}.author.icon_url`)
+            if(!author?.url) resetField(`message.embeds.${i}.author.url`)
+            }
+            if (!footer?.text && !footer?.icon_url) {
+            resetField(`message.embeds.${i}.footer`)
+            } else {
+            if(!footer?.text) resetField(`message.embeds.${i}.footer.text`)
+            if(!footer?.icon_url) resetField(`message.embeds.${i}.footer.icon_url`)
+            }
+        }
+    }
 
     return (
         <>
@@ -56,12 +83,12 @@ export default function MessageBuilder({
                     <option value="select_menu">Select Menu</option>
                 </Select>
             </HStack>
-            <Collapsible variant='large' name={(openFormType === 'button' || openFormType === 'select_menu')? 'Message' : 'Slash Command'}>
+            <Collapsible variant='large' name={(openFormType === 'button' || openFormType === 'select_menu') ? 'Message' : 'Slash Command'}>
             {(openFormType === 'button' || openFormType === 'select_menu') &&
                 <VStack align='flex-start' width='100%' marginBottom="8px">
                     <FormLabel htmlFor="message.content">Message</FormLabel>
-                    <textarea style={{ height: '99px' }} {...register('message.content')} id='message.content' />
-                    <EmbedBuilder {...{ control, register, errors, setValue, getValues, resetField }}/>
+                    <textarea style={{ height: '99px' }} {...register('message.content', { onChange: () => fixMessage() })} id='message.content' />
+                    <EmbedBuilder {...{ control, register, errors, setValue, getValues, resetField, fixMessage }}/>
                     {openFormType === 'select_menu' && <Box width='100%'>
                         <FormLabel htmlFor="select_menu_placeholder">Select Menu Placeholder</FormLabel>
                         {/* @ts-expect-error */}
@@ -87,6 +114,6 @@ export default function MessageBuilder({
                 <ErrorMessage error={errors?.application_command?.description}/>
                 </>
             }</Collapsible>
-            </>
+        </>
     );
 }

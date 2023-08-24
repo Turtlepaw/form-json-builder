@@ -239,7 +239,9 @@ export function Editor({
             resetField('application_command');
             resetField('select_menu_placeholder');
             resetField('message')
-            setTimeout(() => setValue('message', { content: 'Fill out the form below' }), 0.0001)
+            setTimeout(() => {
+              setValue('message', { content: 'Fill out the form below' })
+            }, 1)
 
             getValues("forms").forEach((form, i) => {
                 resetField(`forms.${i}.select_menu_option`)
@@ -308,7 +310,13 @@ export function Editor({
           <HStack alignItems='flex-start'>
             <Button
               variant='success'
-              isDisabled={(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5) ))}
+              //@ts-expect-error
+              isDisabled={(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5) ) || (getValues('message.embeds')?.length && (() => {
+                //@ts-expect-error
+                for (const { title, description, author, footer } of getValues('message.embeds')) {
+                  if(!(title || description || author?.name || footer?.text)) return true;
+                }
+              })() ))}
               onClick={() => {
                 handleLoad();
                 downloadForm();
@@ -320,7 +328,12 @@ export function Editor({
               {loading && <Spinner size="sm" />}
             </Button>
           </HStack>
-          {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5))) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
+          {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)) || (getValues('message.embeds')?.length && (() => {
+                //@ts-expect-error
+                for (const { title, description, author, footer } of getValues('message.embeds')) {
+                  if(!(title || description || author?.name || footer?.text)) return true;
+                }
+              })() )) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>
         <Box>
           Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.

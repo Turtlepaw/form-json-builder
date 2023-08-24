@@ -59,6 +59,8 @@ export default function TextInputBuilder({
   watch,
   setValue,
   resetField,
+  //@ts-expect-error
+  fixMessage,
   id
 }: TextInputBuilderProperties<FormAndMessageBuilder>) {
   const { fields, remove, append } = useFieldArray({
@@ -93,7 +95,7 @@ export default function TextInputBuilder({
             <Collapsible name={`Text Input ${k + 1}${textInput?.label && textInput?.label.match(/\S/) ? ` – ${textInput?.label}` : ''}`} deleteButton={fields.length > 1 ? <CloseButton onClick={() => remove(k)} /> : null} style={{ padding: 0 }}>
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: textInput?.label?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{textInput?.label?.length || 0}/45</span></FormLabel>
               <input
-                {...register(`forms.${nestIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45 })}
+                {...register(`forms.${nestIndex}.modal.components.${k}.components.0.label`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.label`}
                 defaultValue={textInput.label}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
@@ -117,6 +119,7 @@ export default function TextInputBuilder({
                     newTextInputStyle[k] = value
                     setTextInputStyle(newTextInputStyle)
                     fixTextInput(k)
+                    fixMessage()
                   }} value={textInputStyle[k]} id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
                     <Stack direction={isSmallScreen ? "column" : "row"}>
                       <Radio
@@ -145,7 +148,7 @@ export default function TextInputBuilder({
                     name={`forms.${nestIndex}.modal.components.${k}.components.0.required`}
                     render={({ field }) => (
                       <Switch
-                        onChange={event => field.onChange(event)}
+                        onChange={event => { field.onChange(event); fixMessage() }}
                         colorScheme='blurple'
                         isChecked={field.value === false ? false : true}
                       />
@@ -158,7 +161,7 @@ export default function TextInputBuilder({
               <Counter count={textInput?.placeholder?.length || 0} max={100}/>  
               </FormLabel>
               <input
-                {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100 })}
+                {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage() })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`}
                 onInput={() => fixTextInput(k)}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
@@ -180,7 +183,7 @@ export default function TextInputBuilder({
                 </FormLabel>
               <Box
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
-                {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength })}
+                {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage() })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
                 onInput={() => fixTextInput(k)}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
@@ -221,6 +224,7 @@ export default function TextInputBuilder({
                     //@ts-expect-error
                     value[1] ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, 1)
                     fixTextInput(k)
+                    fixMessage()
                   }}>
                     <RangeSliderTrack height='8px'>
                       <RangeSliderFilledTrack bg='blurple'/>
@@ -249,6 +253,7 @@ export default function TextInputBuilder({
           ]
         })
         fixTextInput(fields.length)
+        fixMessage()
       }}>Add Text Input</Button>
     </VStack>
   );

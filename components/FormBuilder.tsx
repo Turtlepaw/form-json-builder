@@ -44,6 +44,8 @@ export default function FormBuilder({
   watch,
   displayForm,
   setDisplayForm,
+  //@ts-expect-error
+  fixMessage
   
 }: FormBuilderProperties<FormAndMessageBuilder>) {
   const { fields, append, remove } = useFieldArray({
@@ -84,7 +86,7 @@ export default function FormBuilder({
                   </Tooltip>
                 </FormLabel>
                 <input
-                  {...register(`forms.${index}.webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/ })}
+                  {...register(`forms.${index}.webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/, onChange: () => fixMessage() })}
                   id={`forms[${index}].webhook_url`}
                   onFocus={() => webhookUrlSetFocused(true)}
                   onBlur={() => webhookUrlSetFocused(false)}
@@ -102,7 +104,7 @@ export default function FormBuilder({
                           <Counter count={getValues('forms')[index].select_menu_option?.label?.length} max={100} />
                         </FormLabel>
                         <input
-                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100 })}
+                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100, onChange: () => fixMessage() })}
                           id={`forms[${index}].select_menu_option.label`}
                           placeholder='Form'
                         />
@@ -114,7 +116,7 @@ export default function FormBuilder({
                           <Counter count={getValues('forms')[index].select_menu_option?.description?.length} max={100}></Counter>
                         </FormLabel>
                         <input
-                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100 })}
+                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100, onChange: () => fixMessage() })}
                           id={`forms[${index}].select_menu_option.description`}
                         />
                         <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.description}/>
@@ -129,7 +131,7 @@ export default function FormBuilder({
                           <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>
                         </FormLabel>
                         <input
-                          {...register(`forms.${index}.button.label`, { required: true, maxLength: 80 })}
+                          {...register(`forms.${index}.button.label`, { required: true, maxLength: 80, onChange: () => fixMessage() })}
                           id={`forms[${index}].button.label`}
                           placeholder='Open Form'
                         />
@@ -138,7 +140,7 @@ export default function FormBuilder({
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
                         <Select
-                          {...register(`forms.${index}.button.style`)}
+                          {...register(`forms.${index}.button.style`, { onChange: () => fixMessage() })}
                           id={`forms[${index}].button.style`}
                           borderWidth='2px'
                           borderColor='transparent'
@@ -164,7 +166,7 @@ export default function FormBuilder({
                   <Counter count={getValues('forms')[index]?.modal.title?.length} max={45} />
                 </FormLabel>
                 <input
-                  {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45 })}
+                  {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
                   id={`forms[${index}].modal.title`}
                   style={{ marginBottom: '8px' }}
                 />
@@ -172,7 +174,7 @@ export default function FormBuilder({
               </Collapsible >
               <hr/>
               <Collapsible name="Text Inputs">
-                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField }} />
+                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
               </Collapsible>
             </Collapsible >
           );
@@ -208,6 +210,7 @@ export default function FormBuilder({
                 ]
               }
             })
+            fixMessage()
           }}
         >
           Add Form

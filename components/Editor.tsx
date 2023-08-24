@@ -276,6 +276,33 @@ export function Editor({
     }
   }
 
+  function fixMessage() {
+    const message = getValues('message'); if(!message) return;
+    const { content, embeds } = message
+    if(!content && !embeds?.length) setTimeout(() => resetField('message'), 1); 
+    if(!content) resetField(`message.content`)
+    if(embeds?.length) for (let i = 0; i < embeds.length; i++) {
+        const { title, description, color, author, footer } = embeds[i]
+        if(!title) resetField(`message.embeds.${i}.title`)
+        if(!description) resetField(`message.embeds.${i}.description`)
+        if(typeof color === 'string' && color.length) { setValue(`message.embeds.${i}.color`, parseInt(color)) }
+        if (typeof color === 'string' && !color.length) { resetField(`message.embeds.${i}.color`) }
+        if(!author?.name && !author?.icon_url && !author?.url) {
+        resetField(`message.embeds.${i}.author`)
+        } else {
+        if(!author?.name) resetField(`message.embeds.${i}.author.name`)
+        if(!author?.icon_url) resetField(`message.embeds.${i}.author.icon_url`)
+        if(!author?.url) resetField(`message.embeds.${i}.author.url`)
+        }
+        if (!footer?.text && !footer?.icon_url) {
+        resetField(`message.embeds.${i}.footer`)
+        } else {
+        if(!footer?.text) resetField(`message.embeds.${i}.footer.text`)
+        if(!footer?.icon_url) resetField(`message.embeds.${i}.footer.icon_url`)
+        }
+    }
+}
+
   return (
     <VStack align='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'flex' : 'none'}>
       <HStack>
@@ -295,10 +322,10 @@ export function Editor({
         <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
       <MessageBuilder
-        {...{ Defaults, getValues, resetField, control, formState, register, setValue, openFormType, setOpenFormType }}
+        {...{ Defaults, getValues, resetField, control, formState, register, setValue, openFormType, setOpenFormType, fixMessage }}
       />
       <FormBuilder
-        {...{ control, register, getValues, setValue, resetField, formState, watch, displayForm, setDisplayForm }}
+        {...{ control, register, getValues, setValue, resetField, formState, watch, displayForm, setDisplayForm, fixMessage }}
       />
       <VStack width='100%' align='flex-start'>
         <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>

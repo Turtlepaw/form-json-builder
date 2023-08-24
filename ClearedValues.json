@@ -1,20 +1,6 @@
 {
   "message": {
-    "content": "",
-    "embeds": [{
-      "color": "",
-      "title": "",
-      "description": "",
-      "author": {
-        "name": "",
-        "url": "",
-        "icon_url": ""
-      },
-      "footer": {
-        "text": "",
-        "icon_url": ""
-      }
-    }]
+    "content": ""
   },
   "forms": [
     {
@@ -33,11 +19,7 @@
                 "type": 4,
                 "label": "",
                 "style": 1,
-                "placeholder": "",
-                "value": "",
-                "min_length": 0,
-                "max_length": 1024,
-                "required": true
+                "max_length": 1024
               }
             ]
           }

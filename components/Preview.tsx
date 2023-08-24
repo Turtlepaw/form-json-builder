@@ -80,7 +80,7 @@ function Preview({
     return (
         <Box overflowY='scroll' p='16px 16px 16px 12px' maxHeight='calc(100vh - 48px);' display={displaySection ? 'block' : 'none'}>
             <VStack align='start' spacing={3}>
-                {(forms[0].button || forms[0].select_menu_option) && <PreviewStep number={1} title={`A message with ${forms[0].button ? 'buttons' : 'a select menu'} to open forms is sent to a channel`}>
+                {(forms?.[0].button || forms?.[0].select_menu_option) && <PreviewStep number={1} title={`A message with ${forms?.[0].button ? 'buttons' : 'a select menu'} to open forms is sent to a channel`}>
                     <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <FormProfile {...{
                             avatar: "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096",
@@ -119,10 +119,10 @@ function Preview({
                                  {message?.content && <Text fontFamily='Whitney' whiteSpace='pre-wrap'>{message.content}</Text>}
                                  {MessageEmbed}
                                 <Box p='4px 0'>
-                                    {forms[0].button && forms.map((form, index) => (
+                                    {forms?.[0].button && forms.map((form, index) => (
                                         <Button key={Math.random()} onClick={() => setDisplayForm(index)} height='32px' fontSize='14px' paddingBlock={0} paddingInline={0} padding='2px 16px' m='4px 8px 4px 0' variant={form.button?.style == 1 ? 'primary' : (form.button?.style == 2 ? 'secondary' : (form.button?.style == 3 ? 'success' : 'danger'))}>{form.button?.label}</Button>
                                     ))}
-                                    {forms[0].select_menu_option &&
+                                    {forms?.[0].select_menu_option &&
                                         <Box>
                                             <Box width={
                                                 //@ts-expect-error
@@ -152,7 +152,7 @@ function Preview({
                 </PreviewStep>}
 
 
-                <PreviewStep number={(forms[0].button || forms[0].select_menu_option) ? 2 : 1} title={(forms[0].button || forms[0].select_menu_option) ? 'User opens a form' : `User opens the form with ${application_command?.name ? `/${application_command?.name}` : 'the slash command'}`}>
+                <PreviewStep number={(forms?.[0].button || forms?.[0].select_menu_option) ? 2 : 1} title={(forms?.[0].button || forms?.[0].select_menu_option) ? 'User opens a form' : `User opens the form with ${application_command?.name ? `/${application_command?.name}` : 'the slash command'}`}>
                     <Box display='flex' bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <Box border={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} borderRadius='3px' width='440px' height='fit-content' maxHeight='720px'> {/* overflowY='scroll' */}
                             <Box display='flex' height='fit-content' justifyContent='space-between' alignItems='center' p='16px'>
@@ -195,7 +195,7 @@ function Preview({
                     </Box>
                 </PreviewStep>
 
-                <PreviewStep number={(forms[0].button || forms[0].select_menu_option) ? 3 : 2} title='The submission is sent to a channel'>
+                <PreviewStep number={(forms?.[0].button || forms?.[0].select_menu_option) ? 3 : 2} title='The submission is sent to a channel'>
                     <Box bg={colorMode === 'dark' ? 'grey.dark' : 'white'} borderRadius='8px' p={4}>
                         <Box display='flex'>
                             <Image alt='Default Avatar' _hover={{ cursor: "pointer" }} src='https://cdn.discordapp.com/embed/avatars/1.png' width='40px' height='40px' clipPath='circle(50%)' mt='5px' mr='16px' />

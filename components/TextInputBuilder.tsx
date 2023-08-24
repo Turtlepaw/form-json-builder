@@ -71,16 +71,7 @@ export default function TextInputBuilder({
   const isSmallScreen = !useScreenWidth(500);
   const colorMode = useColorMode().colorMode
 
-  function fixTextInput(k: number) {
-    setTimeout(() => {
-      if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`)
-      if (!watch(`forms.${nestIndex}.modal.components.${k}.components.0.value`)) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.value`)
-      //@ts-expect-error
-      if(typeof watch(`forms.${nestIndex}.modal.components.${k}.components.0.style`) === 'string') setValue(`forms.${nestIndex}.modal.components.${k}.components.0.style`, parseInt(watch(`forms.${nestIndex}.modal.components.${k}.components.0.style`)))
-    }, 1);
-  }
-
-  useEffect(() => fixTextInput(0), [])
+  useEffect(() => fixMessage(), [])
 
   return (
     <VStack align='flex-start' pl={3} pt={1} id={id}>
@@ -118,7 +109,6 @@ export default function TextInputBuilder({
                     let newTextInputStyle = textInputStyle
                     newTextInputStyle[k] = value
                     setTextInputStyle(newTextInputStyle)
-                    fixTextInput(k)
                     fixMessage()
                   }} value={textInputStyle[k]} id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
                     <Stack direction={isSmallScreen ? "column" : "row"}>
@@ -163,7 +153,6 @@ export default function TextInputBuilder({
               <input
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`, { maxLength: 100, onChange: () => fixMessage() })}
                 id={`forms.${nestIndex}.modal.components.${k}.components.0.placeholder`}
-                onInput={() => fixTextInput(k)}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
 
@@ -185,7 +174,6 @@ export default function TextInputBuilder({
                 as={textInputStyle[k] === '1' ? 'input' : 'textarea'}
                 {...register(`forms.${nestIndex}.modal.components.${k}.components.0.value`, { minLength: minimumLength, maxLength: maximumLength, onChange: () => fixMessage() })}
                 id={`forms[${nestIndex}].modal.components[${k}].components[0].value`}
-                onInput={() => fixTextInput(k)}
                 style={{ marginRight: "25px", marginBottom: '8px' }}
               />
               <HStack marginBottom='8px' alignItems='flex-start'>
@@ -223,7 +211,6 @@ export default function TextInputBuilder({
                     if(value[0] === 1) resetField(`forms.${nestIndex}.modal.components.${k}.components.0.min_length`)
                     //@ts-expect-error
                     value[1] ? setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, value[1]) : setValue(`forms.${nestIndex}.modal.components.${k}.components.0.max_length`, 1)
-                    fixTextInput(k)
                     fixMessage()
                   }}>
                     <RangeSliderTrack height='8px'>
@@ -252,7 +239,6 @@ export default function TextInputBuilder({
             }
           ]
         })
-        fixTextInput(fields.length)
         fixMessage()
       }}>Add Text Input</Button>
     </VStack>

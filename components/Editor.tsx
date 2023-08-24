@@ -301,6 +301,19 @@ export function Editor({
         if(!footer?.icon_url) resetField(`message.embeds.${i}.footer.icon_url`)
         }
     }
+
+    // Also fix text inputs
+    if(watch('forms')?.length) for (let i = 0; i < watch('forms')?.length; i++) {
+      for (let ii = 0; ii < watch(`forms.${i}.modal.components`).length; ii++) {
+        setTimeout(() => {
+          if (!watch(`forms.${i}.modal.components.${ii}.components.0.placeholder`)) resetField(`forms.${i}.modal.components.${ii}.components.0.placeholder`)
+          if (!watch(`forms.${i}.modal.components.${ii}.components.0.value`)) resetField(`forms.${i}.modal.components.${ii}.components.0.value`)
+          //@ts-expect-error
+          if(typeof watch(`forms.${ii}.modal.components.${i}.components.0.style`) === 'string') setValue(`forms.${i}.modal.components.${ii}.components.0.style`, parseInt(watch(`forms.${i}.modal.components.${ii}.components.0.style`)))
+        }, 1);
+      }
+    }
+
 }
 
   return (

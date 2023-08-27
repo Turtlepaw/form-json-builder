@@ -85,7 +85,7 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
           </Collapsible >
 
       </Collapsible>
-      {!(getValues(`message.embeds.${index}.title`) || getValues(`message.embeds.${index}.description`) || getValues(`message.embeds.${index}.author.name`) || getValues(`message.embeds.${index}.footer.text`)) && <ErrorMessage>Embed {index+1} is empty</ErrorMessage>}
+      {!(getValues(`message.embeds.${index}.title`) || getValues(`message.embeds.${index}.description`) || getValues(`message.embeds.${index}.author.name`) || getValues(`message.embeds.${index}.image.url`) || getValues(`message.embeds.${index}.footer.text`)) && <ErrorMessage>Embed {index+1} is empty</ErrorMessage>}
       </>
       ) : ''}
       <Button

@@ -371,8 +371,8 @@ export function Editor({
           </HStack>
           {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)) || (getValues('message.embeds')?.length && (() => {
                 //@ts-expect-error
-                for (const { title, description, author, footer } of getValues('message.embeds')) {
-                  if(!(title || description || author?.name || footer?.text)) return true;
+                for (const { title, description, author, image, footer } of getValues('message.embeds')) {
+                  if(!(title || description || author?.name || image?.url || footer?.text)) return true;
                 }
               })() )) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>

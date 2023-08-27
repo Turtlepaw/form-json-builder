@@ -12,11 +12,12 @@ export interface EmbedFooter {
 }
 
 export interface Embed {
-    title: string;
-    description: string;
-    author: EmbedAuthor;
-    footer: EmbedFooter;
-    color: ColorString;
+    author?: EmbedAuthor;
+    title?: string;
+    description?: string;
+    color?: ColorString;
+    image?: { url: string };
+    footer?: EmbedFooter;
 }
 
 export interface FormMessageBuilder {

@@ -43,27 +43,30 @@ function Preview({
     });
 
     if (displayForm < 0) displayForm = 0;
-
+    
     const MessageEmbed = <>
-        {message?.embeds && message.embeds.map(embed => <Box key={Math.random()} whiteSpace='pre-wrap' borderLeftColor={embed?.color ? `#${embed?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(embed?.color) ? message?.embeds?.[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
+        {message?.embeds && message.embeds.map(embed => <Box key={Math.random()} borderLeftColor={embed?.color ? `#${embed?.color.toString(16)}` : '#202225'} borderLeftWidth='4px' mt="0.2rem" bg={colorMode === 'dark' ? '#2f3136' : '#f2f3f5'} borderLeft={`4px solid ${!isEmpty(embed?.color) ? message?.embeds?.[0]?.color : (colorMode === 'dark' ? "#202225" : "#e3e5e8")}`} maxWidth='520px' borderRadius='4px'>
             <Box padding='0.5rem 1rem 1rem 0.75rem'>
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */} {/*@ts-expect-error*/}
                 <Link href={isEmpty(embed?.author?.url) ? undefined : embed.author.url} style={{ cursor: isEmpty(embed?.author?.url) ? 'default' : 'pointer' }} _hover={isEmpty(embed?.author?.url) ? { textDecoration: 'none' } : { textDecoration: 'underline' }} >
                     <Box display='flex' alignItems='center' m='2px 0px 0px'>
+                        {/*@ts-expect-error*/}
                         {!isEmpty(embed?.author?.icon_url) && <Image alt='Author Image' src={embed.author.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
-                        <Box fontSize='0.875rem' fontWeight='500'>{embed?.author?.name}</Box>
+                        <Box fontSize='0.875rem' fontWeight='500' whiteSpace='pre-wrap'>{embed?.author?.name}</Box>
                     </Box>
                 </Link>
                 <Box>
-                    <Text fontFamily='Whitney Bold' fontSize='0.975rem' mt='3px'>
+                    <Text fontFamily='Whitney Bold' fontSize='0.975rem' mt='3px' whiteSpace='pre-wrap'>
                         {embed?.title}
                     </Text>
-                    <Text fontSize='0.875rem' color='#c5c5d3'>
+                    <Text fontSize='0.875rem' color='#c5c5d3' whiteSpace='pre-wrap'>
                         {embed?.description}
                     </Text>
                 </Box>
+                {!isEmpty(embed?.image?.url) && <Image alt='Image' src={embed?.image?.url} style={{ maxWidth: '400px', maxHeight: '300px', borderRadius: '4px', marginTop: '16px' }} />}
                 {!isEmpty(embed?.footer?.text) && (
-                    <Box display='flex' alignItems='center' mt='8px'>
+                    <Box display='flex' alignItems='center' mt='8px' whiteSpace='pre-wrap'>
+                        {/*@ts-expect-error*/}
                         {!isEmpty(embed?.footer?.icon_url) && <Image alt='Footer Icon' src={embed.footer.icon_url} style={{ width: '24px', height: '24px', borderRadius: '50%', marginRight: '8px' }} />}
                         <Text fontFamily='Whitney Bold' fontSize='0.80rem' color='#fbfbfb'>{embed?.footer?.text}</Text>
                     </Box>

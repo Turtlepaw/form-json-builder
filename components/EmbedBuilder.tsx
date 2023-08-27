@@ -1,10 +1,11 @@
-import { FormLabel, Tooltip, Text, Box, Button, CloseButton } from "@chakra-ui/react";
+import { FormLabel, Tooltip, Text, Box, Button, CloseButton, HStack, Stack } from "@chakra-ui/react";
 import { useFieldArray } from "react-hook-form";
 import Collapsible from "./Collapsible";
 import { IoInformationCircle } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { useEffect } from "react";
 import ErrorMessage from "./ErrorMessage";
+import { useScreenWidth } from "../util/width";
 
 //@ts-expect-error
 export default function EmbedBuilder({ control, register, errors, setValue, getValues, resetField, fixMessage }) {
@@ -12,6 +13,8 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
       control,
       name: 'message.embeds'
   });
+
+  const isSmallScreen = !useScreenWidth(500);
 
   function remove(index: number) {
     _remove(index)
@@ -29,6 +32,25 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
       
       <>
       <Collapsible key={item.id} name={`Embed ${index + 1}${getValues('message.embeds')[index]?.title && getValues('message.embeds')[index]?.title.match(/\S/) ? ` – ${getValues('message.embeds')[index]?.title}` : ''}`} deleteButton={<CloseButton onClick={() => { remove(index); fixMessage(); }} />} style={{ padding: 0 }}>
+          {/* Embed Author */}
+          <Collapsible name="Author">
+            {/* Embed Author Name */}
+            <FormLabel htmlFor={`message.embeds.${index}.author.name`}>Author Name</FormLabel>
+            <textarea {...register(`message.embeds.${index}.author.name`, { minLength: 1, maxLength: 256, onChange: () => fixMessage() })} id={`message.embeds.${index}.author.name`} />
+            <Stack direction={isSmallScreen ? "column" : "row"}>
+              {/* Embed Author Icon URL */}
+              <Box width='100%'>
+              <FormLabel htmlFor={`message.embeds.${index}.author.icon_url`}>Author Icon URL</FormLabel>
+              <input {...register(`message.embeds.${index}.author.icon_url`, { minLength: 1, onChange: () => fixMessage() })} id={`message.embeds.${index}.author.icon_url`} />
+              </Box>
+              {/* Embed Author URL */}
+              <Box width='100%'>
+                <FormLabel htmlFor={`message.embeds.${index}.author.url`}>Author URL</FormLabel>
+                <input {...register(`message.embeds.${index}.author.url`, { minLength: 1, onChange: () => fixMessage() })} id={`message.embeds.${index}.author.url`} />
+              </Box>
+            </Stack>
+          </Collapsible >
+          <hr/>
           {/* Embed Title */}
           <FormLabel htmlFor={`message.embeds.${index}.title`}>Title</FormLabel>
           <textarea {...register(`message.embeds.${index}.title`, { minLength: 1, maxLength: 256, onChange: () => fixMessage()})} id={`message.embeds.${index}.title`} />
@@ -41,27 +63,16 @@ export default function EmbedBuilder({ control, register, errors, setValue, getV
               <Tooltip hasArrow label={'The color has to be in the "decimal" color format.'} placement='right' shouldWrapChildren bg="#181414">
                   <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
               </Tooltip>
-          </FormLabel>
-
-          
+          </FormLabel>        
           <input
               {...register(`message.embeds.${index}.color`, { onChange: () => fixMessage() })}
               type="number"
               id={`message.embeds.${index}.color`}
           />
           <hr/>
-          {/* Embed Author */}
-          <Collapsible name="Author">
-              {/* Embed Author Name */}
-              <FormLabel htmlFor={`message.embeds.${index}.author.name`}>Author Name</FormLabel>
-              <textarea {...register(`message.embeds.${index}.author.name`, { minLength: 1, maxLength: 256, onChange: () => fixMessage() })} id={`message.embeds.${index}.author.name`} />
-              {/* Embed Author Icon URL */}
-              <FormLabel htmlFor={`message.embeds.${index}.author.icon_url`}>Author Image URL</FormLabel>
-              <input {...register(`message.embeds.${index}.author.icon_url`, { minLength: 1, onChange: () => fixMessage() })} id={`message.embeds.${index}.author.icon_url`} />
-              {/* Embed Author URL */}
-              <FormLabel htmlFor={`message.embeds.${index}.author.url`}>Author URL</FormLabel>
-              <input {...register(`message.embeds.${index}.author.url`, { minLength: 1, onChange: () => fixMessage() })} id={`message.embeds.${index}.author.url`} />
-          </Collapsible >
+          {/* Embed Image */}
+          <FormLabel htmlFor={`message.embeds.${index}.image.url`}>Image URL</FormLabel>
+          <input {...register(`message.embeds.${index}.image.url`, { minLength: 1, onChange: () => fixMessage() })} id={`message.embeds.${index}.image.url`} />
           <hr/>
           {/* Embed Footer */}
           < Collapsible name="Footer">

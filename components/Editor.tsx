@@ -282,11 +282,7 @@ export function Editor({
     if(!content && !embeds?.length) setTimeout(() => resetField('message'), 1); 
     if(!content) resetField(`message.content`)
     if(embeds?.length) for (let i = 0; i < embeds.length; i++) {
-        const { title, description, color, author, footer } = embeds[i]
-        if(!title) resetField(`message.embeds.${i}.title`)
-        if(!description) resetField(`message.embeds.${i}.description`)
-        if(typeof color === 'string' && color.length) { setValue(`message.embeds.${i}.color`, parseInt(color)) }
-        if (typeof color === 'string' && !color.length) { resetField(`message.embeds.${i}.color`) }
+        const { title, description, color, image, author, footer } = embeds[i]
         if(!author?.name && !author?.icon_url && !author?.url) {
         resetField(`message.embeds.${i}.author`)
         } else {
@@ -294,6 +290,11 @@ export function Editor({
         if(!author?.icon_url) resetField(`message.embeds.${i}.author.icon_url`)
         if(!author?.url) resetField(`message.embeds.${i}.author.url`)
         }
+        if(!title) resetField(`message.embeds.${i}.title`)
+        if(!description) resetField(`message.embeds.${i}.description`)
+        if(typeof color === 'string' && color.length) { setValue(`message.embeds.${i}.color`, parseInt(color)) }
+        if (typeof color === 'string' && !color.length) { resetField(`message.embeds.${i}.color`) }
+        if (!image?.url) resetField(`message.embeds.${i}.image`)
         if (!footer?.text && !footer?.icon_url) {
         resetField(`message.embeds.${i}.footer`)
         } else {

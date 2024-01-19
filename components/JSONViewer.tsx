@@ -8,27 +8,26 @@ import Highlight from "react-highlight"
 export interface JSONViewerProperties {
   downloadForm: () => void;
   children: string;
-  animationsEnabled: boolean;
   getValues: UseFormGetValues<FormAndMessageBuilder>;
 }
 
 export const DOWNLOAD_SPINNER_TIME = 600;
 
-function JSONViewer({ children, downloadForm: downloadFile, animationsEnabled, getValues }: JSONViewerProperties) {
+function JSONViewer({ children, downloadForm: downloadFile, getValues }: JSONViewerProperties) {
   const [show, setShow] = useState(false)
   const { colorMode } = useColorMode();
   const handleToggle = () => setShow(!show)
   const [loading, setLoading] = useState(false);
   const downloadForm = () => {
-    if (animationsEnabled) setLoading(true);
+    setLoading(true);
     downloadFile();
-    if (animationsEnabled) setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
+    setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME)
   }
   const fileName = `${createName({ getValues })}.json`
 
   return (
     <Box style={{ border: `1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`, borderRadius: '4px', background: colorMode === 'dark' ? '#2f3136' : '#f2f3f5', color: colorMode === 'dark' ? '#e0e1e5' : '#4f5660', width: '100%' }}>
-      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: colorMode == "dark" ? "#2f3136" : '#f2f3f5', borderRadius: '4px', padding: '8px' }} in={show}>
+      <Collapse startingHeight={147} style={{ overflow: 'scroll', backgroundColor: colorMode == "dark" ? "#2f3136" : '#f2f3f5', borderRadius: '4px', padding: '8px', fontSize: '14px' }} in={show}>
         <Highlight className='json'>{children}</Highlight>
       </Collapse>
       <Box display='flex' alignItems='center' justifyContent='space-between' padding='4px 12px 4px 4px' borderTop={`1px solid ${colorMode === 'dark' ? '#292b2f' : '#e3e5e8'}`} color='#b8b9bf'>

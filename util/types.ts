@@ -11,17 +11,18 @@ export interface EmbedFooter {
     icon_url: string;
 }
 
-export interface EmbedBuilder {
-    title: string;
-    description: string;
-    author: EmbedAuthor;
-    footer: EmbedFooter;
-    color: ColorString;
+export interface Embed {
+    author?: EmbedAuthor;
+    title?: string;
+    description?: string;
+    color?: ColorString;
+    image?: { url: string };
+    footer?: EmbedFooter;
 }
 
 export interface FormMessageBuilder {
-    content: string | null;
-    embeds: EmbedBuilder[];
+    content?: string;
+    embeds?: Embed[];
 }
 
 export interface ButtonBuilder {
@@ -38,11 +39,11 @@ export interface ModalComponentBuilder {
     type: number;
     label: string;
     style: number;
-    placeholder: string;
-    value: string;
-    min_length: number;
-    max_length: number;
-    required: boolean;
+    placeholder?: string;
+    value?: string;
+    min_length?: number;
+    max_length?: number;
+    required?: boolean;
 }
 
 export interface ModalActionRowBuilder {
@@ -63,7 +64,12 @@ export interface FormBuilder {
 }
 
 export interface FormAndMessageBuilder {
-    message: FormMessageBuilder;
+    message?: FormMessageBuilder;
+    select_menu_placeholder?: string;
+    application_command?: {
+        name: String,
+        description?: String
+    };
     forms: FormBuilder[];
 }
 

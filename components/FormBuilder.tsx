@@ -8,7 +8,8 @@ import {
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
-  UseFormGetValues
+  UseFormGetValues,
+  UseFormResetField
 } from "react-hook-form";
 import { IconContext } from "react-icons";
 import { IoInformationCircle } from "react-icons/io5";
@@ -17,8 +18,8 @@ import TextInputBuilder from "./TextInputBuilder";
 import ErrorMessage from "./ErrorMessage";
 import { FormAndMessageBuilder } from "../util/types";
 import { useScreenWidth } from "../util/width";
-import { ComponentType } from "../pages";
 import { useColorMode } from "@chakra-ui/react";
+import Counter from "./Counter";
 
 export interface FormBuilderProperties<T extends FieldValues> {
   control: Control<T>;
@@ -27,9 +28,9 @@ export interface FormBuilderProperties<T extends FieldValues> {
   watch: UseFormWatch<T>;
   setValue: UseFormSetValue<T>;
   getValues: UseFormGetValues<T>;
+  resetField: UseFormResetField<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
-  componentType: ComponentType;
 }
 
 export default function FormBuilder({
@@ -37,28 +38,40 @@ export default function FormBuilder({
   register,
   setValue,
   getValues,
+  resetField,
   formState,
   formState: { errors },
   watch,
   displayForm,
   setDisplayForm,
-  componentType
+  //@ts-expect-error
+  fixMessage
+  
 }: FormBuilderProperties<FormAndMessageBuilder>) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "forms"
+    name: "forms",
+    rules: { minLength: 1 }
   });
 
   const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false);
   const isSmallScreen = !useScreenWidth(500);
   const colorMode = useColorMode().colorMode
 
+  function fixButton(index: number) {
+    setTimeout(()=> {
+      //@ts-expect-error
+      if(typeof watch(`forms.${index}.button.style`) === 'string') setValue(`forms.${index}.button.style`, parseInt(watch(`forms.${index}.button.style`)))
+    },1)
+  }
+
   return (
     <Box width='100%' pb={2}>
-      <FormLabel pb={2}>Forms</FormLabel>
+      <FormLabel display='flex' alignItems='flex-end' pb={2}><Text>Forms</Text><Counter count={getValues('forms')?.length} max={getValues('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)}/></FormLabel>
       <ul>
         {fields.map((item, index) => {
           return (
+            
             <Collapsible name={`Form ${index + 1}${getValues('forms')[index]?.modal.title && getValues('forms')[index]?.modal.title.match(/\S/) ? ` – ${getValues('forms')[index]?.modal.title}` : ''}`} variant='large' deleteButton={getValues('forms').length > 1 ? <CloseButton onClick={() => {
               remove(index)
               setDisplayForm(displayForm - 1)
@@ -73,7 +86,7 @@ export default function FormBuilder({
                   </Tooltip>
                 </FormLabel>
                 <input
-                  {...register(`forms.${index}.webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/ })}
+                  {...register(`forms.${index}.webhook_url`, { required: true, pattern: /^https:\/\/((canary|ptb).)?discord(app)?.com\/api(\/v\d+)?\/webhooks\/\d{5,30}\/.+$/, onChange: () => fixMessage() })}
                   id={`forms[${index}].webhook_url`}
                   onFocus={() => webhookUrlSetFocused(true)}
                   onBlur={() => webhookUrlSetFocused(false)}
@@ -81,56 +94,53 @@ export default function FormBuilder({
                   placeholder='https://discord.com/api/webhooks/ ...'
                   style={{ marginBottom: '8px' }}
                 />
-                <ErrorMessage>{(errors.forms?.[index]?.webhook_url?.type === 'required' && 'The Webhook URL is required') || (errors.forms?.[index]?.webhook_url?.type === 'pattern' && 'Invalid Webhook URL')}</ErrorMessage>
+                <ErrorMessage error={errors.forms?.[index]?.webhook_url}/>
                 <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
                   {
-                    componentType == ComponentType.SelectMenu && <>
+                    watch('forms.0.select_menu_option') && <>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.label`} display='flex' alignItems='flex-end'>
-                          <Text _after={{ content: '" *"', color: '#ff7a6b' }}>Option Label</Text>
-                          <span style={{
-                            display: 'inline', marginLeft: '7px', fontSize: '13px',
-                            //@ts-expect-error
-                            color: getValues('forms')[index].select_menu_option?.label?.length > 100 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
-                          }}>{getValues('forms')[index].select_menu_option?.label?.length}/100</span></FormLabel>
+                          <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Select Menu Option Label</Text>
+                          <Counter count={getValues('forms')[index].select_menu_option?.label?.length} max={100} />
+                        </FormLabel>
                         <input
-                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100 })}
+                          {...register(`forms.${index}.select_menu_option.label`, { required: true, maxLength: 100, onChange: () => fixMessage() })}
                           id={`forms[${index}].select_menu_option.label`}
                           placeholder='Form'
                         />
-                        <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                        <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.label}/>
                       </Box>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].select_menu_option.description`} display='flex' alignItems='flex-end'>
-                          <Text>Option Description</Text>
-                          <span style={{
-                            display: 'inline', marginLeft: '7px', fontSize: '13px',
-                            //@ts-expect-error
-                            color: getValues('forms')[index].select_menu_option?.description?.length > 100 ? '#ff7a6b' : '#dcddde', fontFamily: 'Whitney Bold Italic'
-                          }}>{getValues('forms')[index].select_menu_option?.description?.length}/100</span>
+                          <Text>Select Menu Option Description</Text>
+                          <Counter count={getValues('forms')[index].select_menu_option?.description?.length} max={100}></Counter>
                         </FormLabel>
                         <input
-                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100 })}
+                          {...register(`forms.${index}.select_menu_option.description`, { maxLength: 100, onChange: () => fixMessage() })}
                           id={`forms[${index}].select_menu_option.description`}
                         />
+                        <ErrorMessage error={errors.forms?.[index]?.select_menu_option?.description}/>
                       </Box>
                     </>
                   }
+                  
                   {
-                    componentType == ComponentType.Button && <>
+                    watch('forms.0.button') && <>
                       <Box width='100%'>
-                        <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].button?.label?.length > 80 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index].button?.label?.length}/80</span></FormLabel>
+                        <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text>
+                          <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>
+                        </FormLabel>
                         <input
-                          {...register(`forms.${index}.button.label`, { required: true, maxLength: 80 })}
+                          {...register(`forms.${index}.button.label`, { required: true, maxLength: 80, onChange: () => fixMessage() })}
                           id={`forms[${index}].button.label`}
                           placeholder='Open Form'
                         />
-                        <ErrorMessage>{(errors.forms?.[index]?.button?.label?.type === 'required' && 'The Button Label is required') || (errors.forms?.[index]?.button?.label?.type === 'maxLength' && 'The Button Label is too long')}</ErrorMessage>
+                        <ErrorMessage error={errors.forms?.[index]?.button?.label}/>
                       </Box>
                       <Box width='100%'>
                         <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
                         <Select
-                          {...register(`forms.${index}.button.style`)}
+                          {...register(`forms.${index}.button.style`, { onChange: () => fixMessage() })}
                           id={`forms[${index}].button.style`}
                           borderWidth='2px'
                           borderColor='transparent'
@@ -138,6 +148,8 @@ export default function FormBuilder({
                           bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
                           _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
                           _hover={{ borderColor: 'transparent' }}
+                          //@ts-expect-error
+                          onInput={fixButton(index)}
                         >
                           <option value="1">Blurple</option>
                           <option value="2">Grey</option>
@@ -149,17 +161,20 @@ export default function FormBuilder({
                   }
                 </Stack>
 
-                <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text><span style={{ display: 'inline', marginLeft: '7px', fontSize: '13px', color: getValues('forms')[index].modal.title?.length > 45 ? (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') : (colorMode === 'dark' ? '#dcddde' : '#2e3338'), fontFamily: 'Whitney Bold Italic' }}>{getValues('forms')[index]?.modal.title?.length}/45</span></FormLabel>
+                <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'>
+                  <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text>
+                  <Counter count={getValues('forms')[index]?.modal.title?.length} max={45} />
+                </FormLabel>
                 <input
-                  {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45 })}
+                  {...register(`forms.${index}.modal.title`, { required: true, maxLength: 45, onChange: () => fixMessage() })}
                   id={`forms[${index}].modal.title`}
                   style={{ marginBottom: '8px' }}
                 />
-                <ErrorMessage>{(errors.forms?.[index]?.modal?.title?.type === 'required' && 'The Title is required') || (errors.forms?.[index]?.modal?.title?.type === 'maxLength' && 'The Title is too long')}</ErrorMessage>
+                <ErrorMessage error={errors.forms?.[index]?.modal?.title}/>
               </Collapsible >
               <hr/>
               <Collapsible name="Text Inputs">
-                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue }} />
+                <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
               </Collapsible>
             </Collapsible >
           );
@@ -169,7 +184,7 @@ export default function FormBuilder({
       <section>
         <Button
           variant='primary'
-          isDisabled={getValues('forms').length >= 5}
+          isDisabled={(getValues('message') && getValues('forms.0.select_menu_option') && getValues('forms').length >= 25) || (getValues('message') && getValues('forms.0.button') && getValues('forms').length >= 5) || getValues('application_command') && getValues('forms').length >= 1 }
           onClick={() => {
             setDisplayForm(fields.length)
             append({
@@ -188,21 +203,19 @@ export default function FormBuilder({
                         type: 4,
                         label: '',
                         style: 1,
-                        placeholder: '',
-                        min_length: 0,
-                        max_length: 1024,
-                        value: '',
-                        required: true
+                        max_length: 1024
                       }
                     ]
                   }
                 ]
               }
             })
+            fixMessage()
           }}
         >
           Add Form
         </Button>
+        {getValues('forms')?.length > 5 || getValues('application_command') && getValues('forms').length > 1 && <ErrorMessage>You have too many forms</ErrorMessage>}
       </section>
     </Box >
   );

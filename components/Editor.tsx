@@ -12,24 +12,18 @@ import {
   Input,
   cssVar,
   Spinner,
-  Stack
+  Text
 } from '@chakra-ui/react';
 import JSONViewer, { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
-import MessageBuilder, { MessageType } from '../components/messageBuilder';
+import MessageBuilder from './MessageBuilder';
 import { SlashCommand, UserMention } from '../components/Mention';
-import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Footer } from '../components/Footer';
 import { ButtonBuilder, FormAndMessageBuilder, ToastStyles } from "../util/types";
-import { useModal } from '../components/SettingsModal';
 import { createName } from '../util/form';
-import { ComponentType } from '../pages';
 import { useScreenWidth } from '../util/width';
-import { fixForm } from '../util/fixForm';
-import fetch from 'isomorphic-fetch';
 
-const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
 
 const Defaults = {
@@ -50,8 +44,6 @@ const Defaults = {
   Message: 'Fill out the form below!'
 };
 
-const defaultValues = DefaultValues as FormAndMessageBuilder;
-
 export interface EditorProps<T extends FieldValues> {
   control: Control<T>;
   register: UseFormRegister<T>;
@@ -61,17 +53,12 @@ export interface EditorProps<T extends FieldValues> {
   getValues: UseFormGetValues<T>;
   displayForm: number;
   setDisplayForm: React.Dispatch<React.SetStateAction<number>>;
-  messageType: string;
-  setMessageType: React.Dispatch<React.SetStateAction<string>>;
-  componentType: [ComponentType, React.Dispatch<React.SetStateAction<ComponentType>>];
   reset: UseFormReset<T>;
   displaySection: boolean;
   resetField: UseFormResetField<T>;
 }
 
 export function Editor({
-  messageType,
-  setMessageType,
   displayForm,
   setDisplayForm,
   watch,
@@ -82,7 +69,6 @@ export function Editor({
   register,
   reset,
   displaySection,
-  componentType,
   resetField
 }: EditorProps<FormAndMessageBuilder>) {
   const toast = useToast();
@@ -146,63 +132,70 @@ export function Editor({
       console.log(json)
 
       if (
+        
         json?.forms == null ||
         !Array.isArray(json?.forms) ||
-        json?.message == null ||
-        typeof json?.message != "object"
+        (json?.message == null && json?.application_command == null)
       ) {
         return makeError();
       }
 
       // Validator for the number of forms
       // 🔗 https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-modal
-      if (json.forms.length > 5) {
-        json.forms.length = 5;
+      if (json.forms.length > 25) {
+        json.forms.length = 25;
       }
 
       // Add the json.forms array to the form hook
       setValue("forms", json.forms);
-      const isEmbed = json.message?.embeds != null && json?.message?.embeds?.length >= 1;
-      const isMessage = json.message?.content != null
-      // Set the type of the message
-      if (isEmbed && isMessage) setMessageType(MessageType.ContentAndEmbed);
-      else if (isMessage) setMessageType(MessageType.Content);
-      else if (isEmbed) setMessageType(MessageType.Embed);
-      // Check the number of button components and menu components
-      // incase of a button modal and a select menu modal
-      let buttons = 0;
-      let menus = 0;
-      json.forms.forEach(form => {
-        if (form.select_menu_option != null) menus++;
-        if (form.button != null) buttons++;
-      });
 
-      if (buttons < menus) {
-        componentType[1](ComponentType.SelectMenu);
-        json.forms.forEach((form, i) => {
-          if (form.select_menu_option == null) {
-            setValue(`forms.${i}.select_menu_option`, {
-              label: "Select Menu Option",
-              description: ""
-            });
-          }
-
-          if (form.button != null) resetField(`forms.${i}.button`);
-        });
-      } else {
-        componentType[1](ComponentType.Button);
-        json.forms.forEach((form, i) => {
-          if (form.button == null) setValue(`forms.${i}.button`, {
-            style: 1,
-            label: "Open Form"
-          });
-
-          if (form.select_menu_option != null) resetField(`forms.${i}.select_menu_option`);
-        });
+      if(json.forms[0].button) {
+        setOpenFormType('button')
+      } else if (json.forms[0].select_menu_option) {
+        setOpenFormType('select_menu')
+      }
+        else if (json.application_command) {
+        setOpenFormType('application_command')
       }
 
-      // Add the json.message object to the form hook
-      setValue("message", json.message);
+      if(!json.application_command) {
+        // Check the number of button components and menu components
+        // incase of a button modal and a select menu modal
+        let buttons = 0;
+        let menus = 0;
+        json.forms.forEach(form => {
+          if (form.select_menu_option != null) menus++;
+          if (form.button != null) buttons++;
+        });
+  
+        if (buttons < menus) {
+          setOpenFormType('select_menu')
+          json.forms.forEach((form, i) => {
+            if (form.select_menu_option == null) {
+              setValue(`forms.${i}.select_menu_option`, {
+                label: "Select Menu Option",
+                description: ""
+              });
+            }
+  
+            if (form.button != null) resetField(`forms.${i}.button`);
+          });
+        } else {
+          setOpenFormType('button')
+          json.forms.forEach((form, i) => {
+            if (form.button == null) setValue(`forms.${i}.button`, {
+              style: 1,
+              label: "Open Form"
+            });
+  
+            if (form.select_menu_option != null) resetField(`forms.${i}.select_menu_option`);
+          });
+        }
+  
+        // Add the json.message object to the form hook
+        setValue("message", json.message);
+      }
+
 
       // Send a toast the the user notifying that the form has
       // been uploaded
@@ -217,15 +210,7 @@ export function Editor({
   }
 
   const downloadForm = () => {
-    fixForm(false, {
-      componentType,
-      getValues,
-      resetField,
-      setValue,
-      toast
-    });
     setTimeout(() => {
-      console.log("downloading...")
       const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
         JSON.stringify(watch(), null, 2)
       )}`;
@@ -238,46 +223,105 @@ export function Editor({
 
   const [loading, setLoading] = useState(false);
   const handleLoad = () => {
-    //if (SettingsModal.settings.LimitAnimations == true) return;
     setLoading(true);
     setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
 
-  const [sending, setSending] = useState(false);
-  const sendForm = async () => {
-    try {
-      setSending(true);
-      const response = await fetch("https://forms.antouto.workers.dev/dashboard");
+  const isSmallScreen = !useScreenWidth(500);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  const [openFormType, _setOpenFormType] = useState('button')
 
-      const data = await response.json();
+  //@ts-expect-error
+  const setOpenFormType = (type) => {
+    _setOpenFormType(type)
+    switch(type) {
+        case 'button':
+            resetField('application_command');
+            resetField('select_menu_placeholder');
+            resetField('message')
+            setTimeout(() => {
+              setValue('message', { content: 'Fill out the form below' })
+            }, 1)
 
-      postToast({
-        title: "Form Sent",
-        style: ToastStyles.Success,
-        description: data ?? "unknown",
-      });
-
-      setTimeout(() => setSending(false), DOWNLOAD_SPINNER_TIME);
-    } catch (error) {
-      console.error("Network request failed:", error);
-      // Handle the error as needed, e.g., show an error toast or message to the user.
+            getValues("forms").forEach((form, i) => {
+                resetField(`forms.${i}.select_menu_option`)
+                setValue(`forms.${i}.button`, {
+                    label: '',
+                    style: 1
+                });
+            });
+            break;
+        case 'select_menu':
+            resetField('application_command');
+            resetField('message')
+            setTimeout(() => setValue('message', { content: 'Fill out the form below' }), 0.0001)
+            getValues("forms").forEach((form, i) => {
+                resetField(`forms.${i}.button`)
+                setValue(`forms.${i}.select_menu_option`, {
+                    label: form.modal.title,
+                    description: ''
+                });
+            });
+            break;
+        case 'application_command':     
+            resetField('message')
+            getValues("forms").forEach((form, i) => {
+                resetField(`forms.${i}.select_menu_option`)
+                resetField(`forms.${i}.button`)
+                setValue('application_command', {
+                    name: ''
+                })
+            });
+            break;
     }
   }
 
-  const SettingsModal = useModal();
+  function fixMessage() {
+    const message = getValues('message'); if(!message) return;
+    const { content, embeds } = message
+    if(!content && !embeds?.length) setTimeout(() => resetField('message'), 1); 
+    if(!content) resetField(`message.content`)
+    if(embeds?.length) for (let i = 0; i < embeds.length; i++) {
+        const { title, description, color, image, author, footer } = embeds[i]
+        if(!author?.name && !author?.icon_url && !author?.url) {
+        resetField(`message.embeds.${i}.author`)
+        } else {
+        if(!author?.name) resetField(`message.embeds.${i}.author.name`)
+        if(!author?.icon_url) resetField(`message.embeds.${i}.author.icon_url`)
+        if(!author?.url) resetField(`message.embeds.${i}.author.url`)
+        }
+        if(!title) resetField(`message.embeds.${i}.title`)
+        if(!description) resetField(`message.embeds.${i}.description`)
+        if(typeof color === 'string' && color.length) { setValue(`message.embeds.${i}.color`, parseInt(color)) }
+        if (typeof color === 'string' && !color.length) { resetField(`message.embeds.${i}.color`) }
+        if (!image?.url) resetField(`message.embeds.${i}.image`)
+        if (!footer?.text && !footer?.icon_url) {
+        resetField(`message.embeds.${i}.footer`)
+        } else {
+        if(!footer?.text) resetField(`message.embeds.${i}.footer.text`)
+        if(!footer?.icon_url) resetField(`message.embeds.${i}.footer.icon_url`)
+        }
+    }
 
-  const isSmallScreen = !useScreenWidth(500);
+    // Also fix text inputs
+    if(watch('forms')?.length) for (let i = 0; i < watch('forms')?.length; i++) {
+      for (let ii = 0; ii < watch(`forms.${i}.modal.components`).length; ii++) {
+        setTimeout(() => {
+          if (!watch(`forms.${i}.modal.components.${ii}.components.0.placeholder`)) resetField(`forms.${i}.modal.components.${ii}.components.0.placeholder`)
+          if (!watch(`forms.${i}.modal.components.${ii}.components.0.value`)) resetField(`forms.${i}.modal.components.${ii}.components.0.value`)
+          //@ts-expect-error
+          if(typeof watch(`forms.${ii}.modal.components.${i}.components.0.style`) === 'string') setValue(`forms.${i}.modal.components.${ii}.components.0.style`, parseInt(watch(`forms.${i}.modal.components.${ii}.components.0.style`)))
+        }, 1);
+      }
+    }
+
+}
 
   return (
     <VStack align='flex-start' overflowY='scroll' p='16px' height='calc(100vh - 48px);' display={displaySection ? 'flex' : 'none'}>
       <HStack>
         <Button onClick={() => {
           if (fileInput == null) {
-            console.log("FILE_INPUT_NULLISH");
             return postToast({
               title: "Something didn't go right.",
               style: ToastStyles.Error
@@ -285,59 +329,52 @@ export function Editor({
           } else fileInput.click()
         }} variant="primary">Upload JSON</Button>
         <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => {
-          if (input == null) {
-            console.log("SETTING_FILE_INPUT_NULLISH");
-            return;
-          } else setFileInput(input);
+          if (input != null) {
+            setFileInput(input);
+          }
         }} />
         <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
-      {SettingsModal.modal}
       <MessageBuilder
-        {...{ Defaults, getValues, componentType, formState, messageType, register, setMessageType, setValue }}
+        {...{ Defaults, getValues, resetField, control, formState, register, setValue, openFormType, setOpenFormType, fixMessage }}
       />
       <FormBuilder
-        {...{ componentType: componentType[0], control, register, defaultValues, getValues, setValue, formState, watch, displayForm, setDisplayForm }}
+        {...{ control, register, getValues, setValue, resetField, formState, watch, displayForm, setDisplayForm, fixMessage }}
       />
       <VStack width='100%' align='flex-start'>
         <Heading size='sm' marginBottom='5px'>Form Configuration File</Heading>
         <Box>
           This is the configuration file you'll need to give to the <UserMention isFormsBot>Forms</UserMention> bot to create your form. The <UserMention isFormsBot>Forms</UserMention> bot needs to be in your server.
         </Box>
-        <JSONViewer {...{ downloadForm, animationsEnabled: !SettingsModal.settings.LimitAnimations, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
+        <JSONViewer {...{ downloadForm, getValues }}>{JSON.stringify(watch(), null, 2)}</JSONViewer>
         <VStack alignItems='flex-start'>
-          <Stack direction={isSmallScreen ? "row" : "column"} alignItems='flex-start'>
+          <HStack alignItems='flex-start'>
             <Button
               variant='success'
-              isDisabled={!formState.isValid}
+              //@ts-expect-error
+              isDisabled={(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5) ) || (getValues('message.embeds')?.length && (() => {
+                //@ts-expect-error
+                for (const { title, description, author, footer } of getValues('message.embeds')) {
+                  if(!(title || description || author?.name || footer?.text)) return true;
+                }
+              })() ))}
               onClick={() => {
                 handleLoad();
                 downloadForm();
               }}
-              width={275}
+              width={225}
             // bgColor={loading ? "#215b32" : undefined}
             >
               {!loading && "Download Configuration File"}
-              {(loading && SettingsModal.settings.LimitAnimations == false) && <Spinner size="sm" />}
-              {(loading && SettingsModal.settings.LimitAnimations == true) && "Downloading..."}
+              {loading && <Spinner size="sm" />}
             </Button>
-            <Button
-              variant="success"
-              isDisabled={!formState.isValid}
-              width={100}
-              onClick={() => sendForm()}
-            >
-              Send
-            </Button>
-            {SettingsModal.settings.ShowFixButton && <Button onClick={() => fixForm(true, {
-              componentType,
-              getValues,
-              resetField,
-              setValue,
-              toast
-            })}>Fix Form</Button>}
-          </Stack>
-          {!formState.isValid && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
+          </HStack>
+          {(!formState.isValid || watch('forms').length > (watch('application_command') ? 1 : ((getValues('message') && getValues('forms.0.select_menu_option')) ? 25 : 5)) || (getValues('message.embeds')?.length && (() => {
+                //@ts-expect-error
+                for (const { title, description, author, image, footer } of getValues('message.embeds')) {
+                  if(!(title || description || author?.name || image?.url || footer?.text)) return true;
+                }
+              })() )) && <ErrorMessage>Fill out the fields correctly before downloading the configuration file.</ErrorMessage>}
         </VStack>
         <Box>
           Upload the configuration file using the <SlashCommand>form create</SlashCommand> command on the <UserMention isFormsBot>Forms</UserMention> bot.

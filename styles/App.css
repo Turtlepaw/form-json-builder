@@ -92,7 +92,3 @@ select {
     background-repeat: no-repeat;
     background-position: right bottom;
 }
-
-.forceFloat {
-    float: right !important;
-}

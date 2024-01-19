@@ -49,7 +49,7 @@ const modal = (title: string) => ({
             components: [
                 {
                     "type": 4,
-                    "label": "Have you had any previous moderation experience?",
+                    "label": "Have you had previous moderation experience?",
                     "style": 2
                 }
             ]

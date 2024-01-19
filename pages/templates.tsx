@@ -21,10 +21,9 @@ import {
 } from '@chakra-ui/react';
 import { DOWNLOAD_SPINNER_TIME } from '../components/JSONViewer';
 import ErrorMessage from '../components/ErrorMessage';
-import _DefaultValues from '../DefaultValues.json';
 import _ClearedValues from '../ClearedValues.json';
 import { Meta } from '../components/Meta';
-import { EmbedAuthor, EmbedBuilder, EmbedFooter, FormAndMessageBuilder } from "../util/types";
+import { EmbedAuthor, Embed, EmbedFooter, FormAndMessageBuilder } from "../util/types";
 import { Navigation } from '../components/Navigation';
 import * as StaffAppForm from "../templates/StaffApp";
 import { FormDataResponse } from '../util/api';
@@ -35,7 +34,6 @@ import Preview from '../components/Preview';
 import Link from 'next/link';
 import { Modal, ModalContent, ModalFooter } from '../components/Modal';
 
-const DefaultValues = _DefaultValues as FormAndMessageBuilder;
 const ClearedValues = _ClearedValues as FormAndMessageBuilder;
 const $SwitchBackground = cssVar("switch-bg");
 
@@ -56,8 +54,6 @@ const Defaults = {
     },
     Message: 'Fill out the form below!'
 };
-
-const defaultValues = DefaultValues as FormAndMessageBuilder;
 
 export interface TemplateData {
     // templates: FormDataResponse[] | null;
@@ -119,7 +115,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
 
     const downloadForm = (formData: any, fileName: string) => {
         setTimeout(() => {
-            console.log("downloading...")
             const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
                 JSON.stringify(formData, null, 2)
             )}`;
@@ -165,50 +160,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
     });
 
     const { colorMode } = useColorMode();
-
-    function FixForm(formData: FormAndMessageBuilder) {
-        formData.forms.forEach((form, i) => {
-            if (formData.forms[i].button != null) formData.forms[i].button.style = Number(form.button.style);
-            form.modal.components.forEach((actionRow) => {
-                actionRow.components.forEach((e, index) => {
-                    console.log(e)
-                    Object.entries(e).map(([k, v]) => {
-                        console.log(k, v)
-                        if (v === null) return { key: k, value: v };
-                        //@ts-expect-error
-                        // eslint-disable-next-line eqeqeq
-                        if (v == '') e[k] = null;
-                        //@ts-expect-error
-                        else if (typeof v != "boolean" && !isNaN(Number(v))) e[k] = Number(v);
-                        return { key: k, value: v };
-                    });
-
-                    formData.forms[i].modal.components[index].components[index] = e;
-                })
-            })
-        });
-
-        const Message = formData.message;
-
-        if (Message?.embeds != null && Message.embeds.length > 0) {
-            console.log("fixing...")
-            Message.embeds.forEach((embed, i) => {
-                Object.entries(embed).forEach(([_key, v]) => {
-                    const k = _key as keyof EmbedBuilder;
-                    if (typeof v == "string") {
-                        //@ts-expect-error
-                        if (v == null || v === "") formData.message.embeds[i][k] = null;
-                    } else if (typeof v == "object") {
-                        Object.entries(v).forEach(([_k, v2], i2) => {
-                            const k2 = _k as keyof EmbedAuthor | keyof EmbedFooter;
-                            //@ts-expect-error
-                            if (v2 == null || v2 === "") formData.message.embeds[i][k][k2] = null;
-                        })
-                    }
-                })
-            });
-        }
-    }
 
     async function postWebhook(message: string, name: string, description: string, username: string) {
         const fetched = await fetch(REQUEST_WEBHOOK, {
@@ -315,7 +266,6 @@ export default function Templates({ REQUEST_WEBHOOK }: TemplateData) {
                     const handleLoad = () => {
                         setLoading(true);
                         (() => {
-                            FixForm(form.data);
                             setTimeout(() => {
                                 downloadForm(form.data, form.name.split(" ").map((e: string) => e.toLowerCase()).join("_"))
                             }, 500);

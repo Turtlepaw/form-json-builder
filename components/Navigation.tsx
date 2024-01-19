@@ -155,7 +155,7 @@ export function Navigation({
                     <Text>
                     You can preview your form here!
                     </Text>
-                    <Text color="#00b0f4" onClick={() => setTipOpen(false)}>Ok</Text>
+                    <Text color="#00b0f4" cursor='pointer' _hover={{ textDecoration: 'underline' }} onClick={() => setTipOpen(false)}>Ok</Text>
                   </HStack>
                 </Box>
               }

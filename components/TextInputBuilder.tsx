@@ -93,7 +93,7 @@ export default function TextInputBuilder({
               />
               <ErrorMessage error={errors?.forms?.[nestIndex]?.modal?.components?.[k]?.components?.[0]?.label}/>
 
-              <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
+              <HStack marginBottom='8px' alignItems='flex-start'>
                 <Box width='100%'>
                   <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].style`} display='flex' alignItems='center'>
                     <Text>Style</Text>
@@ -111,7 +111,7 @@ export default function TextInputBuilder({
                     setTextInputStyle(newTextInputStyle)
                     fixMessage()
                   }} value={textInputStyle[k]} id={`forms.${nestIndex}.modal.components.${k}.components.0.style`}>
-                    <Stack direction={isSmallScreen ? "column" : "row"}>
+                    <HStack>
                       <Radio
                         //name={`forms.${nestIndex}.modal.components.${k}.components.0.style`}
                         {...register(`forms.${nestIndex}.modal.components.${k}.components.0.style`)}
@@ -128,7 +128,7 @@ export default function TextInputBuilder({
                       >
                         <Text>Multiline</Text>
                       </Radio>
-                    </Stack>
+                    </HStack>
                   </RadioGroup>
                 </Box>
                 <Box width='100%'>
@@ -145,7 +145,7 @@ export default function TextInputBuilder({
                     )}
                   />
                 </Box>
-              </Stack>
+              </HStack>
 
               <FormLabel htmlFor={`forms[${nestIndex}].modal.components[${k}].components[0].placeholder`} display='flex' alignItems='flex-end'><Text>Placeholder</Text>
               <Counter count={textInput?.placeholder?.length || 0} max={100}/>  

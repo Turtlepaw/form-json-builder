@@ -33,7 +33,7 @@ export function Navigation({
   displaySection,
   setDisplaySection,
 }: NavigationProps) {
-  const isSmallScreen = !useScreenWidth(500);
+  const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode;
   const { isOpen, onClose } = useDisclosure();
   const [isTipOpen, setTipOpen] = useState(false);

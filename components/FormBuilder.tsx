@@ -55,7 +55,7 @@ export default function FormBuilder({
   });
 
   const [webhookUrlFocused, webhookUrlSetFocused] = React.useState(false);
-  const isSmallScreen = !useScreenWidth(500);
+  const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode
 
   function fixButton(index: number) {
@@ -95,7 +95,7 @@ export default function FormBuilder({
                   style={{ marginBottom: '8px' }}
                 />
                 <ErrorMessage error={errors.forms?.[index]?.webhook_url}/>
-                <Stack direction={isSmallScreen ? "column" : "row"} marginBottom='8px' alignItems='flex-start'>
+                <HStack marginBottom='8px' alignItems='flex-start'>
                   {
                     watch('forms.0.select_menu_option') && <>
                       <Box width='100%'>
@@ -126,7 +126,7 @@ export default function FormBuilder({
                   
                   {
                     watch('forms.0.button') && <>
-                      <Box width='50%'>
+                      <Box width={isSmallScreen ? '100%' : '50%'}>
                         <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text>
                           <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>
                         </FormLabel>
@@ -148,7 +148,7 @@ export default function FormBuilder({
                       </Box>
                     </>
                   }
-                </Stack>
+                </HStack>
 
                 <FormLabel htmlFor={`forms[${index}].modal.title`} display='flex' alignItems='flex-end'>
                   <Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Title</Text>

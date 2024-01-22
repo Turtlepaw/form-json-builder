@@ -126,7 +126,7 @@ export default function FormBuilder({
                   
                   {
                     watch('forms.0.button') && <>
-                      <Box width='100%'>
+                      <Box width='50%'>
                         <FormLabel htmlFor={`forms[${index}].button.label`} display='flex' alignItems='flex-end'><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Label</Text>
                           <Counter count={getValues('forms')[index].button?.label?.length} max={80}></Counter>
                         </FormLabel>
@@ -137,25 +137,14 @@ export default function FormBuilder({
                         />
                         <ErrorMessage error={errors.forms?.[index]?.button?.label}/>
                       </Box>
-                      <Box width='100%'>
-                        <FormLabel htmlFor={`forms[${index}].button.style`}>Button Color</FormLabel>
-                        <Select
-                          {...register(`forms.${index}.button.style`, { onChange: () => fixMessage() })}
-                          id={`forms[${index}].button.style`}
-                          borderWidth='2px'
-                          borderColor='transparent'
-                          borderRadius='4px'
-                          bg={colorMode === 'dark' ? 'grey.extradark' : 'grey.extralight'}
-                          _focus={{ borderWidth: '2px', borderColor: 'blurple' }}
-                          _hover={{ borderColor: 'transparent' }}
-                          //@ts-expect-error
-                          onInput={fixButton(index)}
-                        >
-                          <option value="1">Blurple</option>
-                          <option value="2">Grey</option>
-                          <option value="3">Green</option>
-                          <option value="4">Red</option>
-                        </Select>
+                      <Box>
+                        <FormLabel htmlFor={`forms[${index}].button.style`}><Text _after={{ content: '" *"', color: (colorMode === 'dark' ? '#ff7a6b' : '#d92f2f') }}>Button Colour</Text></FormLabel>
+                        <HStack>
+                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'blurple' }} background={'blurple'} onClick={()=>setValue(`forms.${index}.button.style`, 1)}>{watch(`forms.${index}.button.style`) === 1 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
+                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'grey.light' }} background={'grey.light'} onClick={()=>setValue(`forms.${index}.button.style`, 2)}>{watch(`forms.${index}.button.style`) === 2 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
+                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'green' }} background={'green'} onClick={()=>setValue(`forms.${index}.button.style`, 3)}>{watch(`forms.${index}.button.style`) === 3 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
+                          <Button height='36px' width='36px' minWidth={'unset'} padding={0} _hover={{ background: 'red' }} background={'red'} onClick={()=>setValue(`forms.${index}.button.style`, 4)}>{watch(`forms.${index}.button.style`) === 4 && <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="white" d="M21.7 5.3a1 1 0 0 1 0 1.4l-12 12a1 1 0 0 1-1.4 0l-6-6a1 1 0 1 1 1.4-1.4L9 16.58l11.3-11.3a1 1 0 0 1 1.4 0Z"></path></svg>}</Button>
+                        </HStack>
                       </Box>
                     </>
                   }

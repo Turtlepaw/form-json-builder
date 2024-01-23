@@ -233,7 +233,7 @@ export default function FormBuilder({
                 <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
               </Collapsible>
               <hr />
-              <Collapsible name="Submission & Conformation Messages">
+              {/* <Collapsible name="Submission & Conformation Messages">
                 <VStack align={'flex-start'}>
                 <HStack>
                   <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>
@@ -319,7 +319,7 @@ export default function FormBuilder({
                     <ErrorMessage error={errors.forms?.[index]?.submit_message?.content} />
                   </Box>}
                 </VStack>
-              </Collapsible>
+              </Collapsible> */}
             </Collapsible >
           );
         })}

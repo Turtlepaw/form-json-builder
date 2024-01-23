@@ -232,8 +232,8 @@ export default function FormBuilder({
               <Collapsible name="Text Inputs">
                 <TextInputBuilder id={`forms.${index}.modal.components`} nestIndex={index} {...{ control, register, formState, watch, setValue, resetField, fixMessage }} />
               </Collapsible>
-              <hr />
-              {/* <Collapsible name="Submission & Conformation Messages">
+              {/* <hr />
+              <Collapsible name="Submission & Conformation Messages">
                 <VStack align={'flex-start'}>
                 <HStack>
                   <IconContext.Provider value={{ color: '#b9bbbe', size: '20px' }}><Box><IoInformationCircle /></Box></IconContext.Provider>

@@ -227,7 +227,7 @@ export function Editor({
     setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
 
-  const isSmallScreen = !useScreenWidth(500);
+  const isSmallScreen = !useScreenWidth(1070);
 
   const [openFormType, _setOpenFormType] = useState('button')
 

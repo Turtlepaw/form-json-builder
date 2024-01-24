@@ -101,6 +101,9 @@ export default function FormBuilder({
         break;
       } 
     }
+    fixSubmissionMessage(index);
+    fixdmSubmissionMessage(index);
+    fixServerSubmissionMessage(index);
   }
 
   function setdmSubmissionMessage(value: string, index: number) {
@@ -128,6 +131,9 @@ export default function FormBuilder({
         break;
       } 
     }
+    fixSubmissionMessage(index);
+    fixdmSubmissionMessage(index);
+    fixServerSubmissionMessage(index);
   }
 
   function fixButton(index: number) {

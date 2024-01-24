@@ -138,16 +138,19 @@ export default function FormBuilder({
   }
 
   function fixServerSubmissionMessage(index: number) {
+    //@ts-expect-error
     const { content } = getValues(`forms.${index}.guild_submit_message`)
     if(!content) resetField(`forms.${index}.guild_submit_message`);
   }
 
   function fixdmSubmissionMessage(index: number) {
+    //@ts-expect-error
     const { content } = getValues(`forms.${index}.dm_submit_message`)
     if(!content) resetField(`forms.${index}.dm_submit_message`);
   }
 
   function fixSubmissionMessage(index: number) {
+    //@ts-expect-error
     const { content } = getValues(`forms.${index}.submit_message`)
 
     //if(!content) setTimeout(() => resetField(`forms.${index}.submit_message`), 1); 

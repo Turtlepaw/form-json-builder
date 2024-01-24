@@ -60,6 +60,7 @@ export default function FormBuilder({
   const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode
 
+  
   function _setServerSubmissionMessage(value: string, index: number) {
     const array = serverSubmissionMessage.slice();
     array[index] = value;

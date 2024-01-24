@@ -139,15 +139,11 @@ export default function FormBuilder({
 
   function fixServerSubmissionMessage(index: number) {
     const { content } = getValues(`forms.${index}.guild_submit_message`)
-
-    //if(!content) setTimeout(() => resetField(`forms.${index}.guild_submit_message`), 1); 
     if(!content) resetField(`forms.${index}.guild_submit_message`);
   }
 
   function fixdmSubmissionMessage(index: number) {
     const { content } = getValues(`forms.${index}.dm_submit_message`)
-
-    //if(!content) setTimeout(() => resetField(`forms.${index}.dm_submit_message`), 1); 
     if(!content) resetField(`forms.${index}.dm_submit_message`);
   }
 

@@ -61,9 +61,9 @@ export interface FormBuilder {
     button: ButtonBuilder;
     select_menu_option?: SelectMenuBuilder;
     modal: ModalBuilder;
-    submit_message: FormMessageBuilder;
-    guild_submit_message: FormMessageBuilder;
-    dm_submit_message: FormMessageBuilder;
+    submit_message?: FormMessageBuilder;
+    guild_submit_message?: FormMessageBuilder;
+    dm_submit_message?: FormMessageBuilder;
 }
 
 export interface FormAndMessageBuilder {

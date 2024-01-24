@@ -74,7 +74,7 @@ export default function FormBuilder({
     console.log('__setdmSubmissionMessage', dmSubmissionMessage)
   }
 
-  function setServerSubmissionMessage(value: String, index: number) {
+  function setServerSubmissionMessage(value: string, index: number) {
     _setServerSubmissionMessage(value, index)
     console.log('_setServerSubmissionMessage')
 
@@ -103,7 +103,7 @@ export default function FormBuilder({
     }
   }
 
-  function setdmSubmissionMessage(value: String, index) {
+  function setdmSubmissionMessage(value: string, index: number) {
     _setdmSubmissionMessage(value, index)
     switch(value) {
       case 'default': {

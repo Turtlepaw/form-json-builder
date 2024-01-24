@@ -81,10 +81,15 @@ export default function FormBuilder({
     switch(value) {
       case 'default': {
         resetField(`forms.${index}.guild_submit_message`);
+        if(serverSubmissionMessage[index] === 'same_as_dm') {
+          setValue(`forms.${index}.dm_submit_message`, getValues(`forms.${index}.submit_message`));
+          resetField(`forms.${index}.submit_message`);
+          _setServerSubmissionMessage('default', index);
+          console.log('_setdmSubmissionMessage')
+        }
         if(dmSubmissionMessage[index] === 'same_as_server') {
           resetField(`forms.${index}.submit_message`);
-          _setdmSubmissionMessage('default', index);
-          console.log('_setdmSubmissionMessage')
+          _setdmSubmissionMessage('default', index)
         }
         break;
       } case 'custom': {
@@ -92,10 +97,11 @@ export default function FormBuilder({
           setValue(`forms.${index}.dm_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
         }
+        resetField(`forms.${index}.server_submit_message`);
         break;
       }
       case 'same_as_dm': {
-        setValue(`forms.${index}.submit_message`, watch(`forms.${index}.dm_submit_message`));
+        setValue(`forms.${index}.submit_message`, getValues(`forms.${index}.dm_submit_message`));
         resetField(`forms.${index}.dm_submit_message`)
         resetField(`forms.${index}.guild_submit_message`)
         break;
@@ -111,10 +117,15 @@ export default function FormBuilder({
     switch(value) {
       case 'default': {
         resetField(`forms.${index}.dm_submit_message`);
+        if(dmSubmissionMessage[index] === 'same_as_server') {
+          setValue(`forms.${index}.guild_submit_message`, getValues(`forms.${index}.submit_message`));
+          resetField(`forms.${index}.submit_message`);
+          _setdmSubmissionMessage('default', index);
+          console.log('_setServerSubmissionMessage')
+        }
         if(serverSubmissionMessage[index] === 'same_as_dm') {
           resetField(`forms.${index}.submit_message`);
-          _setServerSubmissionMessage('default', index);
-          console.log('_setServerSubmissionMessage')
+          _setServerSubmissionMessage('default', index)
         }
         break;
       } case 'custom': {
@@ -122,14 +133,29 @@ export default function FormBuilder({
           setValue(`forms.${index}.guild_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
         }
+        resetField(`forms.${index}.dm_submit_message`);
         break;
       }
       case 'same_as_server': {
-        setValue(`forms.${index}.submit_message`, watch(`forms.${index}.guild_submit_message`));
+        setValue(`forms.${index}.submit_message`, getValues(`forms.${index}.guild_submit_message`));
         resetField(`forms.${index}.guild_submit_message`)
         resetField(`forms.${index}.dm_submit_message`)
         break;
-      } 
+      }
+      case 'off': {
+        if(dmSubmissionMessage[index] === 'same_as_server') {
+          setValue(`forms.${index}.guild_submit_message`, getValues(`forms.${index}.submit_message`));
+          resetField(`forms.${index}.submit_message`);
+        }
+        //@ts-expect-error
+        setValue(`forms.${index}.dm_submit_message`, null);
+        if(serverSubmissionMessage[index] === 'same_as_dm') {
+          resetField(`forms.${index}.submit_message`);
+          _setServerSubmissionMessage('default', index);
+          console.log('_setServerSubmissionMessage')
+        }
+        break;
+      }
     }
     fixSubmissionMessage(index);
     fixdmSubmissionMessage(index);
@@ -144,22 +170,23 @@ export default function FormBuilder({
   }
 
   function fixServerSubmissionMessage(index: number) {
+    if(!getValues(`forms.${index}.guild_submit_message`)) return;
     //@ts-expect-error
     const { content } = getValues(`forms.${index}.guild_submit_message`)
     if(!content) resetField(`forms.${index}.guild_submit_message`);
   }
 
   function fixdmSubmissionMessage(index: number) {
+    if(!getValues(`forms.${index}.dm_submit_message`)) return;
     //@ts-expect-error
     const { content } = getValues(`forms.${index}.dm_submit_message`)
     if(!content) resetField(`forms.${index}.dm_submit_message`);
   }
 
   function fixSubmissionMessage(index: number) {
+    if(!getValues(`forms.${index}.submit_message`)) return;
     //@ts-expect-error
     const { content } = getValues(`forms.${index}.submit_message`)
-
-    //if(!content) setTimeout(() => resetField(`forms.${index}.submit_message`), 1); 
     if(!content) resetField(`forms.${index}.submit_message`);
   }
 
@@ -334,6 +361,7 @@ export default function FormBuilder({
                       <option value="default">Default</option>
                       <option value="custom">Custom</option>
                       {serverSubmissionMessage[index] === 'custom' && <option value="same_as_server">Same as Server</option>}
+                      <option value="off">Off</option>
                     </Select>
                   </HStack>
                   {dmSubmissionMessage[index] === 'custom' && serverSubmissionMessage[index] !== 'same_as_dm' && <Box width='100%'>

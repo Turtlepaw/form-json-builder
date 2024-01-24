@@ -98,7 +98,7 @@ export default function FormBuilder({
           setValue(`forms.${index}.dm_submit_message`, getValues(`forms.${index}.submit_message`));
           resetField(`forms.${index}.submit_message`);
         }
-        resetField(`forms.${index}.server_submit_message`);
+        resetField(`forms.${index}.guild_submit_message`);
         break;
       }
       case 'same_as_dm': {

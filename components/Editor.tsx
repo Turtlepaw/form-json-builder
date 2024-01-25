@@ -327,7 +327,7 @@ export function Editor({
               style: ToastStyles.Error
             });
           } else fileInput.click()
-        }} variant="primary">Upload JSON</Button>
+        }} variant="secondary">Upload JSON</Button>
         <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => {
           if (input != null) {
             setFileInput(input);

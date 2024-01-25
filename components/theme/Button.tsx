@@ -26,9 +26,15 @@ export const Button: ComponentTheme<ButtonProps> = {
             _hover: { bg: '#215b32' }
         },
         danger: {
-            bg: 'red',
-            _disabled: { _hover: { bg: 'red!important' }},
+            bg: '#ED4245',
+            _disabled: { _hover: { bg: '#ED4245!important' }},
             _hover: { bg: '#a12d2f' }
+        },
+        'danger-outline': {
+            bg: 'transparent',
+            border: '2px solid #ED4245',
+            _disabled: { _hover: { border: '2px solid #ED4245!important' }},
+            _hover: { bg: '#ED4245' }
         },
         link: {
             bg: 'transparent',

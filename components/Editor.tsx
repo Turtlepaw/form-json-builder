@@ -333,7 +333,7 @@ export function Editor({
             setFileInput(input);
           }
         }} />
-        <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
+        <Button variant="danger-outline" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
       <MessageBuilder
         {...{ Defaults, getValues, resetField, control, formState, register, setValue, openFormType, setOpenFormType, fixMessage }}

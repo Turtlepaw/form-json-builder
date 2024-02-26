@@ -33,7 +33,7 @@ export function Navigation({
   displaySection,
   setDisplaySection,
 }: NavigationProps) {
-  const isSmallScreen = !useScreenWidth(500);
+  const isSmallScreen = !useScreenWidth(1070);
   const colorMode = useColorMode().colorMode;
   const { isOpen, onClose } = useDisclosure();
   const [isTipOpen, setTipOpen] = useState(false);
@@ -155,7 +155,7 @@ export function Navigation({
                     <Text>
                     You can preview your form here!
                     </Text>
-                    <Text color="#00b0f4" onClick={() => setTipOpen(false)}>Ok</Text>
+                    <Text color="#00b0f4" cursor='pointer' _hover={{ textDecoration: 'underline' }} onClick={() => setTipOpen(false)}>Ok</Text>
                   </HStack>
                 </Box>
               }

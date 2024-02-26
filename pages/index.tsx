@@ -69,7 +69,7 @@ export default function App() {
   const [displayForm, setDisplayForm] = useState(0);
   const [displaySection, setDisplaySection] = useState(1);
   const SettingsModal = useModal();
-  const isNotSmallScreen = useScreenWidth(500);
+  const isNotSmallScreen = useScreenWidth(1070);
 
   return (
     <>

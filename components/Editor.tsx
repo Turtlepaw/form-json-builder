@@ -227,7 +227,7 @@ export function Editor({
     setTimeout(() => setLoading(false), DOWNLOAD_SPINNER_TIME);
   }
 
-  const isSmallScreen = !useScreenWidth(500);
+  const isSmallScreen = !useScreenWidth(1070);
 
   const [openFormType, _setOpenFormType] = useState('button')
 
@@ -327,13 +327,13 @@ export function Editor({
               style: ToastStyles.Error
             });
           } else fileInput.click()
-        }} variant="primary">Upload JSON</Button>
+        }} variant="secondary">Upload JSON</Button>
         <Input id="json" type="file" accept=".json" display="none" onChange={ReadFile} ref={(input) => {
           if (input != null) {
             setFileInput(input);
           }
         }} />
-        <Button variant="secondary" onClick={() => reset(ClearedValues)}>Clear All</Button>
+        <Button variant="danger-outline" onClick={() => reset(ClearedValues)}>Clear All</Button>
       </HStack>
       <MessageBuilder
         {...{ Defaults, getValues, resetField, control, formState, register, setValue, openFormType, setOpenFormType, fixMessage }}

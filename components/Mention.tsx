@@ -5,10 +5,12 @@ import {
   Heading,
   Text,
   Tooltip,
+  cssVar,
   useColorMode,
 } from "@chakra-ui/react";
 import React, { CSSProperties, MouseEventHandler, useState } from "react";
 import Image from "next/image";
+import { AVATAR_URL } from "../util/config";
 
 export interface MentionProperties {
   children: React.ReactNode;
@@ -96,7 +98,9 @@ export function FormProfile({
                   borderRadius: 1000000,
                 }}
               />
-              <Heading size="md">Forms</Heading>
+              <Heading size="md" px={3}>
+                Forms
+              </Heading>
               <Box
                 display="inline-flex"
                 backgroundColor="#5865F2"
@@ -104,6 +108,7 @@ export function FormProfile({
                 ml="4px"
                 height=".9375rem"
                 width="39px"
+                pr="4px"
               >
                 <Tooltip
                   hasArrow
@@ -141,9 +146,7 @@ export function UserMention({
   link,
 }: UserMentionProperties) {
   if (children === "Forms") isFormsBot = true;
-  if (avatar == null && isFormsBot)
-    avatar =
-      "https://cdn.discordapp.com/avatars/942858850850205717/35f7b68f8f64be0df28554968531bcd2?size=4096";
+  if (avatar == null && isFormsBot) avatar = AVATAR_URL;
   if (avatar == null) avatar = "https://cdn.discordapp.com/embed/avatars/0.png";
   if (avatar.startsWith("https://github.com"))
     link = avatar.replace(".png", "");

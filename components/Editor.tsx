@@ -33,6 +33,7 @@ import _ClearedValues from "../ClearedValues.json";
 import { Footer } from "../components/Footer";
 import {
   ButtonBuilder,
+  Embed,
   FormAndMessageBuilder,
   ToastStyles,
 } from "../util/types";
@@ -478,17 +479,24 @@ export function Editor({
                     : 5) ||
                 (getValues("message.embeds")?.length &&
                   (() => {
-                    //@ts-expect-error
-                    for (const {
-                      title,
-                      description,
-                      author,
-                      footer,
-                    } of getValues("message.embeds")) {
-                      if (
-                        !(title || description || author?.name || footer?.text)
-                      )
-                        return true;
+                    const embeds = getValues("message.embeds");
+                    if (embeds != undefined) {
+                      for (const {
+                        title,
+                        description,
+                        author,
+                        footer,
+                      } of embeds) {
+                        if (
+                          !(
+                            title ||
+                            description ||
+                            author?.name ||
+                            footer?.text
+                          )
+                        )
+                          return true;
+                      }
                     }
                   })())
               }
@@ -513,24 +521,26 @@ export function Editor({
                 : 5) ||
             (getValues("message.embeds")?.length &&
               (() => {
-                //@ts-expect-error
-                for (const {
-                  title,
-                  description,
-                  author,
-                  image,
-                  footer,
-                } of getValues("message.embeds")) {
-                  if (
-                    !(
-                      title ||
-                      description ||
-                      author?.name ||
-                      image?.url ||
-                      footer?.text
+                const embeds = getValues("message.embeds");
+                if (embeds != undefined) {
+                  for (const {
+                    title,
+                    description,
+                    author,
+                    image,
+                    footer,
+                  } of embeds) {
+                    if (
+                      !(
+                        title ||
+                        description ||
+                        author?.name ||
+                        image?.url ||
+                        footer?.text
+                      )
                     )
-                  )
-                    return true;
+                      return true;
+                  }
                 }
               })())) && (
             <ErrorMessage>

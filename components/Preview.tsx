@@ -81,10 +81,9 @@ function Preview({
           >
             <Box padding="0.5rem 1rem 1rem 0.75rem">
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}{" "}
-              {/*@ts-expect-error*/}
               <Link
                 href={
-                  isEmpty(embed?.author?.url) ? undefined : embed.author.url
+                  embed?.author?.url == undefined ? undefined : embed.author.url
                 }
                 style={{
                   cursor: isEmpty(embed?.author?.url) ? "default" : "pointer",
@@ -96,7 +95,6 @@ function Preview({
                 }
               >
                 <Box display="flex" alignItems="center" m="2px 0px 0px">
-                  {/*@ts-expect-error*/}
                   {!isEmpty(embed?.author?.icon_url) && (
                     <Image
                       alt="Author Image"

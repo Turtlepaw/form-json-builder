@@ -95,7 +95,7 @@ function Preview({
                 }
               >
                 <Box display="flex" alignItems="center" m="2px 0px 0px">
-                  {!isEmpty(embed?.author?.icon_url) && (
+                  {embed?.author?.icon_url != undefined && (
                     <Image
                       alt="Author Image"
                       src={embed.author.icon_url}

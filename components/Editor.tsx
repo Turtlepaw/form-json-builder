@@ -170,11 +170,11 @@ export function Editor({
       setValue("forms", json.forms);
 
       if (json.forms[0].button) {
-        setOpenFormType("button");
+        setOpenFormType("button", false);
       } else if (json.forms[0].select_menu_option) {
-        setOpenFormType("select_menu");
+        setOpenFormType("select_menu", false);
       } else if (json.application_command) {
-        setOpenFormType("application_command");
+        setOpenFormType("application_command", false);
       }
 
       if (!json.application_command) {
@@ -188,7 +188,7 @@ export function Editor({
         });
 
         if (buttons < menus) {
-          setOpenFormType("select_menu");
+          //setOpenFormType("select_menu");
           json.forms.forEach((form, i) => {
             if (form.select_menu_option == null) {
               setValue(`forms.${i}.select_menu_option`, {
@@ -200,7 +200,7 @@ export function Editor({
             if (form.button != null) resetField(`forms.${i}.button`);
           });
         } else {
-          setOpenFormType("button");
+          //setOpenFormType("button",);
           json.forms.forEach((form, i) => {
             setValue(
               `forms.${i}.button`,
@@ -259,49 +259,57 @@ export function Editor({
 
   const [openFormType, _setOpenFormType] = useState("button");
 
-  //@ts-expect-error
-  const setOpenFormType = (type) => {
+  const setOpenFormType = (type: string, setContent = true) => {
     _setOpenFormType(type);
     switch (type) {
       case "button":
         resetField("application_command");
         resetField("select_menu_placeholder");
         resetField("message");
-        setTimeout(() => {
-          setValue("message", { content: "Fill out the form below" });
-        }, 1);
+        if (setContent) {
+          setTimeout(() => {
+            setValue("message", { content: "Fill out the form below" });
+          }, 1);
+        }
 
         getValues("forms").forEach((form, i) => {
           resetField(`forms.${i}.select_menu_option`);
-          setValue(`forms.${i}.button`, {
-            label: "",
-            style: 1,
-          });
+          if (setContent) {
+            setValue(`forms.${i}.button`, {
+              label: "",
+              style: 1,
+            });
+          }
         });
         break;
       case "select_menu":
         resetField("application_command");
         resetField("message");
-        setTimeout(
-          () => setValue("message", { content: "Fill out the form below" }),
-          0.0001
-        );
+        if (setContent) {
+          setTimeout(
+            () => setValue("message", { content: "Fill out the form below" }),
+            0.0001
+          );
+        }
         getValues("forms").forEach((form, i) => {
           resetField(`forms.${i}.button`);
-          setValue(`forms.${i}.select_menu_option`, {
-            label: form.modal.title,
-            description: "",
-          });
+          if (setContent) {
+            setValue(`forms.${i}.select_menu_option`, {
+              label: form.modal.title,
+              description: "",
+            });
+          }
         });
         break;
       case "application_command":
-        resetField("message");
         getValues("forms").forEach((form, i) => {
           resetField(`forms.${i}.select_menu_option`);
           resetField(`forms.${i}.button`);
-          setValue("application_command", {
-            name: "",
-          });
+          if (setContent) {
+            setValue("application_command", {
+              name: "",
+            });
+          }
         });
         break;
     }

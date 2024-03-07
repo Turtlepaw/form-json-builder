@@ -113,10 +113,9 @@ export default function MessageBuilder({
                 <FormLabel htmlFor="select_menu_placeholder">
                   Select Menu Placeholder
                 </FormLabel>
-                {/* @ts-expect-error */}
                 <input
                   {...register("select_menu_placeholder", { required: false })}
-                  maxLength="100"
+                  maxLength={100}
                   placeholder="Select a form"
                   id="select_menu_placeholder"
                 />

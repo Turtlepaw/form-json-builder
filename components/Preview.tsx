@@ -148,8 +148,7 @@ function Preview({
                   mt="8px"
                   whiteSpace="pre-wrap"
                 >
-                  {/*@ts-expect-error*/}
-                  {!isEmpty(embed?.footer?.icon_url) && (
+                  {embed?.footer?.icon_url != undefined && (
                     <Image
                       alt="Footer Icon"
                       src={embed.footer.icon_url}
@@ -344,10 +343,10 @@ function Preview({
                       <Box>
                         <Box
                           width={
-                            //@ts-expect-error
                             forms.find(
                               (e) =>
-                                e?.select_menu_option?.description?.length > 40
+                                (e?.select_menu_option?.description?.length ??
+                                  0) > 40
                             ) != null
                               ? 450
                               : "auto"
